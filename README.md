@@ -1,0 +1,1 @@
+# Just the Vim configuration
