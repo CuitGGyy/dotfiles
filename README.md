@@ -1,1 +1,1 @@
-# Just the Vim configuration
+# Just my Vim configuration
