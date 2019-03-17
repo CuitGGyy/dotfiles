@@ -28,10 +28,10 @@ let g:ctrlp_reuse_window = 'netrw\|help\|quickfix'
 let g:ctrlp_by_filename = 1
 
 let g:ctrlp_custom_ignore = {
-\ 'dir':    '\v[\/](node_modules)|(\.(git|hg|svn|bzr)$)',
-\ 'file':   '\v\.(exe|dll|so|DS_Store)$',
-\ 'link':   'SOME_BAD_SYMBOLIC_LINKS',
-\ }
+\   'dir':    '\v[\/](node_modules)|(\.(git|hg|svn|bzr)$)',
+\   'file':   '\v\.(exe|dll|so|DS_Store)$',
+\   'link':   'SOME_BAD_SYMBOLIC_LINKS',
+\}
 
 let g:ctrlp_lazy_update = 1
 let g:ctrlp_default_input = 1
@@ -78,7 +78,7 @@ let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " 'default'|'jsformatter'|'unique_tail'|'unique_tail_improved'
-let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 " Enable airline support ALE
 let g:airline#extensions#ale#enabled = 1
@@ -190,22 +190,22 @@ map <leader><leader><tab> :LeadingSpaceToggle<cr>
 
 " Align line-wise comment delimiters flush left instead of following code indentation
 " one of 'none', 'left', 'start', or 'both'.
-"let g:NERDDefaultAlign = 'left'
+let g:NERDDefaultAlign = 'left'
 
 " Tells the script whether to remove alternative comment delimiters when uncommenting
-"let g:NERDRemoveAltComs = 1
+let g:NERDRemoveAltComs = 1
 
 " Add your own custom formats or override the defaults
-"let g:NERDCustomDelimiters = {
-"\   'python': { 'left':'#', 'leftAlt':'"""', 'right':'', 'rightAlt':'"""' },
-"\   'vue': { 'left':'//', 'leftAlt':'/*', 'right':'', 'rightAlt':'*/' },
-"}
+let g:NERDCustomDelimiters = {
+\   'python': { 'left':'#', 'leftAlt':'"""', 'right':'', 'rightAlt':'"""' },
+\   'vue': { 'left':'//', 'leftAlt':'/*', 'right':'', 'rightAlt':'*/' },
+\}
 
 " Set a language to use its alternate delimiters by default
-"let g:NERDAltDelims_java = 1
+let g:NERDAltDelims_python = 0
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
-"let g:NERDCommentEmptyLines = 1
+let g:NERDCommentEmptyLines = 1
 
 " Enable trimming of trailing whitespace when uncommenting
 "let g:NERDTrimTrailingWhitespace = 1
@@ -222,12 +222,8 @@ map <leader>c<leader> <plug>NERDCommenterInvert
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Autopairs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Fly Mode
-"let g:AutoPairsFlyMode = 0
-"let g:AutoPairsShortcutBackInsert = '<M-b>'
-
 let g:AutoPairsMapBS = 0
-"let g:AutoPairsMapCh = 1
+let g:AutoPairsMapCh = 0
 "let g:AutoPairsMapCR = 1
 "let g:AutoPairsMapCenterLine = 1
 "let g:AutoPairsMapSpace = 1
@@ -237,6 +233,10 @@ let g:AutoPairsMapBS = 0
 "let g:AutoPairsShortcutToggle = '<M-p>'
 "let g:AutoPairsShortcutFastWrap = '<M-e>'
 "let g:AutoPairsShortcutJump = '<M-n>'
+
+" Fly Mode
+"let g:AutoPairsFlyMode = 0
+"let g:AutoPairsShortcutBackInsert = '<M-b>'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

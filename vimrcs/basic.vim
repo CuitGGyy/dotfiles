@@ -240,20 +240,22 @@ set noswapfile
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
+" No spaces instead of tabs
+"set noexpandtab
 
 " Be smart when using tabs ;)
-"set smarttab
-
+set smarttab
 " No smart when using tabs ;)
-set nosmarttab
-set tabstop=8
+"set nosmarttab
+
 " 1 tab == 4 spaces
+set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-" Linebreak on 500 characters
+" Linebreak on 240 characters
 set linebreak
-set textwidth=500
+set textwidth=240
 
 " Auto indent
 set autoindent
@@ -301,19 +303,21 @@ map <C-l> <C-W>l
 map <C-w> <C-W>w
 
 " Close the current buffer
-map <leader>bc :bdelete<cr>:tabclose<cr>gT
+map <leader>bd :bdelete<cr>:tabclose<cr>gT
 
 " Close all the buffers
-map <leader>bd :bufdo bd<cr>
+map <leader>ba :bufdo bd<cr>
 
 " Switch buffers
-map <leader>bn :bnext<cr>
-map <leader>bp :bprevious<cr>
+map <leader>bn :bnext<space>
 map <leader>bf :bfirst<cr>
 map <leader>bl :blast<cr>
-
+map <leader>bp :bprevious<cr>
 map <leader>bb :bnext<cr>
 map <leader>b<leader> :bprevious<cr>
+
+" Close the current tab
+map <leader>tc :tabclose<cr>:bdelete<cr>gT
 
 " Open each buffer in tab
 map <leader>ts :tab sball<cr>
@@ -325,7 +329,7 @@ map <leader>tm :tabmove<space>
 map <leader>tn :tabnext<space>
 map <leader>tf :tabfirst<cr>
 map <leader>tl :tablast<cr>
-
+map <leader>tp :tabprevious<cr>
 map <leader>tt :tabnext<cr>
 
 " Let '<leader>t<leader>' toggle between this and the last accessed tab
