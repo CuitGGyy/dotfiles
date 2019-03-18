@@ -12,6 +12,7 @@
 "    -> Moving around, tabs and buffers
 "    -> Status line and curosr line
 "    -> Editing mappings
+"    -> Highlight keywords in comments
 "    -> Spell checking
 "    -> GUI related
 "    -> Misc
@@ -399,6 +400,13 @@ endfunction
 if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Highlight keywords in comments
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax match keyTodo contained "\<\(TODO\|FIXME\|XXX\|BUG\|HACK\|NOTE\|WARNING\):"
+highlight def link keyTodo Todo
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
