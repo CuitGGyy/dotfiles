@@ -34,6 +34,9 @@ au FileType python setl cindent
 au FileType python setl cinkeys-=0#
 au FileType python setl indentkeys-=0#
 
+" HACK: vim-polyglot/syntax/python.vim highlight Todo keyword
+au FileType python syn keyword pythonTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+" NOTE: python triple double-quotation-markers keyword
 au FileType python let b:AutoPairs = {
 \   '(':')', '[':']', '{':'}',
 \   "'":"'", '`':'`', 
