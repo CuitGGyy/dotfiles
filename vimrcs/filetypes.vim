@@ -29,6 +29,7 @@ au BufNewFile,BufRead *.jinja setl syntax=jinja2
 au BufNewFile,BufRead *.mako setl ft=mako
 au BufNewFile,BufRead *.jinja,*.mako :ColorHighlight!
 
+au FileType python setl foldenable
 au FileType python setl foldmethod=indent
 au FileType python setl cindent
 au FileType python setl cinkeys-=0#
@@ -78,9 +79,8 @@ function! JavaScriptFold()
     endfunction
     setl foldtext=FoldText()
 endfunction
-
 au FileType javascript call JavaScriptFold()
-au FileType javascript setl fen
+au FileType javascript setl foldenable
 au FileType javascript setl nocindent
 
 au FileType javascript let g:syntastic_javascript_checkers=['eslint']

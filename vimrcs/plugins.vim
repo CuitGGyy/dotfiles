@@ -223,7 +223,7 @@ map <leader>c<leader> <plug>NERDCommenterInvert
 " => Autopairs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:AutoPairsMapBS = 0
-"let g:AutoPairsMapCh = 1
+let g:AutoPairsMapCh = 1
 "let g:AutoPairsMapCR = 1
 "let g:AutoPairsMapCenterLine = 1
 "let g:AutoPairsMapSpace = 1

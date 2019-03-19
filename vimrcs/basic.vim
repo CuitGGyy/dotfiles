@@ -75,7 +75,7 @@ else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.bzr/*,*/.DS_Store
 endif
 
-" Enable automatic change directory
+" Enable automatic show vim mode
 set showmode
 
 " Enable automatic change directory
@@ -100,7 +100,7 @@ set ruler
 set cmdheight=1
 
 " A buffer becomes hidden when it is abandoned
-set hidden
+"set hidden
 
 " Configure backspace so it acts as it should act
 "set backspace=eol,start,indent
@@ -221,10 +221,7 @@ set fileencoding=utf-8
 
 " File encoding squence, compatible Asian character encoding
 set fileencodings=utf-8,cp936,gb18030,utf-16,ucs-bom,gbk,gb2312,big5,euc-jp,euc-kr,latin1
-
 let &termencoding=&encoding
-"let g:fencview_autodetect=1
-"let g:fencview_auto_patterns='*'
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -414,7 +411,6 @@ highlight def link keyTodo Todo
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing <leader><leader>s will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
-"map <leader>ss :setlocal spell!<cr>
 
 " Shortcuts using <leader>
 "map <leader>sn ]s
