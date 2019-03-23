@@ -233,7 +233,7 @@ let g:AutoPairsMapCenterLine = 0
 "let g:AutoPairsMapMultilineClose = 1
 
 " System Shortcuts
-let g:AutoPairsShortcutToggle = '<C-i>'
+let g:AutoPairsShortcutToggle = ''
 "let g:AutoPairsShortcutToggle = '<M-p>'
 "let g:AutoPairsShortcutFastWrap = '<M-e>'
 "let g:AutoPairsShortcutJump = '<M-n>'
