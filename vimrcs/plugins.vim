@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
-"       Jonet Lai <joney.lai@gmail.com>
+"       Joney Lai <joney.lai@gmail.com>
+"
+" License:
+"       GPLv3.0
 "
 " Sections:
 "    -> BufExplorer
@@ -34,7 +37,7 @@ let g:ctrlp_custom_ignore = {
 \}
 
 let g:ctrlp_lazy_update = 1
-let g:ctrlp_default_input = 1
+let g:ctrlp_default_input = 0
 
 let g:ctrlp_mruf_max = 500
 let g:ctrlp_mruf_exclude = '/tmp/.*\|/var/tmp/.*'
@@ -225,11 +228,12 @@ map <leader>c<leader> <plug>NERDCommenterInvert
 let g:AutoPairsMapBS = 0
 let g:AutoPairsMapCh = 1
 "let g:AutoPairsMapCR = 1
-"let g:AutoPairsMapCenterLine = 1
+let g:AutoPairsMapCenterLine = 0
 "let g:AutoPairsMapSpace = 1
 "let g:AutoPairsMapMultilineClose = 1
 
 " System Shortcuts
+let g:AutoPairsShortcutToggle = '<C-i>'
 "let g:AutoPairsShortcutToggle = '<M-p>'
 "let g:AutoPairsShortcutFastWrap = '<M-e>'
 "let g:AutoPairsShortcutJump = '<M-n>'
@@ -242,6 +246,21 @@ let g:AutoPairsMapCh = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic (syntax checker)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Returns string if ale has errors or warnings
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+    "return l:counts.total == 0 ? 'OK' : printf(
+    return l:counts.total == 0 ? '' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+" If no vim-airline, statusline format below with  ALE linter status can use instead.
+"set statusline=\ [%{mode()}%H%M%R%W%{Paste()}]\ %<%F%=[%{&ff}]\ %p%%,\ %l/%L\ :\ %c\ %y\ %(%{LinterStatus()}\ %)
+
 " Only run linting when saving the file
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0

@@ -1,6 +1,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
-"       Jonet Lai <joney.lai@gmail.com>
+"       Joney Lai <joney.lai@gmail.com>
+"
+" License:
+"       GPLv3.0
 "
 " Sections:
 "    -> Git commit
@@ -63,7 +66,10 @@ function! ShortTabStop()
     :ColorHighlight!
 endfunction
 au FileType javascript,html,xml,yaml,vue call ShortTabStop()
-au FileType xml,html let b:AutoPairs['<']='>'
+au FileType xml,html let b:AutoPairs = {
+\   '(':')', '[':']', '{':'}', '<':'>',
+\   "'":"'", '"':'"', '`':'`',
+\}
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

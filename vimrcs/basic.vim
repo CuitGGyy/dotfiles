@@ -1,6 +1,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
-"       Jonet Lai <joney.lai@gmail.com>
+"       Joney Lai <joney.lai@gmail.com>
+"
+" License:
+"       GPLv3.0
 "
 " Sections:
 "    -> General settings
@@ -11,7 +14,7 @@
 "    -> Visual mode related
 "    -> Moving around, tabs and buffers
 "    -> Status line and curosr line
-"    -> Editing mappings
+"    -> Editing and diff mappings
 "    -> Highlight keywords in comments
 "    -> Spell checking
 "    -> GUI related
@@ -300,11 +303,19 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 map <C-w> <C-W>w
 
-" Close the current buffer
-map <leader>bd :bdelete<cr>:tabclose<cr>gT
 
+" Edit last buffer using horizontal split window
+map <leader>sp :sp<cr>:blast<cr>
+" Edit last buffer using vertical split window
+map <leader>vs :vs<cr>:blast<cr>
+
+" Delete the current buffer
+map <leader>bd :bdelete<cr>
 " Close all the buffers
-map <leader>ba :bufdo bd<cr>
+map <leader>bc :bufdo bdelete<cr>
+
+" Open each buffer in split window
+map <leader>ba :sball<cr>
 
 " Switch buffers
 map <leader>bn :bnext<space>
@@ -314,8 +325,11 @@ map <leader>bp :bprevious<cr>
 map <leader>bb :bnext<cr>
 map <leader>b<leader> :bprevious<cr>
 
-" Close the current tab
-map <leader>tc :tabclose<cr>:bdelete<cr>gT
+
+" Close the current tab using :bdelete, not :tabclose
+map <leader>tc :bdelete<cr>
+" Close all the tabs
+map <leader>td :tabdo bdelete<cr>
 
 " Open each buffer in tab
 map <leader>ts :tab sball<cr>
@@ -359,15 +373,12 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " Always show the status line
 set laststatus=2
 
-" If no vim-airline, statusline format below with  ALE linter status can use instead.
-"set statusline=\ [%{mode()}%H%M%R%W%{Paste()}]\ %<%F%=[%{&ff}]\ %p%%,\ %l/%L\ :\ %c\ %y\ %(%{LinterStatus()}\ %)
-
 " If no vim-airline, use statusline format below as default.
 set statusline=\ [%{mode()}%H%M%R%W%{Paste()}]\ %<%F%=[%{&ff}]\ %p%%,\ %l/%L\ :\ %c\ %y\ %(%)
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
+" => Editing and diff mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
@@ -385,6 +396,28 @@ map 0 ^
   "vmap <D-k> <M-k>
 "endif
 
+" Diff mode on/off switch toggle
+function! DiffToggle()
+    if &diff
+        " Switch off diff mode for current window.
+        diffoff
+    else
+        " Make current window part of the diff windows
+        diffthis
+    endif
+endfunction
+"map <leader>dt :call DiffToggle()<cr>
+command! DiffToggle call DiffToggle()
+map <leader>dt :DiffToggle<cr>
+" Quit diff mode and reset the window
+map <leader>dq :diffoff!<cr>
+" Check and update differences between files
+map <leader>du :diffupdate<cr>
+" Vertical diffsplit this window with other file
+map <leader>ds :vertical diffsplit ~/
+" Vertical diffpatch this window with diff patch
+map <leader>df :vertical diffpatch ~/
+
 " Delete trailing white space on save, useful for some filetypes ;)
 function! CleanExtraSpaces()
     let save_cursor = getpos(".")
@@ -393,9 +426,8 @@ function! CleanExtraSpaces()
     call setpos('.', save_cursor)
     call setreg('/', old_query)
 endfunction
-
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+    autocmd BufWritePre *.txt,*.js,*.py,*.sh,*.wiki,*.coffee :call CleanExtraSpaces()
 endif
 
 
@@ -494,24 +526,26 @@ function! Paste()
     return ''
 endfunction
 
-" Returns string if ale has errors or warnings
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    "return l:counts.total == 0 ? 'OK' : printf(
-    return l:counts.total == 0 ? '' : printf(
-    \   '%dW %dE',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
-
 function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction 
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
 
 " If last window is not editable, quit vim.
 autocmd BufEnter * if 0 == len(filter(range(1, winnr('$')), 'empty(getbufvar(winbufnr(v:val), "&bt"))')) | qa! | endif

@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer: 
-"       Jonet Lai <joney.lai@gmail.com>
+"       Joney Lai <joney.lai@gmail.com>
+"
+" License:
+"       GPLv3.0
 "
 " Sections:
 "    -> vundle#begin
@@ -48,7 +51,6 @@ Plugin 'majutsushi/tagbar'              " substite taglist, require: ctags
 Plugin 'Yggdroot/indentLine'            " indent line
 Plugin 'scrooloose/nerdcommenter'       " auto comment
 Plugin 'jiangmiao/auto-pairs'           " auto pairs
-Plugin 'tpope/vim-surround'             " auto surround
 "Plugin 'Valloric/YouCompleteMe'         " auto complete
 "Plugin 'Shougo/deoplete.nvim'           " asynchronous completion framework
 "Plugin 'Chiel92/vim-autoformat'         " auto format
