@@ -414,9 +414,9 @@ map <leader>dq :diffoff!<cr>
 " Check and update differences between files
 map <leader>du :diffupdate<cr>
 " Vertical diffsplit this window with other file
-map <leader>ds :vertical diffsplit ~/
+map <leader>ds :vertical diffsplit <c-r>=expand("%:p:h")<cr>/
 " Vertical diffpatch this window with diff patch
-map <leader>df :vertical diffpatch ~/
+map <leader>df :vertical diffpatch <c-r>=expand("%:p:h")<cr>/
 
 " Delete trailing white space on save, useful for some filetypes ;)
 function! CleanExtraSpaces()
