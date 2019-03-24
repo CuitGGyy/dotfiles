@@ -199,13 +199,11 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDRemoveAltComs = 1
 
 " Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = {
-\   'python': { 'left':'#', 'leftAlt':'"""', 'right':'', 'rightAlt':'"""' },
-\   'vue': { 'left':'//', 'leftAlt':'/*', 'right':'', 'rightAlt':'*/' },
-\}
+"let g:NERDCustomDelimiters = {}
 
 " Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_python = 0
+"let g:NERDAltDelims_python = 0
+"let g:NERDAltDelims_vue = 0
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1

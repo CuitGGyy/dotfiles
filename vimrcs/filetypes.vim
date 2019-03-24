@@ -105,9 +105,6 @@ au FileType vue syntax sync fromstart
 " Fix vim slow down when using this plugin.
 au FileType vue let g:vue_disable_pre_processors = 1
 
-" Use existing configuration/plugins, but maybe cause problem.
-"au BufRead,BufNewFile *.vue setlocal filetype=vue.javascript.css.html
-
 " NERDCommenter work with vim-vue, see help for more details.
 let g:ft = ''
 function! NERDCommenter_before()
@@ -117,10 +114,6 @@ function! NERDCommenter_before()
         if len(stack) > 0
             let syn = synIDattr((stack)[0], 'name')
             if len(syn) > 0
-                " NERDCommenter help recommend fellow:
-                "let syn = tolower(syn)
-                "exe 'setf '.syn
-                " vim-vue recommend fellow:
                 exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
             endif
         endif
