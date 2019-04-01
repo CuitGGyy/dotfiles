@@ -182,11 +182,11 @@ map <leader><leader><tab> :LeadingSpaceToggle<cr>
 " => NERD Commenter
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Add spaces after comment delimiters by default
-"let g:NERDSpaceDelims = 1
+let g:NERDSpaceDelims = 0
 
 " Tells the script to always remove the extra spaces when uncommenting
 " (regardless of whether NERDSpaceDelims is set)
-"let g:NERDRemoveExtraSpaces = 1
+let g:NERDRemoveExtraSpaces = 1
 
 " Use compact syntax for prettified multi-line comments
 "let g:NERDCompactSexyComs = 1
@@ -199,17 +199,20 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDRemoveAltComs = 1
 
 " Add your own custom formats or override the defaults
-"let g:NERDCustomDelimiters = {}
+let g:NERDCustomDelimiters = {
+\   'python': { 'left': '#', },
+\   'vue': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', }
+\}
 
 " Set a language to use its alternate delimiters by default
-"let g:NERDAltDelims_python = 0
-"let g:NERDAltDelims_vue = 0
+let g:NERDAltDelims_python = 0
+let g:NERDAltDelims_vue = 0
 
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
 
 " Enable trimming of trailing whitespace when uncommenting
-"let g:NERDTrimTrailingWhitespace = 1
+let g:NERDTrimTrailingWhitespace = 1
 
 " Enable NERDCommenterToggle to check all selected lines is commented or not 
 " When this option is set to 1, NERDCommenterToggle will check all selected line,

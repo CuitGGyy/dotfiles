@@ -66,7 +66,7 @@ function! ShortTabStop()
     :ColorHighlight!
 endfunction
 au FileType javascript,html,xml,yaml,vue call ShortTabStop()
-au FileType xml,html let b:AutoPairs = {
+au FileType vue,xml,html let b:AutoPairs = {
 \   '(':')', '[':']', '{':'}', '<':'>',
 \   "'":"'", '"':'"', '`':'`',
 \}
@@ -86,10 +86,13 @@ function! JavaScriptFold()
     setl foldtext=FoldText()
 endfunction
 au FileType javascript call JavaScriptFold()
-au FileType javascript setl foldenable
+au FileType javascript setl nofoldenable
 au FileType javascript setl nocindent
 
 au FileType javascript let g:syntastic_javascript_checkers=['eslint']
+
+" HACK: vim-polyglot/syntax/javascript.vim highlight Todo keyword
+au FileType javascript syn keyword jsCommentTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
 
 "au FileType javascript inoremap <buffer> $r return<space>
 "au FileType javascript inoremap <buffer> $a alert();<esc>hi
@@ -104,6 +107,9 @@ au FileType vue syntax sync fromstart
 
 " Fix vim slow down when using this plugin.
 au FileType vue let g:vue_disable_pre_processors = 1
+
+" HACK: vim-polyglot/syntax/javascript.vim highlight Todo keyword
+au FileType vue syn keyword jsCommentTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
 
 " NERDCommenter work with vim-vue, see help for more details.
 let g:ft = ''
@@ -128,13 +134,16 @@ endfunction
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => CoffeeScript
+" => SCSS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! CoffeeScriptFold()
+function! SCSSFold()
     setl foldmethod=indent
     setl foldlevelstart=1
 endfunction
-au FileType coffee call CoffeeScriptFold()
+au FileType scss call SCSSFold()
+
+" HACK: vim-polyglot/syntax/scss.vim highlight Todo keyword
+au FileType scss syn keyword scssTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
