@@ -186,7 +186,7 @@ let g:NERDSpaceDelims = 0
 
 " Tells the script to always remove the extra spaces when uncommenting
 " (regardless of whether NERDSpaceDelims is set)
-let g:NERDRemoveExtraSpaces = 1
+let g:NERDRemoveExtraSpaces = 0
 
 " Use compact syntax for prettified multi-line comments
 "let g:NERDCompactSexyComs = 1

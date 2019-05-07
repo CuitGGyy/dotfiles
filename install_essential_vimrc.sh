@@ -1,11 +1,15 @@
 #!/bin/sh
 set -e
 
-BASIC=$HOME/.vim/vimrcs/basic.vim
-TYPES=$HOME/.vim/vimrcs/filetypes.vim
+BASIC=$(dirname $0)/vimrcs/basic.vim
+TYPES=$(dirname $0)/vimrcs/filetypes.vim
 VIMRC=$HOME/.vimrc
-ERROR="Failed to install essential vim configuation!"
-cat $BASIC | sed '/^"/d' | sed '/^[[:blank:]]*"/d' | sed '/^[[:blank:]]*$/d' > $VIMRC || { echo $ERROR; exit 1; }
-cat $TYPES | sed '/^"/d' | sed '/^[[:blank:]]*"/d' | sed '/^[[:blank:]]*$/d' >> $VIMRC || { echo $ERROR; exit 1; }
-echo "Installed essential vim configuration successfully! Enjoy :-)"
+if [ -r $BASIC ] && [ -r $TYPES ]; then
+    cat $BASIC | sed '/^"/d' | sed '/^[[:blank:]]*"/d' | sed '/^[[:blank:]]*$/d' > $VIMRC
+    cat $TYPES | sed '/^"/d' | sed '/^[[:blank:]]*"/d' | sed '/^[[:blank:]]*$/d' >> $VIMRC
+else
+    echo "Failed to install essential VimRC! :-("
+    exit 1
+fi
+echo "Installed essential VimRC successfully! Enjoy :-)"
 
