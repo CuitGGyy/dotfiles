@@ -201,6 +201,7 @@ let g:NERDRemoveAltComs = 1
 " Add your own custom formats or override the defaults
 let g:NERDCustomDelimiters = {
 \   'python': { 'left': '#', },
+\   'c': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
 \   'vue': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', }
 \}
 

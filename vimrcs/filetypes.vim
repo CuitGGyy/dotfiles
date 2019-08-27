@@ -7,6 +7,7 @@
 "
 " Sections:
 "    -> Git commit
+"    -> C/C++
 "    -> Python
 "    -> HTML/CS/Javascript common
 "    -> Javascript
@@ -26,10 +27,26 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => C/C++
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufNewFile,BufRead *.c,*.h,*.cpp setl filetype=c
+
+au FileType c setl foldenable
+au FileType c setl foldmethod=indent
+au FileType c setl cindent
+
+au FileType c syn keyword cTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType c let b:AutoPairs = {
+\   '(':')', '[':']', '{':'}',
+\   "'":"'", '"':'"', '`':'`', 
+\}
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufNewFile,BufRead *.jinja setl syntax=jinja2
-au BufNewFile,BufRead *.mako setl ft=mako
+au BufNewFile,BufRead *.mako setl filetype=mako
 au BufNewFile,BufRead *.jinja,*.mako :ColorHighlight!
 
 au FileType python setl foldenable

@@ -1,14 +1,17 @@
+# ===========================
+# Repository Ignores
+# ===========================
+# Vim backup
+README.md~
+# Vim swap
+*.swp
+
+# ===========================
+# Windows Cached Files
+# ===========================
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
-README.md~
-
-Software/Python/.idea
-Software/Python/1.sh
-
-# Other
-Script/RPi.GPIO-0.5.11/build
-*.swp
 
 # Folder config file
 Desktop.ini
@@ -25,13 +28,19 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# =========================
-# Operating System Files
-# =========================
+# Visual Studio files
+*.suo
+*.pyc
+*.pfx
+*.user
+Debug
+bin
+obj
+Release
 
-# OSX
-# =========================
-
+# ===========================
+# MacOS Cached Files
+# ===========================
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -46,16 +55,7 @@ $RECYCLE.BIN/
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
+.apdisk
 Network Trash Folder
 Temporary Items
-.apdisk
-*.suo
-Debug
-bin
-obj
-Release
-*.user
 
-# Visual Studio files
-*.pyc
-*.pfx
