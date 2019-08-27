@@ -6,10 +6,10 @@ VIMRC=$HOME/.vimrc
 ERROR="Failed to install standard VimRC! :-("
 
 if [ -d $HOME/.vim/bundle/Vundle.vim ]; then
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-else
     cd $HOME/.vim/bundle/Vundle.vim
     git pull
+else
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
 cat $CONFIG > $VIMRC || { echo $ERROR; exit 1; }

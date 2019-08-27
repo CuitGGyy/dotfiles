@@ -54,6 +54,8 @@ bash ~/.vim/install_standard_vimrc.sh
 :PluginInstall
 ```
 
+3.重启Vim
+
 ## 最小安装
 
 如果仅想对 Vim 做常规配置, 而不启用Vundle及其他插件, 也可进行最小化安装：

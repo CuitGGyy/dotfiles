@@ -54,6 +54,7 @@ Launch vim and run follow command in vim command line:
 ```
 :PluginInstall
 ```
+3.Restart Vim
 
 ## Minimal Installion
 
