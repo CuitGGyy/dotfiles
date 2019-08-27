@@ -1,8 +1,8 @@
 # **VimRC**
---
 
 [汉语](https://github.com/CuitGGyy/VimRC/blob/master/README.zh_CN.md)
 [English](https://github.com/CuitGGyy/VimRC/blob/master/README.md)
+
 
 This is just my vim configuration based on https://github.com/amix/vimrc framework,
 but was modified to support https://github.com/VundleVim/Vundle.vim with cool plugins.

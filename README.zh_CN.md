@@ -1,8 +1,8 @@
 #  **VimRC**
---
 
 [汉语](https://github.com/CuitGGyy/VimRC/blob/master/README.zh_CN.md)
 [English](https://github.com/CuitGGyy/VimRC/blob/master/README.md)
+
 
 这只是我的 Vim 配置文件, 虽然代码基于 https://github.com/amix/vimrc 代码框架, 
 但是已经支持 https://github.com/VundleVim/Vundle.vim 及 GitHub 上很多很酷的插件.
