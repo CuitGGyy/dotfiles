@@ -1,7 +1,7 @@
 # **VimRC**
 
+[English](https://github.com/CuitGGyy/VimRC)
 [汉语](https://github.com/CuitGGyy/VimRC/blob/master/README.zh_CN.md)
-[English](https://github.com/CuitGGyy/VimRC/blob/master/README.md)
 
 
 This is just my vim configuration based on https://github.com/amix/vimrc framework,
@@ -54,7 +54,10 @@ Launch vim and run follow command in vim command line:
 ```
 :PluginInstall
 ```
+
 3.Restart Vim
+
+Restart your Vim after Vundle.vim :PluginInstall finished.
 
 ## Minimal Installion
 

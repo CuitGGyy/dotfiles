@@ -1,7 +1,7 @@
 #  **VimRC**
 
+[English](https://github.com/CuitGGyy/VimRC)
 [汉语](https://github.com/CuitGGyy/VimRC/blob/master/README.zh_CN.md)
-[English](https://github.com/CuitGGyy/VimRC/blob/master/README.md)
 
 
 这只是我的 Vim 配置文件, 虽然代码基于 https://github.com/amix/vimrc 代码框架, 
@@ -54,7 +54,9 @@ bash ~/.vim/install_standard_vimrc.sh
 :PluginInstall
 ```
 
-3.重启Vim
+3.重新启动 Vim
+
+完成 Vundle.vim 插件安装后, 重新启动你的 Vim.
 
 ## 最小安装
 
