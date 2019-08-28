@@ -9,7 +9,7 @@ if [ -d $HOME/.vim/bundle/Vundle.vim ]; then
     cd $HOME/.vim/bundle/Vundle.vim
     git pull
 else
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    git clone --depth=1 https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
 cat $CONFIG > $VIMRC || { echo $ERROR; exit 1; }
