@@ -200,8 +200,11 @@ let g:NERDRemoveAltComs = 1
 
 " Add your own custom formats or override the defaults
 let g:NERDCustomDelimiters = {
+\   'gitconfig': { 'left': '#', 'leftAlt': ';', },
+\   'gitcommit': { 'left': '#', },
 \   'python': { 'left': '#', },
 \   'c': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
+\   'cpp': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
 \   'vue': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', }
 \}
 

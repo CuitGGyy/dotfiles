@@ -6,7 +6,7 @@
 "       GPLv3.0
 "
 " Sections:
-"    -> Git commit
+"    -> Git config/commit
 "    -> C/C++
 "    -> Python
 "    -> HTML/CS/Javascript common
@@ -20,7 +20,7 @@
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Git commit
+" => Git config/commit
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au FileType gitcommit setl textwidth=72
 au FileType gitcommit call setpos('.', [0, 1, 1, 0])
@@ -29,16 +29,18 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => C/C++
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufNewFile,BufRead *.c,*.h,*.cpp setl filetype=c
+au BufNewFile,BufRead *.c,*.h setl filetype=c
+au BufNewFile,BufRead *.cpp setl filetype=cpp
 
-au FileType c setl foldenable
-au FileType c setl foldmethod=indent
-au FileType c setl cindent
+au FileType c,cpp setl foldenable
+au FileType c,cpp setl foldmethod=indent
+au FileType c,cpp setl cindent
 
-au FileType c syn keyword cTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
-au FileType c let b:AutoPairs = {
+" HACK: vim-polyglot/syntax/c.vim highlight Todo keyword
+au FileType c,cpp syn keyword cTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType c,cpp let b:AutoPairs = {
 \   '(':')', '[':']', '{':'}',
-\   "'":"'", '"':'"', '`':'`', 
+\   "'":"'", '"':'"', '`':'`',
 \}
 
 
