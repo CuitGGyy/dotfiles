@@ -1,5 +1,4 @@
-#!/bin/bash
-set -e
+#!/bin/bash -euo pipefail
 
 CONFIG=$(dirname $0)/vimrcs/.vimrc
 VIMRC=$HOME/.vimrc

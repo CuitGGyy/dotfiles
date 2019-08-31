@@ -1,5 +1,4 @@
-#!/bin/sh
-set -e
+#!/bin/bash -euo pipefail
 
 BASIC=$(dirname $0)/vimrcs/basic.vim
 TYPES=$(dirname $0)/vimrcs/filetypes.vim
