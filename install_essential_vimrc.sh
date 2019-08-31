@@ -1,4 +1,5 @@
-#!/bin/bash -euo pipefail
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
 
 BASIC=$(dirname $0)/vimrcs/basic.vim
 TYPES=$(dirname $0)/vimrcs/filetypes.vim
