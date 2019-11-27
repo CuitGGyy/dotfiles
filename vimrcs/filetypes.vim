@@ -37,7 +37,7 @@ au FileType c,cpp setl foldmethod=indent
 au FileType c,cpp setl cindent
 
 " HACK: vim-polyglot/syntax/c.vim highlight Todo keyword
-au FileType c,cpp syn keyword cTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType c,cpp syn keyword cTodo TODO FIXME FIXED XXX BUG HACK NOTE WARNING contained
 au FileType c,cpp let b:AutoPairs = {
 \   '(':')', '[':']', '{':'}',
 \   "'":"'", '"':'"', '`':'`',
@@ -58,7 +58,7 @@ au FileType python setl cinkeys-=0#
 au FileType python setl indentkeys-=0#
 
 " HACK: vim-polyglot/syntax/python.vim highlight Todo keyword
-au FileType python syn keyword pythonTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType python syn keyword pythonTodo TODO FIXME FIXED XXX BUG HACK NOTE WARNING contained
 " NOTE: python triple double-quotation-markers keyword
 au FileType python let b:AutoPairs = {
 \   '(':')', '[':']', '{':'}',
@@ -111,7 +111,7 @@ au FileType javascript setl nocindent
 au FileType javascript let g:syntastic_javascript_checkers=['eslint']
 
 " HACK: vim-polyglot/syntax/javascript.vim highlight Todo keyword
-au FileType javascript syn keyword jsCommentTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType javascript syn keyword jsCommentTodo TODO FIXME FIXED XXX BUG HACK NOTE WARNING contained
 
 "au FileType javascript inoremap <buffer> $r return<space>
 "au FileType javascript inoremap <buffer> $a alert();<esc>hi
@@ -128,7 +128,7 @@ au FileType vue syntax sync fromstart
 au FileType vue let g:vue_disable_pre_processors = 1
 
 " HACK: vim-polyglot/syntax/javascript.vim highlight Todo keyword
-au FileType vue syn keyword jsCommentTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType vue syn keyword jsCommentTodo TODO FIXME FIXED XXX BUG HACK NOTE WARNING contained
 
 " NERDCommenter work with vim-vue, see help for more details.
 let g:ft = ''
@@ -162,7 +162,7 @@ endfunction
 au FileType scss call SCSSFold()
 
 " HACK: vim-polyglot/syntax/scss.vim highlight Todo keyword
-au FileType scss syn keyword scssTodo TODO FIXME XXX BUG HACK NOTE WARNING contained
+au FileType scss syn keyword scssTodo TODO FIXME FIXED XXX BUG HACK NOTE WARNING contained
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
