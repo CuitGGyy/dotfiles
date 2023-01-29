@@ -5,7 +5,7 @@
 " 仅用 Vim 内置命令, 无自定义命令或函数, 无许插件或外部依赖
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2023/01/06 10:46:39
+" Last Modified: 2023/01/29 17:26:59
 "
 "==============================================================================
 
@@ -262,8 +262,10 @@ set matchtime=2
 " 设置显示制表符等隐藏分割符
 set list
 " 隐藏分割符显示列表 (支持 Unicode 字符或字符编码)
-"set listchars=eol:¶,tab:▸\ ,lead:.,trail:~,extends:⫸,precedes:⫷,nbsp:␣
-set listchars=tab:\|\ ,space:\ ,multispace:.,lead:.,trail:.,extends:>,precedes:<,nbsp:␣
+set listchars=tab:\|\ ,space:\ ,trail:.,extends:>,precedes:<,nbsp:␣
+if v:version > 810
+	set listchars+=multispace:.,lead:.
+endif
 
 " 错误格式
 set errorformat+=[%f:%l]\ ->\ %m,[%f:%l]:%m
