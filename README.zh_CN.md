@@ -1,4 +1,4 @@
-#  **VimRC**
+#  **nvim**
 
 [English](https://github.com/CuitGGyy/VimRC)
 [汉语](https://github.com/CuitGGyy/VimRC/blob/master/README.zh_CN.md)
@@ -6,11 +6,19 @@
 
 ## 说明
 
-- 自用 Vim/NeoVim 配置文件
-- 要求 Vim 8.2+ 或 NeoVim 0.7+
+- 自用 vim / neoVim 配置文件
+- 要求 vim 7.4+ 或 neovim 0.7+
 - 遵循 XDG 目录规范
 - 使用 [vim-plug](https://github.com/junegunn/vim-plug) 管理插件
-- 在 macOS Ventura + iTerm2 下测试
+
+## 如何使用
+
+在 Shell 中执行下列命令
+
+```console
+$git clone https://github.com/CuitGGyy/nvim.git ~/.config/nvim
+$echo "source ~/.config/nvim/init.vim" > $HOME/.vimrc
+```
 
 ## LICENSE
 
