@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; bundle.vim 插件使用列表
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/01/07 02:09:52
+" Last Modified: 2023/02/21 06:02:41
 "
 "==============================================================================
 
@@ -349,18 +349,33 @@ if get(s:enabled, 'nerdcommenter', 0) == 1
 	" if there have oneline not be commented, then comment all lines.
 	let g:NERDToggleCheckAllLines = 0
 
-	noremap <leader>cc <Plug>NERDCommenterComment
-	"noremap <leader>cn <Plug>NERDCommenterNested
-	noremap <leader>c<space> <Plug>NERDCommenterToggle
-	"noremap <leader>cm <Plug>NERDCommenterMinimal
-	"noremap <leader>ci <Plug>NERDCommenterInvert
-	noremap <leader>cs <Plug>NERDCommenterSexy
-	"noremap <leader>cA <Plug>NERDCommenterAppend
-	noremap <leader>ca <Plug>NERDCommenterAltDelims
-	noremap <leader>cu <Plug>NERDCommenterUncomment
+	if v:version >= 820
+		noremap <leader>cc <Plug>NERDCommenterComment
+		"noremap <leader>cn <Plug>NERDCommenterNested
+		noremap <leader>c<space> <Plug>NERDCommenterToggle
+		"noremap <leader>cm <Plug>NERDCommenterMinimal
+		"noremap <leader>ci <Plug>NERDCommenterInvert
+		noremap <leader>cs <Plug>NERDCommenterSexy
+		"noremap <leader>cA <Plug>NERDCommenterAppend
+		noremap <leader>ca <Plug>NERDCommenterAltDelims
+		noremap <leader>cu <Plug>NERDCommenterUncomment
 
-	noremap <leader>c<leader> <Plug>NERDCommenterInvert
-	noremap <leader><leader>c <Plug>NERDCommenterUncomment
+		noremap <leader>c<leader> <Plug>NERDCommenterInvert
+		noremap <leader><leader>c <Plug>NERDCommenterUncomment
+	else
+		map <leader>cc <Plug>NERDCommenterComment
+		"map <leader>cn <Plug>NERDCommenterNested
+		map <leader>c<space> <Plug>NERDCommenterToggle
+		"map <leader>cm <Plug>NERDCommenterMinimal
+		"map <leader>ci <Plug>NERDCommenterInvert
+		map <leader>cs <Plug>NERDCommenterSexy
+		"map <leader>cA <Plug>NERDCommenterAppend
+		map <leader>ca <Plug>NERDCommenterAltDelims
+		map <leader>cu <Plug>NERDCommenterUncomment
+
+		map <leader>c<leader> <Plug>NERDCommenterInvert
+		map <leader><leader>c <Plug>NERDCommenterUncomment
+	endif
 endif
 
 

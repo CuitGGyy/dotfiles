@@ -5,7 +5,7 @@
 " 仅用 Vim 内置命令, 无自定义命令或函数, 无许插件或外部依赖
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2023/01/29 17:26:59
+" Last Modified: 2023/02/21 05:59:39
 "
 "==============================================================================
 
@@ -54,7 +54,11 @@ endif
 
 " vim 使用文本文件 viminfo, nvim 使用二进制文件 shada
 if has('nvim') == 0
-	set viminfo='100,<50,s10,h,n$XDG_CACHE_HOME/.viminfo
+	if $XDG_CACHE_HOME != ''
+		set viminfo='100,<50,s10,h,n$XDG_CACHE_HOME/.viminfo
+	else
+		set viminfo='100,<50,s10,h,n$HOME/.cache/.viminfo
+	endif
 endif
 " 各历史记录数量
 set history=100
@@ -100,7 +104,9 @@ set fileformats=unix,dos,mac
 " 终端使用 256 色
 if !has('gui_running')
 	set t_Co=256
-	set termguicolors
+	if v:version >= 800
+		set termguicolors
+	endif
 endif
 
 " 防止tmux下vim的背景色显示异常
@@ -151,7 +157,9 @@ set number
 set relativenumber
 
 " 总是显示侧边栏（用于显示 mark/gitdiff/诊断信息）
-set signcolumn=yes
+if v:version >= 800
+	set signcolumn=yes
+endif
 
 " 总是显示标签栏
 set showtabline=2

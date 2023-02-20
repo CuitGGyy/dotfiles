@@ -5,7 +5,7 @@
 " 依赖终端或系统的键码识别, 可结合键盘键位布局及键码识别情况予以修改
 "
 " Created by skywind on 2018/05/30
-" Last Modified: 2023/01/07 02:20:31
+" Last Modified: 2023/02/21 06:01:30
 "
 "==============================================================================
 
@@ -270,7 +270,7 @@ if has('nvim')
 	tnoremap <tab><right> <c-\><c-n><c-w>l
 	tnoremap <tab>, <c-\><c-n><c-w>p
 	tnoremap <tab><esc> <c-\><c-n>
-else
+elseif v:version >= 800
 	noremap <s-f1> :terminal<cr>
 
 	set termwinkey=<c-w>
@@ -331,10 +331,10 @@ noremap <silent><leader>b[ :bprevious<cr>
 augroup LastBuf
 	autocmd!
 	if !exists('g:lastbuf')
-		let g:lastbuf = bufnr()
+		let g:lastbuf = bufnr('$')
 	endif
 	noremap <leader>b<leader> :execute 'buffer '.g:lastbuf<cr>
-	autocmd BufLeave * let g:lastbuf = bufnr()
+	autocmd BufLeave * let g:lastbuf = bufnr('$')
 augroup END
 
 
