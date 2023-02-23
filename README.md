@@ -17,8 +17,10 @@ Execute following commands with shell:
 
 ```console
 $git clone https://github.com/CuitGGyy/nvim.git ~/.config/nvim
-$echo "source ~/.config/nvim/init.vim" > $HOME/.vimrc
+$echo "source ~/.config/nvim/init.vim" > ~/.vimrc
 ```
+
+Run vim / neovim, it will update plugins automatically.
 
 ## LICENSE
 

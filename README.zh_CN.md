@@ -17,8 +17,10 @@
 
 ```console
 $git clone https://github.com/CuitGGyy/nvim.git ~/.config/nvim
-$echo "source ~/.config/nvim/init.vim" > $HOME/.vimrc
+$echo "source ~/.config/nvim/init.vim" > ~/.vimrc
 ```
+
+运行 vim / neovim 将会自动下载并更新插件
 
 ## LICENSE
 

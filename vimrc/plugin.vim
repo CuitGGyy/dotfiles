@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; bundle.vim 插件使用列表
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/02/21 06:02:41
+" Last Modified: 2023/02/24 04:50:56
 "
 "==============================================================================
 
@@ -363,18 +363,18 @@ if get(s:enabled, 'nerdcommenter', 0) == 1
 		noremap <leader>c<leader> <Plug>NERDCommenterInvert
 		noremap <leader><leader>c <Plug>NERDCommenterUncomment
 	else
-		map <leader>cc <Plug>NERDCommenterComment
-		"map <leader>cn <Plug>NERDCommenterNested
-		map <leader>c<space> <Plug>NERDCommenterToggle
-		"map <leader>cm <Plug>NERDCommenterMinimal
-		"map <leader>ci <Plug>NERDCommenterInvert
-		map <leader>cs <Plug>NERDCommenterSexy
-		"map <leader>cA <Plug>NERDCommenterAppend
-		map <leader>ca <Plug>NERDCommenterAltDelims
-		map <leader>cu <Plug>NERDCommenterUncomment
+		nmap <leader>cc <Plug>NERDCommenterComment
+		"nmap <leader>cn <Plug>NERDCommenterNested
+		nmap <leader>c<space> <Plug>NERDCommenterToggle
+		"nmap <leader>cm <Plug>NERDCommenterMinimal
+		"nmap <leader>ci <Plug>NERDCommenterInvert
+		nmap <leader>cs <Plug>NERDCommenterSexy
+		"nmap <leader>cA <Plug>NERDCommenterAppend
+		nmap <leader>ca <Plug>NERDCommenterAltDelims
+		nmap <leader>cu <Plug>NERDCommenterUncomment
 
-		map <leader>c<leader> <Plug>NERDCommenterInvert
-		map <leader><leader>c <Plug>NERDCommenterUncomment
+		nmap <leader>c<leader> <Plug>NERDCommenterInvert
+		nmap <leader><leader>c <Plug>NERDCommenterUncomment
 	endif
 endif
 
