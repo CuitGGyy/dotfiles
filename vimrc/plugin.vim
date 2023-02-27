@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; bundle.vim 插件使用列表
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/02/24 04:50:56
+" Last Modified: 2023/02/27 09:52:39
 "
 "==============================================================================
 
@@ -349,7 +349,7 @@ if get(s:enabled, 'nerdcommenter', 0) == 1
 	" if there have oneline not be commented, then comment all lines.
 	let g:NERDToggleCheckAllLines = 0
 
-	if v:version >= 820
+	if has('nvim') || v:version >= 820
 		noremap <leader>cc <Plug>NERDCommenterComment
 		"noremap <leader>cn <Plug>NERDCommenterNested
 		noremap <leader>c<space> <Plug>NERDCommenterToggle
@@ -375,6 +375,19 @@ if get(s:enabled, 'nerdcommenter', 0) == 1
 
 		nmap <leader>c<leader> <Plug>NERDCommenterInvert
 		nmap <leader><leader>c <Plug>NERDCommenterUncomment
+
+		vmap <leader>cc <Plug>NERDCommenterComment
+		"vmap <leader>cn <Plug>NERDCommenterNested
+		vmap <leader>c<space> <Plug>NERDCommenterToggle
+		"vmap <leader>cm <Plug>NERDCommenterMinimal
+		"vmap <leader>ci <Plug>NERDCommenterInvert
+		vmap <leader>cs <Plug>NERDCommenterSexy
+		"vmap <leader>cA <Plug>NERDCommenterAppend
+		vmap <leader>ca <Plug>NERDCommenterAltDelims
+		vmap <leader>cu <Plug>NERDCommenterUncomment
+
+		vmap <leader>c<leader> <Plug>NERDCommenterInvert
+		vmap <leader><leader>c <Plug>NERDCommenterUncomment
 	endif
 endif
 
