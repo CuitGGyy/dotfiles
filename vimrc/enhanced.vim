@@ -5,7 +5,7 @@
 " 自定义命令或函数, 无插件或外部依赖
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2023/01/07 00:52:05
+" Last Modified: 2023/04/02 20:48:52
 "
 "==============================================================================
 
@@ -147,6 +147,7 @@ function! LastModifiedDatetime(headline)
 	endif
 	" 光标跳转到文件头部进行查找替换
 	execute '1,' . l . 'g/[Ll]ast [Mm]odified: /s/[Ll]ast [Mm]odified: .*/Last Modified: ' . strftime('%Y\/%m\/%d %H:%M:%S')
+	execute '1,' . l . 'g/[Ll]ast-[Mm]odified: /s/[Ll]ast-[Mm]odified: .*/Last-Modified: ' . strftime('%Y\/%m\/%d %H:%M:%S')
 	" 光标跳转回查找替换之前所在位置;
 	" 保持光标停留在当前行, 并重新定位当前窗口, 使窗口中部显示光标所在行
 	execute "normal! g''" | execute "normal! z."
@@ -154,6 +155,7 @@ endfunction
 command -nargs=1 LastModifiedDatetime call LastModifiedDatetime(<f-args>)
 if has('autocmd')
 	autocmd BufWritePre,FileWritePre *.vim :LastModifiedDatetime 15
+	autocmd BufWritePre,FileWritePre *.py :LastModifiedDatetime 15
 endif
 
 
