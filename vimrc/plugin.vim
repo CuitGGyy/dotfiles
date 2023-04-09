@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; bundle.vim 插件使用列表
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/02/27 09:52:39
+" Last Modified: 2023/04/10 06:32:50
 "
 "==============================================================================
 
@@ -136,27 +136,65 @@ endif
 "------------------------------------------------------------------------------
 if get(s:enabled, 'rainbow', 0) == 1
 	let g:rainbow_conf = {
-				\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-				\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+				\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick3', 'darkorchid3',],
+				\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta', 'lightred',],
+				\	'guis': [''],
+				\	'cterms': [''],
 				\	'operators': '_,_',
+				\	'contains_prefix': 'TOP',
+				\	'parentheses_options': '',
 				\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
 				\	'separately': {
 				\		'*': {},
-				\		'tex': {
-				\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/',],
+				\		'markdown': {
+				\			'parentheses_options': 'containedin=markdownCode contained',
 				\		},
 				\		'lisp': {
 				\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3',],
 				\		},
+				\		'haskell': {
+				\			'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/\v\{\ze[^-]/ end=/}/ fold'],
+				\		},
+				\		'ocaml': {
+				\			'parentheses': ['start=/(\ze[^*]/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/\[|/ end=/|\]/ fold', 'start=/{/ end=/}/ fold'],
+				\		},
+				\		'tex': {
+				\			'parentheses_options': 'containedin=texDocZone',
+				\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+				\		},
 				\		'vim': {
-				\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody',],
+				\			'parentheses_options': 'containedin=vimFuncBody,vimExecute',
+				\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold'],
+				\		},
+				\		'xml': {
+				\			'syn_name_prefix': 'xmlRainbow',
+				\			'parentheses': ['start=/\v\<\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'))?)*\>/ end=#</\z1># fold'],
+				\		},
+				\		'xhtml': {
+				\			'parentheses': ['start=/\v\<\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'))?)*\>/ end=#</\z1># fold'],
 				\		},
 				\		'html': {
-				\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold',],
+				\			'parentheses': ['start=/\v\<((script|style|area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+				\		},
+				\		'lua': {
+				\			'parentheses': ["start=/(/ end=/)/", "start=/{/ end=/}/", "start=/\\v\\[\\ze($|[^[])/ end=/\\]/"],
+				\		},
+				\		'perl': {
+				\			'syn_name_prefix': 'perlBlockFoldRainbow',
+				\		},
+				\		'php': {
+				\			'syn_name_prefix': 'phpBlockRainbow',
+				\			'contains_prefix': '',
+				\			'parentheses': ['start=/(/ end=/)/ containedin=@htmlPreproc contains=@phpClTop', 'start=/\[/ end=/\]/ containedin=@htmlPreproc contains=@phpClTop', 'start=/{/ end=/}/ containedin=@htmlPreproc contains=@phpClTop', 'start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold contains_prefix=TOP'],
+				\		},
+				\		'stylus': {
+				\			'parentheses': ['start=/{/ end=/}/ fold contains=@colorableGroup'],
 				\		},
 				\		'css': 0,
+				\		'sh': 0,
+				\		'vimwiki': 0,
 				\		'nerdtree': 0,
-				\	}
+				\	},
 				\}
 	let g:rainbow_active = 1
 endif
@@ -328,10 +366,11 @@ if get(s:enabled, 'nerdcommenter', 0) == 1
 	let g:NERDCustomDelimiters = {
 				\ 'gitconfig': { 'left': '#', 'leftAlt': ';', },
 				\ 'gitcommit': { 'left': '#', },
-				\ 'python': { 'left': '#', },
+				\ 'python': { 'left': '#', 'leftAlt': "'''", 'rightAlt': "'''", },
 				\ 'c': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
 				\ 'cpp': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
-				\ 'vue': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', }
+				\ 'vue': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
+				\ 'yaml': { 'left': '#', },
 				\ }
 
 	" Set a language to use its alternate delimiters by default
