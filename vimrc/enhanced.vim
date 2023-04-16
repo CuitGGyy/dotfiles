@@ -5,7 +5,7 @@
 " 自定义命令或函数, 无插件或外部依赖
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2023/04/02 20:48:52
+" Last Modified: 2023/04/16 10:45:16
 "
 "==============================================================================
 
@@ -145,12 +145,20 @@ function! LastModifiedDatetime(headline)
 	else
 		let l = line("$")
 	endif
-	" 光标跳转到文件头部进行查找替换
-	execute '1,' . l . 'g/[Ll]ast [Mm]odified: /s/[Ll]ast [Mm]odified: .*/Last Modified: ' . strftime('%Y\/%m\/%d %H:%M:%S')
-	execute '1,' . l . 'g/[Ll]ast-[Mm]odified: /s/[Ll]ast-[Mm]odified: .*/Last-Modified: ' . strftime('%Y\/%m\/%d %H:%M:%S')
-	" 光标跳转回查找替换之前所在位置;
-	" 保持光标停留在当前行, 并重新定位当前窗口, 使窗口中部显示光标所在行
-	execute "normal! g''" | execute "normal! z."
+	if search("Last\ Modified:", 'nw')
+		" 光标跳转到文件头部进行查找替换
+		silent execute '1,' . l . 'g/[Ll]ast [Mm]odified: /s/[Ll]ast [Mm]odified: .*/Last Modified: ' . strftime('%Y\/%m\/%d %H:%M:%S')
+		" 光标跳转回查找替换之前所在位置;
+		" 保持光标停留在当前行, 并重新定位当前窗口, 使窗口中部显示光标所在行
+		silent execute "normal! g''" | execute "normal! z."
+	endif
+	if search("Last-Modified:", 'nw')
+		" 光标跳转到文件头部进行查找替换
+		silent execute '1,' . l . 'g/[Ll]ast-[Mm]odified: /s/[Ll]ast-[Mm]odified: .*/Last-Modified: ' . strftime('%Y\/%m\/%d %H:%M:%S')
+		" 光标跳转回查找替换之前所在位置;
+		" 保持光标停留在当前行, 并重新定位当前窗口, 使窗口中部显示光标所在行
+		silent execute "normal! g''" | execute "normal! z."
+	endif
 endfunction
 command -nargs=1 LastModifiedDatetime call LastModifiedDatetime(<f-args>)
 if has('autocmd')
