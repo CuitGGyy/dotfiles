@@ -1,10 +1,27 @@
+## git ignore global settings
 # ===========================
 # Repository Ignores
 # ===========================
-# Vim backup
-README.md~
-# Vim swap
+
+
+# ===========================
+# Develop Environment Ignores
+# ===========================
+# Backup files
+*.*~
+*.bak
+# Swap files
 *.swp
+
+# tags file
+.tags
+tags
+
+# Python virtualenv and caches
+virtualenv/
+venv/
+__pycache__/
+*.pyc
 
 # ===========================
 # Windows Cached Files
@@ -30,7 +47,6 @@ $RECYCLE.BIN/
 
 # Visual Studio files
 *.suo
-*.pyc
 *.pfx
 *.user
 Debug

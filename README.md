@@ -1,26 +1,20 @@
-# **nvim**
+#  **dotfiles**
 
-[English](https://github.com/CuitGGyy/VimRC)
-[汉语](https://github.com/CuitGGyy/VimRC/blob/master/README.zh_CN.md)
+[汉语](https://github.com/CuitGGyy/dotfiles)
+[English](https://github.com/CuitGGyy/dotfiles/blob/master/README.en_US.md)
 
 
-## Introduction
+## 说明
 
-- My vim / neovim configuration.
-- Require vim 7.4+ or neovim 0.7+
-- Follow XDG Base Directory Specification
-- Use [vim-plug](https://github.com/junegunn/vim-plug) to manage plugins
+- 自用 vim / neoVim 配置文件
+- 要求 vim 7.4+ 或 neovim 0.7+
+- 遵循 XDG 目录规范
+- 使用 [vim-plug](https://github.com/junegunn/vim-plug) 管理插件
 
-## How to use
+- 自用 zsh 环境配置
+- 自用 bash 环境配置
+- 自用 python 环境配置
 
-Execute following commands with shell:
-
-```console
-$git clone https://github.com/CuitGGyy/nvim.git ~/.config/nvim
-$echo "source ~/.config/nvim/init.vim" > ~/.vimrc
-```
-
-Run vim / neovim, it will update plugins automatically.
 
 ## LICENSE
 
