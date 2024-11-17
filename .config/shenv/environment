@@ -1,0 +1,210 @@
+#!/bin/sh
+#set -e
+
+# ---------------------------
+# Develop environment variables
+# ---------------------------
+
+# export environment variables if this is MacOS
+if [[ "$(uname -s)" = "Darwin" ]]; then
+	# enable color support of ls and also add handy aliases
+	export CLICOLOR=1
+	#export LSCOLORS=exfxcxdxbxegedabagacad  # default background
+	#export LSCOLORS=ExFxCxDxBxegedabagacad  # light background
+	export LSCOLORS=GxFxCxDxBxegedabagaced  # dark background
+
+	# enable color support of grep highlight matches
+	export GREP_OPTIONS='--color=auto'
+fi
+
+# colorized gcc warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# enable color support of ls and also add handy aliases
+if [[ -x /usr/bin/dircolors ]]; then
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
+	alias dir='dir --color=auto'
+	alias vdir='vdir --color=auto'
+
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lm="ll | % {PAGER}"
+alias lk='ll -Sr'
+alias lt='ll -tr'
+
+#alias df='df -h'
+#alias du='df -h'
+alias free='free -m'
+
+#alias cp='cp -i'
+#alias rm='rm -i'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+if [[ -x $(command -v notify-send) ]]; then
+	alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+fi
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+#if [ -f ~/.bash_aliases ]; then
+#    . ~/.bash_aliases
+#fi
+#
+# You may want to put all your additions into a separate file like
+# ~/.zsh_aliases, instead of adding them here directly.
+#if [ -f ~/.zsh_aliases ]; then
+#    . ~/.zsh_aliases
+#fi
+
+# less history file
+if [[ -x "$(command -v less)" ]]; then
+	export LESSHISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.lesshst
+fi
+
+#route configuration
+if [[ "$(uname -s)" == "Darwin" ]]; then
+	alias add_route='sudo route add -net 192.168.1.0/24 192.168.1.200'
+	alias del_route='sudo route delete -net 192.168.1.0/24 192.168.1.200'
+elif [[ "$(uname -s)" == "Linux" ]]; then
+	alias add_route='sudo route add 192.168.1.0/24 via 192.168.1.200'
+	alias del_route='sudo route del 192.168.1.0/24 via 192.168.1.200'
+fi
+
+# proxy configuration
+alias https_proxy='export http_proxy=http://192.168.1.200:8118; export https_proxy=$http_proxy'
+alias socks_proxy='export ALL_PROXY=socks5://192.168.1.200:1080'
+alias unset_proxy='unset http_proxy; unset https_proxy; unset ALL_PROXY'
+
+# try to use neovim as default editor
+NVIM_HOME="/opt/nvim-linux64"
+if [[ -x "$(command -v nvim)" ]]; then
+	alias vim=nvim
+	alias vi=nvim
+	[[ "$(uname -s)" = "Linux" ]] && export EDITOR=nvim
+elif [[ -d "$NVIM_HOME" ]] && [[ -x "$NVIM_HOME/bin/nvim" ]]; then
+	export PATH=$PATH:"${NVIM_HOME}/bin"
+	alias vim=nvim
+	alias vi=nvim
+	[[ "$(uname -s)" = "Linux" ]] && export EDITOR=nvim
+fi
+unset NVIM_HOME
+
+# python command line tab completetion and history file
+if [[ -x "$(command -v python)" ]] || [[ -x "$(command -v python3)" ]]; then
+	export PYTHONSTARTUP=${XDG_CONFIG_HOME:-"$HOME/.config"}/scripts/pythonstartup
+	export PYTHONDONTWRITEBYTECODE=1
+	#export PYTHONUNBUFFERED=1
+	#export PYTHONUTF8=1
+	#export PYTHONIOENCODING=utf-8
+	#alias python=/usr/bin/python3
+fi
+
+# avoid ranger load default rc file or load twice
+if [[ -x "$(command -v ranger)" ]]; then
+	export RANGER_LOAD_DEFAULT_RC=FALSE
+fi
+
+# homebrew bottle source at china ustc
+# Use the follow brew-install.sh script at homebrew initialization in China
+# /bin/bash -c "$(curl -fsSL https://mirrors.ustc.edu.cn/misc/brew-install.sh)"
+# /bin/bash -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/HomebrewUninstall.sh)"
+# Brew services for macOS(launchctl) or Linux(systemctl)
+# brew tap --custom-remote --force-auto-update homebrew/services https://mirrors.ustc.edu.cn/homebrew-services.git
+if [[ -x "$(command -v brew)" ]]; then
+	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+	export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
+fi
+
+# homebrew bottle source at china tsinghua
+# Use the follow brew-install.sh script at homebrew initialization in China
+# git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
+# /bin/bash brew-install/install.sh
+# rm -rf brew-install
+#if [[ -x "$(command -v brew)" ]]; then
+#    export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
+#    export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/bottles"
+#    export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+#    export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+#    export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
+#fi
+
+# linuxbrew shell environment
+if [[ "$(uname -s)" == "Linux" ]]; then
+	# apple silicon cpu macos homebrew directory
+	#BREW_HOME=/opt/linuxbrew
+	# linux homebrew drectory
+	BREW_HOME=/home/linuxbrew/.linuxbrew
+	# setup homebrew command shellenv
+	test -d "$BREW_HOME" && test -r "$BREW_HOME/bin/brew" && eval "$($BREW_HOME/bin/brew shellenv)"
+	unset BREW_HOME
+fi
+
+# try to use vscode
+#VSCODE_HOME="/opt/vscode-linux-x64"
+#if [[ -x "$(command -v code)" ]]; then
+#    if [[ -n ${WAYLAND_DISPLAY} ]] && [[ -n ${ELECTRON_OZONE_PLATFORM_HINT} ]]; then
+#        alias code='code --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime'
+#    fi
+#elif [[ -d "$VSCODE_HOME" ]] && [[ -x "$VSCODE_HOME/bin/code" ]]; then
+#    export PATH=$PATH:"${VSCODE_HOME}/bin"
+#    if [[ -n ${WAYLAND_DISPLAY} ]] && [[ -n ${ELECTRON_OZONE_PLATFORM_HINT} ]]; then
+#        alias code='code --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --enable-wayland-ime'
+#    fi
+#fi
+#unset VSCODE_HOME
+
+# mono-mdk environment framework path
+#export FrameworkPathOverride=/Library/Frameworks/Mono.framework/Versions/Current
+#MONO_MDK=$HOME/Library/Frameworks/Mono.framework/Home
+#export PATH=$PATH:"${MONO_MDK}/Commands"
+# dotnet-sdk environment framework path
+#DOTNET_SDK="$HOME/Applications/Unity/dotnet-sdk-6.0.413-osx-x64"
+#export PATH=$PATH:$DOTNET_SDK
+
+# gcc-linaro cross-compliation environment
+#SYSROOT_GLIBC_AARCH64="/opt/sysroot-glibc-linaro-2.25-2019.12-aarch64-linux-gnu"
+#CROSS_COMPILE_AARCH64="/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu"
+#if [ -d "${CROSS_COMPILE_AARCH64}/bin" ]; then
+#    export PATH=$PATH:"${CROSS_COMPILE_AARCH64}/bin"
+#fi
+#if [ -f "${CROSS_COMPILE_AARCH64}/bin/aarch64-linux-gnu-gcc" ]; then
+#    export CROSS_COMPILE="${CROSS_COMPILE_AARCH64}/bin/aarch64-linux-gnu-"
+#fi
+
+# cmake open-source cross-platform build test package family
+#CMAKE_HOME="/opt/cmake-3.26.5-linux-x86_64"
+#if [ -d "${CMAKE_HOME}/bin" ]; then
+#	export PATH=$PATH:"${CMAKE_HOME}/bin"
+#fi
+
+# qt compilers
+#export LDFLAGS="-L/usr/local/opt/qt/lib"
+#export CPPFLAGS="-I/usr/local/opt/qt/include"
+# pyside6 environment
+#PYSIDE6="$HOME/uitest/virtualenv/lib/python3.11/site-packages/PySide6"
+#export QT_QPA_PLATFORM_PLUGIN_PATH="${PYSIDE6}/Qt/plugins/platforms"
+
+# nodejs environment, alias for cnpm
+#NODE_HOME=/opt/node-v10.15.3-linux-x64
+#if [ -d $NODE_HOME ]; then
+#    export PATH=$PATH:$NODE_HOME/bin
+#    export NODE_PATH=$NODE_HOME/lib/node_modules
+#    alias cnpm="npm --registry=https://registry.npm.taobao.org \
+#--cache=${XDG_CACHE_HOME:-"$HOME/.cache"}/cnpm \
+#--disturl=https://npm.taobao.org/dist \
+#--userconfig=${XDG_CONFIG_HOME}/cnpmrc
+#fi
+

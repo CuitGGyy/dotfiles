@@ -1,11 +1,19 @@
+#
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc) for examples
+#
 
+# Test for an interactive shell. There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+#if [[ $- != *i* ]] ; then
+#    # Shell is non-interactive.  Be done now!
+#    return
+#fi
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+	*i*) ;;
+		*) return;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -15,9 +23,15 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+# keep 1000 lines of command history within the shell and save it to ~/.bash_history:
+HISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.bash_history
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
+# track user login
+#USER_IP=`who -u -m | awk '{print $NF}' | sed 's/[()]//g`'
+#USER=`whoami`
+#HISTTIMEFORMAT="[%F %T] [$USER] [$USER_IP]"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -30,14 +44,9 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+	xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -46,57 +55,69 @@ esac
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
 	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
 	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
-    else
+	else
 	color_prompt=
-    fi
+	fi
 fi
 
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+	debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set different color prompt for root or the other users
 if [ "$color_prompt" = yes ]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;33m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	if [ $EUID -eq 0 ]; then
+		#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\] \[\033[01;34m\]\W\[\033[00m\]\$ '
+		PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	else
+		#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;33m\]\h\[\033[00m\] \[\033[01;34m\]\W\[\033[00m\]\$ '
+		PS1='${debian_chroot:+($debian_chroot)}\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;33m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+	fi
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+	#PS1='${debian_chroot:+($debian_chroot)}\u@\h \W\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
+	#PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \W\a\]$PS1"
+	PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	;;
 *)
-    ;;
+	;;
 esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
+	#alias dir='dir --color=auto'
+	#alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+	#alias grep='grep --color=auto'
+	#alias fgrep='fgrep --color=auto'
+	#alias egrep='egrep --color=auto'
 fi
 
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
+#alias ll='ls -alF'
+#alias la='ls -A'
 #alias l='ls -CF'
 
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# Add an "alert" alias for long running commands.
+# Use like so: sleep 10; alert
+#alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -104,77 +125,25 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+	. ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 fi
 
-# less history file
-export LESSHISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.lesshst
+# -------------------------------
+# Develop environment variables
+# -------------------------------
 
-# try to use neovim as default editor
-#if type nvim > /dev/null 2>&1; then
-#    alias vim=nvim
-#    alias vi=nvim
-#    #export EDITOR=/usr/local/bin/nvim
-#fi
-# set neovim as default editor
-NVIM_HOME="/opt/nvim-linux64"
-if [ -f "${NVIM_HOME}/bin/nvim" ]; then
-	export PATH=$PATH:"${NVIM_HOME}/bin"
-	alias vim=nvim
-	alias vi=nvim
-	export EDITOR="${NVIM_HOME}/bin/nvim"
+if [ -f ~/.config/shenv/environment ]; then
+	. ~/.config/shenv/environment
 fi
-
-# python tab completetion and history file
-export PYTHONSTARTUP=${XDG_CONFIG_HOME:-"$HOME/.config"}/python/pythonstartup
-export PYTHONDONTWRITEBYTECODE=1
-#export PYTHONUNBUFFERED=1
-#export PYTHONUTF8=1
-#export PYTHONIOENCODING=utf-8
-#alias python=/usr/bin/python3
-
-# gcc-linaro cross-compilation environment
-#SYSROOT_GLIBC_AARCH64="/opt/sysroot-glibc-linaro-2.25-2019.12-aarch64-linux-gnu"
-#CROSS_COMPILE_AARCH64="/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu"
-#if [ -d "${CROSS_COMPILE_AARCH64}/bin" ]; then
-#	export PATH=$PATH:"${CROSS_COMPILE_AARCH64}/bin"
-#fi
-#if [ -f "${CROSS_COMPILE_AARCH64}/bin/aarch64-linux-gnu-gcc" ]; then
-#	export CROSS_COMPILE="${CROSS_COMPILE_AARCH64}/bin/aarch64-linux-gnu-"
-#fi
-
-# cmake open-source cross-platform build test package family
-#CMAKE_HOME="/opt/cmake-3.26.5-linux-x86_64"
-#if [ -d "${CMAKE_HOME}/bin" ]; then
-#    export PATH=$PATH:"${CMAKE_HOME}/bin"
-#fi
-
-# qt6 compliers
-#export LDFLAGS="-L/usr/local/opt/qt/lib"
-#export CPPFLAGS="-L/usr/local/opt/qt/include"
-# pyside6 environment
-#PYSIDE6="/home/master/uitest/virtualenv/lib/python3.10/site-packages/PySide6"
-#export QT_QPA_PLATFORM_PLUGIN_PATH="${PYSIDE6}/Qt/plugins/platforms"
-
-# node.js environment, alias for cnpm
-#NODE_HOME=/opt/node-v12.13.0-linux-x64
-#if [ -d $NODE_HOME ]; then
-#	export PATH=$PATH:$NODE_HOME/bin
-#	export NODE_PATH=$NODE_HOME/lib/node_modules
-#	alias cnpm="npm --registry=https://registry.npm.taobao.org \
-#--cache=${XDG_CACHE_HOME:-"$HOME/.cache"}/.cnpm \
-#--disturl=https://npm.taobao.org/dist \
-#--userconfig=${XDG_CONFIG_HOME-:"$HOME/.config"}/cnpmrc"
-#fi
 

@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; 使用 plugin.vim 调整插件默认配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/01/07 02:09:49
+" Last Modified: 2024/11/17 22:58:04
 "
 "==============================================================================
 
@@ -57,7 +57,7 @@ autocmd VimEnter *
 " vim 一般是 ~/.vim/bundle
 " neovim 则是 ~/.config/neovim/bundle
 "------------------------------------------------------------------------------
-call plug#begin(get(g:, 'bundle_home', expand(s:home.'/bundle')))
+silent call plug#begin(get(g:, 'bundle_home', expand(s:home.'/bundle')))
 
 
 "------------------------------------------------------------------------------

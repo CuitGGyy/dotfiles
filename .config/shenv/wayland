@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+### wayland environment for application
+
+# qt use wayland backend
+#export QT_QPA_PLATFORM="wayland;xcb"
+export QT_QPA_PLATFORM="wayland"
+# use qt5ct config theme
+#export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_QPA_PLATFORMTHEME=gtk4
+# disable qt draw client-side decorations for all windows
+export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+# avoid qt screen scale wrong
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+# force wayland dpi
+export QT_WAYLAND_FORCE_DPI=128
+# debug qt plugins in wayland
+#export QT_DEBUG_PLUGINS=1
+
+# enable mozilla support wayland
+export MOZ_ENABLE_WAYLAND=1
+export MOZ_DBUS_REMOTE=1
+export MOZ_WEBRENDER=1
+#export GTK_CSD=0
+
+# gdk use wayland backend
+#export GDK_BACKEND="wayland,x11"
+export GDK_BACKEND=wayland
+# x11 use wayland backend
+export CLUTTER_BACKEND=wayland
+# game video use wayland
+export SDL_VIDEODRIVER=wayland
+# set ozone platform to wayland
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
+# avoid java application black scrren
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# disable hardware cursors. this might fix disappearing cursors in virtual machine
+if systemd-detect-virt -q; then
+	# if the system is running inside a virtual machine, disable hardware cursors
+	export WLR_NO_HARDWARE_CURSORS=1
+fi
+
+# Disable warnings by OpenCV
+#export OPENCV_LOG_LEVEL=ERROR
+
+# xdg environment session type
+export XDG_SESSION_TYPE=wayland
+
+#if [[ -f "$HOME/.config/user-dirs.dirs" ]]; then
+#    set -a
+#    . $HOME/.config/user-dirs.dirs
+#    set +a
+#fi
+
+# fcitx5 input method framework
+if [[ -x $(command -v fcitx5) ]]; then
+	export GTK_IM_MODULE=fcitx5
+	export QT_IM_MODULE=fcitx5
+	export CLUTTER_IM_MODULE=fcitx5
+	export XMODIFIERS="@im=fcitx5"
+	export SDL_IM_MODULE=fcitx5
+	export GLFW_IM_MODULE=fcitx5
+	#export INPUT_METHOD=fcitx5
+	#export XIM=fcitx5
+fi
+

@@ -1,14 +1,30 @@
+#
 # ~/.zshrc: executed by bash for non-login shells.
+# created by master for zsh version 5.9
+#
 
+# Test for an interactive shell. There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+#if [[ $- != *i* ]] ; then
+#    # Shell is non-interactive.  Be done now!
+#    return
+#fi
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
 	  *) return;;
 esac
 
+#
+# Darwin system-wide profile for interactive zsh(1) shells.
+#
+#[ -r "$XDG_CONFIG_HOME/zsh/zshrc_Apple" ] && . "$XDG_CONFIG_HOME/zsh/zshrc_Apple"
+#[ -r "$XDG_CONFIG_HOME/zsh/zshrc_Apple_Terminal" ] && . "$XDG_CONFIG_HOME/zsh/zshrc_Apple_Terminal"
+#
 # Setup user specific overrides for this in ~/.zhsrc. See zshbuiltins(1)
 # and zshoptions(1) for more details.
-
+#
 # Correctly display UTF-8 with combining characters.
 if [[ "$(locale LC_CTYPE)" == "UTF-8" ]]; then
 	setopt COMBINING_CHARS
@@ -17,166 +33,217 @@ fi
 # Disable the log builtin, so we don't conflict with /usr/bin/log
 disable log
 
-# Save command history
-#HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
-HISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.zsh_history
-# for setting history length see HISTSIZE and SAVESIZE in zsh(1)
-HISTSIZE=2000
-SAVEHIST=1000
-
-# Beep on error
+# Beep on error in ZLE
 setopt BEEP
 
-# Use keycodes (generated via zkbd) if present, otherwise fallback on
-# values from terminfo
-if [[ -r ${ZDOTDIR:-$HOME}/.zkbd/${TERM}-${VENDOR} ]] ; then
-	source ${ZDOTDIR:-$HOME}/.zkbd/${TERM}-${VENDOR}
-else
-	typeset -g -A key
+# Treat the ‘#’, ‘~’ and ‘^’ characters as part of patterns for filename generation,
+# etc. (An initial unquoted ‘~’ always produces named directory expansion.)
+#setopt EXTENDED_GLOB
+# If numeric filenames are matched by a filename generation pattern,
+# sort the filenames numerically rather than lexicographically.
+#setopt NUMERIC_GLOB_SORT
 
-	[[ -n "$terminfo[kf1]" ]] && key[F1]=$terminfo[kf1]
-	[[ -n "$terminfo[kf2]" ]] && key[F2]=$terminfo[kf2]
-	[[ -n "$terminfo[kf3]" ]] && key[F3]=$terminfo[kf3]
-	[[ -n "$terminfo[kf4]" ]] && key[F4]=$terminfo[kf4]
-	[[ -n "$terminfo[kf5]" ]] && key[F5]=$terminfo[kf5]
-	[[ -n "$terminfo[kf6]" ]] && key[F6]=$terminfo[kf6]
-	[[ -n "$terminfo[kf7]" ]] && key[F7]=$terminfo[kf7]
-	[[ -n "$terminfo[kf8]" ]] && key[F8]=$terminfo[kf8]
-	[[ -n "$terminfo[kf9]" ]] && key[F9]=$terminfo[kf9]
-	[[ -n "$terminfo[kf10]" ]] && key[F10]=$terminfo[kf10]
-	[[ -n "$terminfo[kf11]" ]] && key[F11]=$terminfo[kf11]
-	[[ -n "$terminfo[kf12]" ]] && key[F12]=$terminfo[kf12]
-	[[ -n "$terminfo[kf13]" ]] && key[F13]=$terminfo[kf13]
-	[[ -n "$terminfo[kf14]" ]] && key[F14]=$terminfo[kf14]
-	[[ -n "$terminfo[kf15]" ]] && key[F15]=$terminfo[kf15]
-	[[ -n "$terminfo[kf16]" ]] && key[F16]=$terminfo[kf16]
-	[[ -n "$terminfo[kf17]" ]] && key[F17]=$terminfo[kf17]
-	[[ -n "$terminfo[kf18]" ]] && key[F18]=$terminfo[kf18]
-	[[ -n "$terminfo[kf19]" ]] && key[F19]=$terminfo[kf19]
-	[[ -n "$terminfo[kf20]" ]] && key[F20]=$terminfo[kf20]
-	[[ -n "$terminfo[kbs]" ]] && key[Backspace]=$terminfo[kbs]
-	[[ -n "$terminfo[kich1]" ]] && key[Insert]=$terminfo[kich1]
-	[[ -n "$terminfo[kdch1]" ]] && key[Delete]=$terminfo[kdch1]
-	[[ -n "$terminfo[khome]" ]] && key[Home]=$terminfo[khome]
-	[[ -n "$terminfo[kend]" ]] && key[End]=$terminfo[kend]
-	[[ -n "$terminfo[kpp]" ]] && key[PageUp]=$terminfo[kpp]
-	[[ -n "$terminfo[knp]" ]] && key[PageDown]=$terminfo[knp]
-	[[ -n "$terminfo[kcuu1]" ]] && key[Up]=$terminfo[kcuu1]
-	[[ -n "$terminfo[kcub1]" ]] && key[Left]=$terminfo[kcub1]
-	[[ -n "$terminfo[kcud1]" ]] && key[Down]=$terminfo[kcud1]
-	[[ -n "$terminfo[kcuf1]" ]] && key[Right]=$terminfo[kcuf1]
-fi
+# keep command history lines within the shell and save it to:
+#HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+HISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.zsh_history
+# The maximum number of events stored internally and saved in the history file.
+# for setting history length see HISTSIZE and SAVESIZE in zsh(1).
+HISTSIZE=20000
+SAVEHIST=10000
 
-# Default key bindings
-[[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
-[[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
-[[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
-[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-line-or-search
-[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
+# The former is greater than the latter in case user wants HIST_EXPIRE_DUPS_FIRST.
+#setopt HIST_EXPIRE_DUPS_FIRST
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-	xterm-color|*-256color) color_prompt=yes;;
-esac
+# don't put duplicate lines in the history. See zsh(1) for more options.
+# the options below is NOT set by zim default, need to `setopt` manually.
+#setopt HIST_SAVE_NO_DUPS
+#setopt HIST_IGNORE_ALL_DUPS
+#setopt HIST_REDUCE_BLANKS
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
+# zim completion dump file cache path
+zstyle ':zim:completion' dumpfile ${XDG_CACHE_HOME:-"$HOME/.cache"}/.zcompdump
+# zim completion cache directory path
+#zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME:-"$HOME/.cache"}/zcompcache
 
-if [ -n "$force_color_prompt" ]; then
-	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+# configure case sensitivity for completions and globbing
+zstyle ':zim:completion' case-sensitivity sensitive
+zstyle ':zim:glob' case-sensitivity sensitive
+
+#
+# Start configuration added by Zim install {{{
+#
+# User configuration sourced by interactive shells
+#
+
+# -----------------
+# Zsh configuration
+# -----------------
+#
+# History
+#
+
+# Remove older command from the history if a duplicate is to be added.
+#setopt HIST_IGNORE_ALL_DUPS
+
+#
+# Input/output
+#
+
+# Set editor default keymap to emacs (`-e`) or vi (`-v`)
+bindkey -e
+
+# Prompt for spelling correction of commands.
+#setopt CORRECT
+
+# Customize spelling correction prompt.
+#SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
+
+# Remove path separator from WORDCHARS.
+WORDCHARS=${WORDCHARS//[\/]}
+
+# -----------------
+# Zim configuration
+# -----------------
+
+# Use degit instead of git as the default tool to install and update modules.
+#zstyle ':zim:zmodule' use 'degit'
+
+# By default, zimfw will check if it has a new version available every 30 days.
+# This can be disabled with:
+#zstyle ':zim' disable-version-check yes
+
+# --------------------
+# Module configuration
+# --------------------
+
+#
+# git
+#
+
+# Set a custom prefix for the generated aliases. The default prefix is 'G'.
+#zstyle ':zim:git' aliases-prefix 'g'
+
+#
+# input
+#
+
+# Append `../` to your input for each `.` you type after an initial `..`
+#zstyle ':zim:input' double-dot-expand yes
+
+#
+# termtitle
+#
+
+# Set a custom terminal title format using prompt expansion escape sequences.
+# See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Simple-Prompt-Escapes
+# If none is provided, the default '%n@%m: %~' is used.
+#zstyle ':zim:termtitle' format '%1~'
+
+#
+# zsh-autosuggestions
+#
+
+# Disable automatic widget re-binding on each precmd. This can be set when
+# zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+# Customize the style that the suggestions are shown with.
+# See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+
+#
+# zsh-syntax-highlighting
+#
+
+# Set what highlighters will be used.
+# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+# Customize the main highlighter styles.
+# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md#how-to-tweak-it
+#typeset -A ZSH_HIGHLIGHT_STYLES
+#ZSH_HIGHLIGHT_STYLES[comment]='fg=242'
+
+# ------------------
+# Initialize modules
+# ------------------
+
+# Set where the directory used by zim will be localed:
+#ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+ZIM_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}/zim
+# Customize zimrc location:
+#ZIM_CONFIG_FILE=${ZDOTDIR:-${HOME}}/.zimrc
+ZIM_CONFIG_FILE=${ZIM_HOME}/zimrc
+
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+	if (( ${+commands[curl]} )); then
+		curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+			https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 	else
-	color_prompt=
+		mkdir -p ${ZIM_HOME} && wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+			https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 	fi
 fi
-
-if [ "$color_prompt" = yes ]; then
-	# bold green apple prompt
-	#PS1='%B%F{green}%n%f%b@%B%F{green}%m%f%b %B%F{blue}%1~%f%b %# '
-	# bold green debian prompt
-	#PS1='%B%F{green}%n%f%b@%B%F{green}%m%f%b:%B%F{blue}%~%f%b%# '
-	# bold yellow apple prompt
-	#PS1='%B%F{yellow}%n%f%b@%B%F{yellow}%m%f%b %B%F{blue}%1~%f%b %# '
-	# bold yellow debian prompt
-	PS1='%B%F{yellow}%n%f%b@%B%F{yellow}%m%f%b:%B%F{blue}%~%f%b%# '
-else
-	# Default apple prompt
-	#PS1="%n@%m %1~ %# "
-	# Default debian prompt
-	PS1="%n@%m:%1~%# "
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+	source ${ZIM_HOME}/zimfw.zsh init -q
 fi
-unset color_prompt force_color_prompt
+# Initialize modules.
+source ${ZIM_HOME}/init.zsh
 
-# zsh support for Terminal from /etc/zshrc_Apple_Terminal
+# ------------------------------
+# Post-init module configuration
+# ------------------------------
+
 #
-# Working Directory
+# zsh-history-substring-search
 #
-# Tell the terminal about the current working directory at each prompt.
+zmodload -F zsh/terminfo +p:terminfo
+# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
+for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
+for key ('k') bindkey -M vicmd ${key} history-substring-search-up
+for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+unset key
 
-if [ -z "$INSIDE_EMACS" ]; then
+#
+# }}} End configuration added by Zim install
+#
 
-	update_terminal_cwd() {
-	# Identify the directory using a "file:" scheme URL, including
-	# the host name to disambiguate local vs. remote paths.
+#
+# ------------------------------
+# Zsh completion default configuration
+# ------------------------------
+#
+# Use modern completion system
+#autoload -Uz compinit
+#compinit
+#
+#zstyle ':completion:*' auto-description 'specify: %d'
+#zstyle ':completion:*' completer _expand _complete _correct _approximate
+#zstyle ':completion:*' format 'Completing %d'
+#zstyle ':completion:*' group-name ''
+#zstyle ':completion:*' menu select=2
+#eval "$(dircolors -b)"
+#zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+#zstyle ':completion:*' list-colors ''
+#zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+#zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+#zstyle ':completion:*' menu select=long
+#zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+#zstyle ':completion:*' use-compctl false
+#zstyle ':completion:*' verbose true
+#
+#zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+#zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+#
 
-	# Percent-encode the pathname.
-	local url_path=''
-	{
-		# Use LC_CTYPE=C to process text byte-by-byte. Ensure that
-		# LC_ALL isn't set, so it doesn't interfere.
-		local i ch hexch LC_CTYPE=C LC_ALL=
-		for ((i = 1; i <= ${#PWD}; ++i)); do
-			ch="$PWD[i]"
-			if [[ "$ch" =~ [/._~A-Za-z0-9-] ]]; then
-		url_path+="$ch"
-			else
-		printf -v hexch "%02X" "'$ch"
-		url_path+="%$hexch"
-			fi
-		done
-	}
-
-	printf '\e]7;%s\a' "file://$HOST$url_path"
-	}
-
-	# Register the function so it is called at each prompt.
-	autoload add-zsh-hook
-	add-zsh-hook precmd update_terminal_cwd
-fi
-
-# enable color support of ls and also add handy aliases
-export CLICOLOR=1
-#export LSCOLORS=exfxcxdxbxegedabagacad  # default background
-#export LSCOLORS=ExFxCxDxBxegedabagacad  # light background
-export LSCOLORS=GxFxCxDxBxegedabagaced  # dark background
-
-# enable color support of grep highlight matches
-export GREP_OPTIONS='--color=auto'
-
-# GCC colorized warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-#alias l='ls -CF'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.zsh_aliases, instead of adding them here directly.
-if [ -f ~/.zsh_aliases ]; then
-	. ~/.zsh_aliases
-fi
-
-# Enable the famous zsh programmable tab-completion features,
-# to activate its advanced autocompletion abilities.
-autoload -Uz compinit
-compinit
+# ------------------------------
+# Tuning completion after zim init
+# ------------------------------
+# For autocompletion of command line switches for aliases.
+#setopt COMPLETE_ALIASES
 
 # Default completion style is quite plain and ugly.
 # To improve its appearance, enter the following commands:
@@ -185,10 +252,7 @@ compinit
 
 # For autocompletion with an arrow-key driven interface,
 # To activate the menu, press Tab twice.
-zstyle ':completion:*' menu select
-
-# For autocompletion of command line switches for aliases.
-setopt COMPLETE_ALIASES
+#zstyle ':completion:*' menu select
 
 # For enabling autocompletion of privileged environments
 # in privileged commands (e.g. if you complete a command starting with sudo,
@@ -210,83 +274,35 @@ setopt COMPLETE_ALIASES
 zstyle ':completion:*' rehash true
 
 # 不区分大小写的指令补全
-#zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+#zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 
 # 部分补全的建议策略
-zstyle ':completion:*' list-suffixes
+#zstyle ':completion:*' list-suffixes
 #zstyle ':completion:*' expand prefix suffix
 
-# less history file
-export LESSHISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.lesshst
+# ------------------------------
+# Setup third-party modules
+# ------------------------------
 
-# try to use neovim as default editor
-if type nvim > /dev/null 2>&1; then
-	alias vim=nvim
-	alias vi=nvim
-	#export EDITOR=/usr/local/bin/nvim
+# Enable zsh fuzzy search: from 'ab c' to '*ab*c*'
+#HISTORY_SUBSTRING_SEARCH_FUZZY='1'
+
+# Powerlevel10k configuration wizard has been aborted. It will run again next time unless
+# you define at least one Powerlevel10k configuration option. To define an option that
+# does nothing except for disabling Powerlevel10k configuration wizard.
+#POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+
+# Avoid zsh-autosuggestions use precmd-hook rebind keys after each command
+ZSH_AUTOSUGGEST_MANUAL_REBIND='1'
+
+# fzf set tab key means accept
+#export FZF_DEFAULT_OPTS='--ansi --height=60% --reserve --cycle --bind=tab:accept'
+
+# -------------------------------
+# Develop environment variables
+# -------------------------------
+
+if [ -f $HOME/.config/shenv/environment ]; then
+	. $HOME/.config/shenv/environment
 fi
-# set neovim as default editor
-#NVIM_HOME="/opt/nvim-macos"
-#if [ -f "${NVIM_HOME}/bin/nvim" ]; then
-#    export PATH=$PATH:"${NVIM_HOME}/bin"
-#    alias vim=nvim
-#    alias vi=nvim
-#    export EDITOR="${NVIM_HOME}/bin/nvim"
-#fi
-
-# homebrew bottle source at china ustc
-export HOMEBREW_API_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/api
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/bottles
-#export HOMEBREW_API_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api
-#export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/bottles
-
-# python command line tab completetion and history file
-export PYTHONSTARTUP=${XDG_CONFIG_HOME:-"$HOME/.config"}/python/pythonstartup
-export PYTHONDONTWRITEBYTECODE=1
-#export PYTHONUNBUFFERED=1
-#export PYTHONUTF8=1
-#export PYTHONIOENCODING=utf-8
-#alias python=/usr/bin/python3
-
-# mono-mdk environment framework path
-#export FrameworkPathOverride=/Library/Frameworks/Mono.framework/Versions/Current
-#MONO_MDK=$HOME/Library/Frameworks/Mono.framework/Home
-#export PATH=$PATH:"${MONO_MDK}/Commands"
-# dotnet-sdk environment framework path
-#DOTNET_SDK="$HOME/Applications/Unity/dotnet-sdk-6.0.413-osx-x64"
-#export PATH=$PATH:$DOTNET_SDK
-
-# gcc-linaro cross-compliation environment
-#SYSROOT_GLIBC_AARCH64="/opt/sysroot-glibc-linaro-2.25-2019.12-aarch64-linux-gnu"
-#CROSS_COMPILE_AARCH64="/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu"
-#if [ -d "${CROSS_COMPILE_AARCH64}/bin" ]; then
-#    export PATH=$PATH:"${CROSS_COMPILE_AARCH64}/bin"
-#fi
-#if [ -f "${CROSS_COMPILE_AARCH64}/bin/aarch64-linux-gnu-gcc" ]; then
-#    export CROSS_COMPILE="${CROSS_COMPILE_AARCH64}/bin/aarch64-linux-gnu-"
-#fi
-
-# cmake open-source cross-platform build test package family
-#CMAKE_HOME="/opt/cmake-3.26.5-linux-x86_64"
-#if [ -d "${CMAKE_HOME}/bin" ]; then
-#	export PATH=$PATH:"${CMAKE_HOME}/bin"
-#fi
-
-# qt compilers
-#export LDFLAGS="-L/usr/local/opt/qt/lib"
-#export CPPFLAGS="-I/usr/local/opt/qt/include"
-# pyside6 environment
-#PYSIDE6="$HOME/uitest/virtualenv/lib/python3.11/site-packages/PySide6"
-#export QT_QPA_PLATFORM_PLUGIN_PATH="${PYSIDE6}/Qt/plugins/platforms"
-
-# nodejs environment, alias for cnpm
-#NODE_HOME=/opt/node-v10.15.3-linux-x64
-#if [ -d $NODE_HOME ]; then
-#    export PATH=$PATH:$NODE_HOME/bin
-#    export NODE_PATH=$NODE_HOME/lib/node_modules
-#    alias cnpm="npm --registry=https://registry.npm.taobao.org \
-#--cache=${XDG_CACHE_HOME:-"$HOME/.cache"}/cnpm \
-#--disturl=https://npm.taobao.org/dist \
-#--userconfig=${XDG_CONFIG_HOME:-"$HOME/.config"}/cnpmrc
-#fi
 

@@ -1,0 +1,20 @@
+#
+# remote config for sway wayvnc
+#
+
+include $HOME/.config/sway/config
+
+#export SWAYSOCK=$XDG_RUNTIME_DIR/sway-ipc.*.sock
+export SWAYSOCK=$XDG_RUNTIME_DIR/sway-ipc.$(id -u).$(pgrep -x sway).sock
+
+# server listen at 0.0.0.0:5900
+#exec swaymsg --socket $XDG_RUNTIME_DIR/sway-ipc.*.sock exec wayvnc 0.0.0.0
+#exec swaymsg --socket $XDG_RUNTIME_DIR/sway-ipc.$(id -u).$(pgrep -x sway).sock exec wayvnc 0.0.0.0
+exec swaymsg --socket $SWAYSOCK exec wayvnc 0.0.0.0
+
+# pass mod-key from sway to the remote desktop session
+#mode "passthough" {
+#	bindsym $mod+Pause mode default
+#}
+# bindsym $mod+Pause mode passthough
+

@@ -1,0 +1,247 @@
+/* =============================================================================
+ *
+ * Waybar styles
+ *
+ * Styles reference: https://github.com/Alexays/Waybar/wiki/Configuration
+ *
+ * =========================================================================== */
+
+/* -----------------------------------------------------------------------------
+ * Keyframes
+ * -------------------------------------------------------------------------- */
+
+@keyframes blink-warning {
+	70% {
+		color: white;
+	}
+	to {
+		color: white;
+		background-color: orange;
+	}
+}
+
+@keyframes blink-critical {
+	70% {
+		color: white;
+	}
+	to {
+		color: white;
+		background-color: red;
+	}
+}
+
+/* -----------------------------------------------------------------------------
+ * Base styles
+ * -------------------------------------------------------------------------- */
+
+/* Reset all styles */
+* {
+	border: none;
+	border-radius: 0;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+/* The whole bar */
+#waybar {
+	background-color: #222222; /* Sway palette: unfocused/background */
+	color: #ffffff; /* Sway palette: focused/text */
+	font-family: monospace, system-ui, sans-serif;
+	font-size: 12px;
+}
+
+/* -----------------------------------------------------------------------------
+ * Module styles
+ * -------------------------------------------------------------------------- */
+/* Each module */
+#workspaces,
+#scratchpad,
+#mode,
+#window,
+#mpd,
+#idle_inhibitor,
+#tray,
+#clock,
+#cpu,
+#memory,
+#temperature,
+#disk,
+#backlight,
+#battery,
+#network,
+#pulseaudio,
+#keyboard-state,
+#custom-separator,
+#custom-space,
+#custom-uptime,
+#custom-notifier,
+#custom-clipboard,
+#custom-media {
+	margin: 0px 6px 0px 6px;
+	padding: 0px;
+}
+
+#sway-workspaces {
+	padding: 2px;
+}
+#sway-workspaces .active * {
+	/* background-color: rgba(79, 79, 79, 0.8); */
+	/* background-color: rgba(0x5f, 0x67, 0x6a, 0.5); */
+	/* color: #c5841a; */
+	color: #ff5555;
+}
+#sway-workspaces button {
+	border-top: 2px solid transparent;
+	/* To compensate for the top border and still have vertical centering */
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	color: #888888; /* Sway palette: unfocused/text */
+}
+#sway-workspaces button:hover {
+	/* Reset all hover styles */
+	background: inherit;
+	box-shadow: inherit;
+	text-shadow: inherit;
+}
+#sway-workspaces button.visible {
+	border-color: #333333; /* Sway palette focused_inactive/border */
+	color: #ffffff; /* Sway palette: focused_inactive/text */
+	background-color: #5f676a; /* Sway palette focused_inactive/background */
+}
+#sway-workspaces button.focused {
+	border-color: #4c7899; /* Sway palette: focused/border */
+	color: #ffffff; /* Sway palette: focused/text */
+	background-color: #285577; /* Sway palette: focused/background */
+}
+#sway-workspaces button.urgent {
+	border-color: #2f343a; /* Sway palette: urgent/border */
+	color: #ffffff; /* Sway palette: urgent/text */
+	background-color: #900000; /* Sway palette: urgent/background */
+}
+
+#sway-scratchpad {
+	/* No styles */
+}
+
+#sway-mode {
+	color: #ffffff; /* Sway palette: urgent/text */
+	background-color: #900000; /* Sway palette: urgent/background */
+	margin-left: 0;
+	/* To compensate for the top border and still have vertical centering */
+	padding: 0 16px;
+}
+
+#sway-window {
+	margin-left: 32px;
+	margin-right: 32px;
+}
+
+#tray {
+	/* No styles */
+}
+
+#clock {
+	margin-left: 6px;
+	margin-right: 6px;
+	min-width: 60px;
+}
+
+#cpu {
+	/* No styles */
+}
+#cpu.warning {
+	color: orange;
+}
+#cpu.critical {
+	color: red;
+}
+
+#memory {
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+#memory.warning {
+	color: orange;
+}
+#memory.critical {
+	color: red;
+	animation-name: blink-critical;
+	animation-duration: 2s;
+}
+
+#temperature {
+	/* No styles */
+}
+#temperature.critical {
+	color: red;
+}
+
+#network {
+	/* No styles */
+}
+#network.disconnected {
+	color: orange;
+}
+
+#pulseaudio {
+	/* No styles */
+}
+#pulseaudio.muted {
+	/* No styles */
+}
+
+#keyboard-state {
+	/* No styles */
+}
+#keyboard-state.locked {
+	/* No styles */
+}
+#keyboard-state.unlocked {
+	/* No styles */
+}
+
+#backlight {
+	/* No styles */
+}
+
+#battery {
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+#battery.warning {
+	color: orange;
+}
+#battery.critical {
+	color: red;
+}
+#battery.warning.discharging {
+	animation-name: blink-warning;
+	animation-duration: 3s;
+}
+#battery.critical.discharging {
+	animation-name: blink-critical;
+	animation-duration: 2s;
+}
+
+#custom-separator,
+#custom-space {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+#custom-uptime {
+	/* No styles */
+}
+
+#custom-notifier {
+	/* No styles */
+}
+
+#custom-clipboard {
+	/* No styles */
+}

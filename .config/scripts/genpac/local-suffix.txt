@@ -1,0 +1,9 @@
+steampowered.com
+steamcommunity.com
+steamstatic.com
+.help
+.top
+.xyz
+.icu
+.cc
+.tv
