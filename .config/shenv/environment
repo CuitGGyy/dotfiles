@@ -87,7 +87,17 @@ alias socks_proxy='export ALL_PROXY=socks5://192.168.18.200:1080'
 alias unset_proxy='unset http_proxy; unset https_proxy; unset ALL_PROXY'
 
 # try to use neovim as default editor
-NVIM_HOME="/opt/nvim-linux64"
+if [[ "$(uname -s)" = "Darwin" ]]; then
+	if [[ "$(uname -m)" = "x86_64" ]]; then
+		NVIM_HOME="/opt/nvim-macos-x86_64"
+	elif [[ "$(uname -m)" = "arm64" ]]; then
+		NVIM_HOME="/opt/nvim-macos-arm64"
+	else
+		NVIM_HOME="/opt/nvim-macos"
+	fi
+else
+	NVIM_HOME="/opt/nvim-linux64"
+fi
 if [[ -x "$(command -v nvim)" ]]; then
 	alias vim=nvim
 	alias vi=nvim
