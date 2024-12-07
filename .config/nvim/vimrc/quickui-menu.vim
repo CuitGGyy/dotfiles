@@ -5,7 +5,7 @@
 " 依赖 Vim 8.1 +popup 特性
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/01/07 02:26:25
+" Last Modified: 2024/12/07 16:24:29
 "
 "======================================================================
 
@@ -20,13 +20,13 @@ if has('patch-8.1.2292') == 0 && exists('*nvim_open_win') == 0
 	finish
 endif
 
-call quickui#menu#reset()
+silent call quickui#menu#reset()
 
 
 "------------------------------------------------------------------------------
 " 顶部菜单栏
 "------------------------------------------------------------------------------
-call quickui#menu#install("&File", [
+silent call quickui#menu#install("&File", [
 			\ [ "&New File\t:tabnew", ':tabnew', ''],
 			\ [ "&Open File\t:tabe", 'call feedkeys(":tabedit ")', ''],
 			\ [ "-", '', ''],
@@ -38,7 +38,7 @@ call quickui#menu#install("&File", [
 			\ [ "E&xit\t:qall", 'qall', ''],
 			\ ])
 
-call quickui#menu#install("&Edit", [
+silent call quickui#menu#install("&Edit", [
 			\ ['&Strip Trail Spaces', 'call StripTrailSpaces()', ''],
 			\ ['Update &Modified Datetime', 'call LastModifiedDatetime(15)', ''],
 			\ ['-', '', ''],
@@ -47,7 +47,7 @@ call quickui#menu#install("&Edit", [
 			\ ['&Diff Original', 'DiffOrig', ''],
 			\ ])
 
-call quickui#menu#install("&Diff", [
+silent call quickui#menu#install("&Diff", [
 			\ ["Diff &This\t\\dt", 'diffthis', ''],
 			\ ["Diff &Split\t\\ds", 'call feedkeys(":vertical diffsplit ")', ''],
 			\ ["Diff &Patch\t\\dp", 'call feedkeys(":vertical diffpatch ")', ''],
@@ -58,7 +58,7 @@ call quickui#menu#install("&Diff", [
 			\ ["&Diff Off\t\\dq", 'diffoff!', ''],
 			\ ])
 
-call quickui#menu#install("&Build", [
+silent call quickui#menu#install("&Build", [
 			\ ["File &Execute\tF5", 'AsyncTask file-run', ''],
 			\ ["File &Compile\tF9", 'AsyncTask file-build', ''],
 			\ ["File E&make\tF7", 'AsyncTask emake', ''],
@@ -75,7 +75,7 @@ call quickui#menu#install("&Build", [
 			\ ['&Stop Building', 'AsyncStop', ''],
 			\ ])
 
-call quickui#menu#install('&Tools', [
+silent call quickui#menu#install('&Tools', [
 			\ ['&Spell %{&spell? "Off":"On"}', 'setlocal spell!', ''],
 			\ ['&Paste %{&paste? "Off":"On"}', 'setlocal paste!', ''],
 			\ ['-', '', ''],
@@ -92,7 +92,7 @@ call quickui#menu#install('&Tools', [
 			\ ["&Terminal\tc-`", ':split | terminal', ''],
 			\ ])
 
-call quickui#menu#install('&Plugins', [
+silent call quickui#menu#install('&Plugins', [
 			\ ['%{b:apc_enable? "Disable":"Enable"} &APC', 'ApcToggle', 'Auto Popup Completetion'],
 			\ ['-', '', ''],
 			\ ['Plugins &Status', 'PlugStatus', 'List plugins status'],
@@ -102,7 +102,7 @@ call quickui#menu#install('&Plugins', [
 			\ ['Up&grade vim-plug', 'PlugUpgrade', 'Upgrade vim-plug'],
 			\ ])
 
-call quickui#menu#install('&Help', [
+silent call quickui#menu#install('&Help', [
 			\ ['&About', 'call quickui#textbox#open(["Hello world!"], {"close":"button", "title":"Dialog"})', ''],
 			\ ['-', '', ''],
 			\ ['&Help', 'execute "normal! K"', 'Help'],
