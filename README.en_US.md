@@ -9,7 +9,7 @@
 - My home directory environment
 - Follow XDG Base Directory Specification
 - Compatible with MacOS or Linux
-- Require bash or zsh
+- Require bash or zsh and git
 - Use [zimfw](https://github.com/zimfw/zimfw) to manage modules
 - Require vim 7.4+ or neovim 0.7+
 - Use [vim-plug](https://github.com/junegunn/vim-plug) to manage plugins

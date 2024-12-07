@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; bundle.vim 插件使用列表
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2023/04/10 06:32:50
+" Last Modified: 2024/12/07 18:34:30
 "
 "==============================================================================
 
@@ -713,5 +713,4 @@ if get(s:enabled, 'nerdtree', 0) == 1
 	"map <leader>nf :NERDTreeFind<cr>
 
 endif
-
 
