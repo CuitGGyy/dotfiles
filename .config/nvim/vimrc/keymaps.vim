@@ -5,7 +5,7 @@
 " 依赖终端或系统的键码识别, 可结合键盘键位布局及键码识别情况予以修改
 "
 " Created by skywind on 2018/05/30
-" Last Modified: 2023/02/21 06:01:30
+" Last Modified: 2024/12/07 18:34:36
 "
 "==============================================================================
 
@@ -357,5 +357,4 @@ noremap <leader>dp :vertical diffpatch <c-r>=expand("%:p:h")<cr>/
 "nnoremap <leader>s[ [s
 "nnoremap <leader>sa zg
 "nnoremap <leader>s? z=
-
 

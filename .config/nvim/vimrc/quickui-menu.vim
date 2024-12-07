@@ -5,7 +5,7 @@
 " 依赖 Vim 8.1 +popup 特性
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2024/12/07 16:24:29
+" Last Modified: 2024/12/07 18:34:24
 "
 "======================================================================
 
@@ -178,5 +178,4 @@ nnoremap <silent><tab><cr> :call quickui#tools#clever_context('k', g:context_men
 if has('gui_running') || has('nvim')
 	noremap <c-f10> :call MenuHelp_TaskList()<cr>
 endif
-
 
