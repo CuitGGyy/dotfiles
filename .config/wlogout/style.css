@@ -1,0 +1,108 @@
+/** ************ Colors ************ **/
+@define-color black				#000000;
+@define-color red				#ff0000;
+@define-color green				#00ff00;
+@define-color blue				#0000ff;
+@define-color magenta			#ff00ff;
+@define-color cyan				#00ffff;
+@define-color yellow			#ffff00;
+@define-color white				#ffffff;
+
+@define-color ghostwhite		#f8f8ff;
+@define-color snow				#fffafa;
+@define-color whitesmoke		#f5f5f5;
+@define-color gainsboro			#dcdcdc;
+@define-color lightgray			#d3d3d3;
+@define-color silver			#c0c0c0;
+@define-color darkgray			#a9a9a9;
+@define-color gray				#808080;
+@define-color dimgray			#696969;
+@define-color lightblack		#2d2d2d;
+@define-color darkblack			#1e1e1e;
+@define-color golden			#ffd700;
+@define-color goldenrod			#daa520;
+@define-color darkgoldenrod		#b8860b;
+@define-color orange			#ffa500;
+@define-color darkorange		#ff8c00;
+@define-color orchid			#da70d6;
+@define-color crimson			#dc143c;
+@define-color darkred			#8b0000;
+@define-color violet			#ee82ee;
+@define-color fuchsine			#e4007f;
+@define-color darkfuchsine		#a90069;
+@define-color darkerfuchsine	#96005a;
+@define-color darkestfuchsine	#80004e;
+@define-color lightmagenta		#a900a9;
+@define-color darkmagenta		#8b008b;
+@define-color purple			#800080;
+@define-color darkpurple		#690069;
+
+@define-color background		#1E1E1E;
+/*@define-color background-alt0	#3700B3;*/
+@define-color background-alt0	#a90069;
+@define-color background-alt1	#20262C;
+@define-color background-alt2	#343A40;
+@define-color background-alt3	#3E444A;
+@define-color foreground		#F1FCF9;
+
+/** ************ Global ************ **/
+* {
+	background-image: none;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/** ************ Main Window ************ **/
+window {
+	background-color: rgba(12, 12, 12, 0.9);
+}
+
+
+/** ************ Buttons ************ **/
+button {
+    color: @white;
+	background-color: @background-alt1;
+	border-width: 1px;
+	border-style: solid;
+	border-color: @background-alt2;
+	border-radius: 10px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 25%;
+}
+
+button:focus, button:active, button:hover {
+	background-color: @background-alt0;
+	outline-style: none;
+	color: @foreground;
+}
+
+/** ************ Icons ************ **/
+#lock {
+    background-image: image(url("/usr/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
+}
+
+#reload {
+    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+}
+
+#logout {
+    background-image: image(url("/usr/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
+}
+
+#hibernate {
+    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
+}
+
+#suspend {
+    background-image: image(url("/usr/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
+}
+
+#reboot {
+    background-image: image(url("/usr/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+}
+
+#shutdown {
+    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+}
+

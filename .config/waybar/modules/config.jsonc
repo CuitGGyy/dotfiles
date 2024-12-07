@@ -1,0 +1,590 @@
+{
+	// -------------------------------------------------------------------------
+	// Global configuration
+	// -------------------------------------------------------------------------
+	// "output": "HDMI-A-1",
+	// "layer": "top", // Waybar at top layer
+	"position": "bottom", // Waybar position (top|bottom|left|right)
+	"height": 32, // Waybar height (to be removed for auto height)
+	// "width": 1280, // Waybar width
+	"spacing": 0, // Gaps between modules (4px)
+
+	// -------------------------------------------------------------------------
+	// Import customized modules
+	// -------------------------------------------------------------------------
+	//"include": [
+	//    "~/.config/waybar/modules/swaybar.jsonc",
+	//    "~/.config/waybar/modules/modules.jsonc",
+	//    "~/.config/waybar/modules/custom.jsonc"
+	//],
+
+	// -------------------------------------------------------------------------
+	// Modules layout and orders
+	// -------------------------------------------------------------------------
+	// Choose the order of the modules
+	"modules-left": [
+		"custom/menu",
+		"custom/user",
+		//"custom/separator",
+		"sway/workspaces",
+		"custom/separator",
+		"sway/scratchpad",
+		//"custom/separator",
+		"sway/mode"
+	],
+	"modules-center": [
+		"sway/window"
+	],
+	"modules-right": [
+		//"custom/uptime",
+		//"custom/separator",
+		"idle_inhibitor",
+		"custom/notifier",
+		"custom/clipboard",
+		"custom/separator",
+		"cpu",
+		"memory",
+		"temperature",
+		//"disk#root",
+		//"disk#home",
+		//"disk#data",
+		//"network",
+		"pulseaudio",
+		//"backlight",
+		//"battery",
+		//"keyboard-state",
+		//"sway/language",
+		"tray",
+		"clock",
+		"custom/weather#json"
+	],
+
+	// -------------------------------------------------------------------------
+	// Sway modules
+	// -------------------------------------------------------------------------
+	"sway/workspaces": {
+		"all-outputs": true,
+		"format": " {name}: {icon}  ",
+		"format-icons": {
+			"1": "",
+			"2": "",
+			"3": "",
+			"4": "",
+			"5": "",
+			"6": "",
+			"7": "",
+			"8": "",
+			"9": "",
+			"10": "",
+			//"11": "",
+			//"12": "",
+			//"13": "",
+			//"14": "",
+			//"15": "󰘚",
+			//"16": "󰍛",
+			"urgent": "",
+			"focused": "",
+			"default": ""
+		},
+		"disable-click": false,
+		"disable-scroll": false,
+		//"disable-scroll-wraparound": false,
+		//"enable-bar-scroll": false,
+		"disable-markup": false,
+		"current-only": false,
+		"persistent_workspaces": {
+			"1": [],
+			//"7": ["eDP-1"],
+			//"8": ["eDP-1", "DP-2"]
+			//"9": ["HDMI-A-1"]
+		},
+		"on-update": ""
+		//"disable-auto-back-and-forth": false,
+		//"alphabetical_sort": false // Note this can make "sway workspace prev/next" move to workspaces inconsistent with the ordering shown in waybar
+	},
+	"sway/mode": {
+		"format": "| <span style=\"italic\">{}</span>",
+		"align": 0
+	},
+	"sway/scratchpad": {
+		"format": "{icon} {count}",
+		"format-icons": ["󰖯", "󰖲"],
+		"show-empty": true,
+		"on-click": "swaymsg 'scratchpad show'",
+		"on-click-right": "swaymsg 'move scratchpad'",
+		"tooltip-format": "{app}: {title}",
+		"tooltip": true,
+		"interval": "once"
+	},
+	"sway/window": {
+		//"format": "{app_id} : {title}",
+		"format": "{app_id} | {title}",
+		//"rewrite": {
+		//	"(.*) - Mozilla Firefox": "~ $1",
+		//	"(.*) - zsh": "> [$1]"
+		//},
+		//"max-length": 64,
+		"align": 0
+	},
+	"sway/language": {
+		"format": " {}",
+		"min-length": 5,
+		"tooltip": false,
+		"on-click": "swaymsg input type:keyboard xkb_switch_layout next"
+	},
+
+	// -------------------------------------------------------------------------
+	// General modules
+	// -------------------------------------------------------------------------
+	"mpd": {
+		"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+		"format-disconnected": "Disconnected ",
+		"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+		"unknown-tag": "N/A",
+		"interval": 2,
+		"consume-icons": {
+			"on": " "	// Icon show only when "consume" is on
+		},
+		"random-icons": {
+			"off": "<span color=\"#f53c3c\"></span> ",	// Icon grayed out when "random" is off
+			"on": " "
+		},
+		"repeat-icons": {
+			"on": " "
+		},
+		"single-icons": {
+			"on": "1 "
+		},
+		"state-icons": {
+			"paused": "",
+			"playing": ""
+		},
+		"tooltip-format": "MPD (connected)",
+		"tooltip-format-disconnected": "MPD (disconnected)"
+	},
+
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "",
+			"deactivated": ""
+		},
+		"start-activated": false,
+		"timeout": 30
+	},
+
+	"tray": {
+		//"icon-size": 21,
+		"spacing": 10,
+		"align": 0
+	},
+
+	"clock": {
+		//"interval": 1,
+		//"format": "  {:%m/%d (%A)  %H:%M:%S}", // Icon: calender-alt; 24 hour format
+		//"format-alt": "  {:%b%e(%A)  %I:%M %p}", // Icon: calender 12 hour format
+
+		"interval": 60,
+		"format": "  {:%m/%d (%a)  %H:%M}", // Icon: calender-alt; 24 hour format
+		"on-click": "swaymsg exec \\$calendar",
+
+		"tooltip": true,
+		"tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
+		"timezone": "Asia/Shanghai"
+	},
+
+	// -------------------------------------------------------------------------
+	// Hardware modules: core
+	// -------------------------------------------------------------------------
+	"cpu": {
+		"interval": 5,
+		"format": "", // Icon: microchip
+		"states": {
+			"warning": 70,
+			"critical": 90
+		},
+		"on-click": "swaymsg exec \\$once \\$term_float htop",
+		"tooltip": true
+	},
+
+	"memory": {
+		"interval": 10,
+		"format": "{icon}",
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"states": {
+			"warning": 70,
+			"critical": 90
+		},
+		"on-click": "swaymsg exec \\$once \\$term_float htop",
+		"tooltip-format": "Memory: {percentage}%\nTotal: {total}GiB\nUsed: {used}GiB\nAvail: {avail}GiB\n\nSwap: {swapPercentage}%\nTotal: {swapTotal}GiB\nUsed: {swapUsed}GiB\nAvail: {swapAvail}GiB",
+		"tooltip": true
+	},
+
+	"temperature": {
+		// "thermal-zone": 2,
+		// "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+		"critical-threshold": 80,
+		"interval": 5,
+		"format": "{icon}",
+		"format-critical": "{icon} {temperatureC}°C",
+		"format-icons": [
+			"", // Icon: temperature-empty
+			"", // Icon: temperature-quarter
+			"", // Icon: temperature-half
+			"", // Icon: temperature-three-quarters
+			"" // Icon: temperature-full
+		],
+		"tooltip-format": "{temperatureC}°C",
+		"tooltip": true,
+		"on-click": "swaymsg exec \"\\$once \\$term_float watch sensors\""
+	},
+
+	// -------------------------------------------------------------------------
+	// Hardware modules: storage
+	// -------------------------------------------------------------------------
+	"disk#root": {
+		"path": "/",
+		"interval": 30,
+		"format": "\uf0a0 {percentage_used}%",
+		"tooltip-format": "\uf0a0 Path {path}: {percentage_used}%\nTotal: {total}\nUsed: {used}\nFree: {free}",
+		"tooltip": true
+	},
+	"disk#home": {
+		"path": "/home",
+		"interval": 30,
+		"format": "\uf0a0 {percentage_used}%",
+		"tooltip-format": "\uf0a0 Path {path}: {percentage_used}%\nTotal: {total}\nUsed: {used}\nFree: {free}",
+		"tooltip": true
+	},
+	"disk#data": {
+		"path": "/data",
+		"interval": 30,
+		"format": "\uf0a0 {percentage_used}%",
+		"tooltip-format": "\uf0a0 Path {path}: {percentage_used}%\nTotal: {total}\nUsed: {used}\nFree: {free}",
+		"tooltip": true
+	},
+
+	// -------------------------------------------------------------------------
+	// Hardware modules: network
+	// -------------------------------------------------------------------------
+	"network": {
+		// "interface": "wlp2*", // (Optional) To force the use of this interface
+		// "interface": "en*", // Use define interface instead of auto detection. Accept wildcard.
+		"interval": 5,
+		"format-wifi": " ",
+		"format-ethernet": "󰈀",
+		"format-linked": "󰀂",
+		"format-disconnected": "󰖪",
+		"format-disabled": "",
+		"tooltip-format": "<big>󰀂 {ifname}:</big>\n\n{ipaddr}\n{netmask}\n{gwaddr}\n\n⇡{bandwidthUpBits:<8} ⇣{bandwidthDownBits:<8}\n⇡{bandwidthUpBytes:<8} ⇣{bandwidthDownBytes:<8}",
+		"tooltip-format-wifi": "<big> {essid}:</big>\n{signalStrength}% {signaldBm} {frequency}\n\n{ipaddr}\n{netmask}\n{gwaddr}\n\n⇡{bandwidthUpBits:<8} ⇣{bandwidthDownBits:<8}\n⇡{bandwidthUpBytes:<8} ⇣{bandwidthDownBytes:<8}",
+		"tooltip-format-ethernet": "<big>󰈀 {ifname}:</big>\n\nAddress: {ipaddr}\nNetmask: {netmask}\nGateway: {gwaddr}\n\nBandwidth: ⇡{bandwidthUpBits:<8} ⇣{bandwidthDownBits:<8}\nBandwidth: ⇡{bandwidthUpBytes:<8} ⇣{bandwidthDownBytes:<8}",
+		"tooltip-format-disconnected": "{icon} disconnected",
+		"tooltip-format-disabled": "{icon} disabled",
+		"on-click": "swaymsg exec \\$once \\$term_float nmtui connect"
+	},
+
+	// -------------------------------------------------------------------------
+	// Hardware modules: multimedia
+	// -------------------------------------------------------------------------
+	"pulseaudio": {
+		//"format": "{icon} {volume}% {format_source}",
+		//"format-muted": "󰖁 {volume}% {format_source}",
+		//"format-source": " {volume}%",
+		//"format-source-muted": " {volume}%",
+
+		"format": "{icon}",
+		"format-muted": "󰖁",
+		"format-source": "",
+		"format-source-muted": "",
+
+		"format-bluetooth": "{icon} {volume}%  {format_source}",
+		"format-bluetooth-muted": "󰕿 {icon}  {format_source}",
+		"format-icons": {
+			//"alsa_output.pci-0000_00_1f.3.analog-stereo": "",
+			"headphone": "󰋋", // Icon: headphones
+			"hands-free": "", // Icon: headset
+			"headset": "󰋎", // Icon: headset
+			"phone": "", // Icon: phone
+			"portable": "", // Icon: phone
+			"car": "", // Icon: car
+			"default": ["", "", ""]
+		},
+		"on-scroll-up": "swaymsg exec \\$volume_up",
+		"on-scroll-down": "swaymsg exec \\$volume_down",
+		"scroll-step": 5, // %, can be a float
+		"on-click": "swaymsg exec \\$pulseaudio",
+		"on-click-middle": "swaymsg exec \\$volume_mute",
+		"on-click-right": "swaymsg exec \\$pavucontrol",
+		"tooltip": true
+	},
+
+	// -------------------------------------------------------------------------
+	// Hardware modules: keyboard and mouse
+	// -------------------------------------------------------------------------
+	"keyboard-state": {
+		//"device-path": "/dev/input/by-id/usb-COMPANY_2.4G_Device-event-kbd",
+		//"device-path": "/dev/input/by-id/usb-MOSART_Semi._wireless_dongle-event-kbd",
+		"numlock": true,
+		"capslock": true,
+		"scrolllock": true,
+		"format": "{icon} {name}",
+		"format-icons": {
+			"locked": "",
+			"unlocked": ""
+		}
+	},
+
+	// -------------------------------------------------------------------------
+	// Hardware modules: laptop releated
+	// -------------------------------------------------------------------------
+	"backlight#detail": {
+		// "device": "acpi_video1",
+		// "device": "intel_backlight",
+		"format": "{icon} {percent}%",
+		//"format-icons": ["", ""],
+		"format-icons": ["","","","","","","","",""],
+		//"on-scroll-up": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
+		//"on-scroll-down": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+		"on-scroll-up": "brightnessctl set +10%",
+		"on-scroll-down": "brightnessctl set 10%-"
+	},
+	"backlight#short": {
+		"format": "{icon} {percent}%",
+		"format-icons": ["󰃞", "󰃟", "󰃠"],
+		"on-scroll-up": "swaymsg exec \\$brightness_up",
+		"on-scroll-down": "swaymsg exec \\$brightness_down"
+	},
+
+	"battery#detail": {
+		//"bat": "BAT1",
+		"interval": 30,
+		"states": {
+			// "good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{capacity}% {icon}",
+		//"format": " {icon} {capacity}%", // Icon: bolt
+		"format-charging": "{capacity}% 󰂄",
+		//"format-discharging": "{icon} {capacity}%",
+		"format-plugged": "{capacity}% ",
+		"format-alt": "{time} {icon}",
+		//"format-good": "", // An empty format will hide the module
+		//"format-full": "",
+		//"format-icons": ["","","","",""],
+		"format-icons": ["󰢜","󰂆","󰂇","󰂈","󰢝","󰂉","󰢞","󰂊","󰂋","󰂅"],
+		//"format-icons": ["󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"],
+		"tooltop": true
+	},
+	"battery#short": {
+		"interval": 30,
+		"states": {
+			"warning": 30,
+			"critical": 15
+		},
+		"format-charging": "󰂄 {capacity}%",
+		"format": "{icon} {capacity}%",
+		"format-icons": ["󱃍","󰁺","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰁹"],
+		"tooltip": true
+	},
+	"battery#bat2": {
+		"bat": "BAT2"
+	},
+
+	// -------------------------------------------------------------------------
+	// Customized waybar modules
+	// -------------------------------------------------------------------------
+	"custom/separator": {
+		"format": "|",
+		"interval": "once",
+		"tooltip": false
+	},
+	"custom/uptime": {
+		"format": " {}",
+		"exec": "~/.config/waybar/scripts/uptime.sh",
+		"return-type": "json",
+		"tooltip": true,
+		"interval": 60,
+		"align": 0
+	},
+	"custom/menu": {
+		"format": "  ",
+		"on-click": "swaymsg exec \\$menu",
+		"interval": "once",
+		"tooltip": false
+	},
+	"custom/user": {
+		"format": "{}",
+		"exec": "whoami",
+		"on-click": "swaymsg exec \\$power",
+		"interval": "once",
+		"tooltip": false
+	},
+	"custom/idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "󰒳",
+			"deactivated": "󰒲"
+		},
+		"start-activated": false,
+		"timeout": 30
+	},
+	"custom/clipboard": {
+		"format": "{icon}",
+		"format-icons": {
+			"non-zero": "󰨸",
+			"zero": ""
+		},
+		"interval": 3,
+		"exec": "~/.config/waybar/scripts/clipboard.sh json",
+		"return-type": "json",
+		"on-click": "swaymsg -q exec '$clipboard'",
+		"on-click-right": "swaymsg -q exec '$clipboard_clear'",
+		"on-click-middle": "swaymsg -q exec '$clipboard_clearall'",
+		"tooltip": true
+	},
+	"custom/notifier": {
+		"interval": "once",
+		"return-type": "json",
+		"format": "{}{icon}",
+		"format-icons": {
+			//"enabled": "",
+			//"disabled": ""
+			"enabled": "󰚢",
+			"disabled": "󰚣"
+		},
+		"on-click": "~/.config/waybar/scripts/notifier.sh toggle",
+		"on-click-right": "~/.config/waybar/scripts/notifier.sh restore",
+		"exec": "~/.config/waybar/scripts/notifier.sh status",
+		"tooltip": true
+	},
+
+	//"custom/sunset": {
+	//    "interval": "once",
+	//    "tooltip": true,
+	//    "return-type": "json",
+	//    "format": "{icon}",
+	//    "format-icons": {
+	//        "on": "󰌵",
+	//        "off": "󰌶"
+	//    },
+	//    "exec": "fallback_latitude=50.1 fallback_longitude=8.7 latitude= longitude= ~/.config/waybar/scripts/sunset.sh",
+	//    "on-click": "~/.config/waybar/scripts/sunset.sh toggle",
+	//    "exec-if": "~/.config/waybar/scripts/sunset.sh check",
+	//    "signal": 6
+	//},
+
+	"custom/weather#text": {
+		"format": "{}",
+		// need ansiweather command
+		"exec": "~/.config/waybar/scripts/weather.sh",
+		"tooltip": true,
+		"interval": 1800,
+		"align": 0
+	},
+	"custom/weather#json": {
+		"format": "{icon} {} ",
+		"tooltip": true,
+		"interval": 600,
+		// accepts -c/--city <city> -t/--temperature <C/F> -d/--distance <km/miles>
+		"exec": "~/.config/waybar/scripts/weather.py -c Tianjin -t C -d km",
+		"return-type": "json",
+		"format-icons": {
+			"Unknown": "",
+			"Cloudy": "󰖐",
+			"Fog": "",
+			"HeavyRain": "",
+			"HeavyShowers": "",
+			"HeavySnow": "",
+			"HeavySnowShowers": "󰜗",
+			"LightRain": "",
+			"LightShowers": "",
+			"LightSleet": "",
+			"LightSleetShowers": "",
+			"LightSnow": "",
+			"LightSnowShowers": "󰙿",
+			"PartlyCloudy": "",
+			"Sunny": "",
+			"ThunderyHeavyRain": "󰙾",
+			"ThunderyShowers": "",
+			"ThunderySnowShowers": "",
+			"VeryCloudy": ""
+		}
+	},
+
+	//"custom/zeit": {
+	//    "return-type": "json",
+	//    "interval": "once",
+	//    "format": "{icon}",
+	//    "format-icons": {
+	//        "tracking": "󰖷",
+	//        "stopped": "󰋣"
+	//    },
+	//    "exec": "/usr/share/sway/scripts/zeit.sh status",
+	//    "on-click": "/usr/share/sway/scripts/zeit.sh click; waybar-signal zeit",
+	//    "exec-if": "[ -x \"$(command -v zeit)\" ]",
+	//    "signal": 10
+	//},
+	//"custom/adaptive-light": {
+	//    "interval": "once",
+	//    "tooltip": true,
+	//    "return-type": "json",
+	//    "format": "{icon}",
+	//    "format-icons": {
+	//        "on": "󰃡",
+	//        "off": "󰃠"
+	//    },
+	//    "exec": "/usr/share/sway/scripts/wluma.sh",
+	//    "on-click": "/usr/share/sway/scripts/wluma.sh toggle",
+	//    "exec-if": "/usr/share/sway/scripts/wluma.sh check",
+	//    "signal": 12
+	//},
+	//"custom/valent": {
+	//    "format": "{icon}",
+	//    "tooltip": true,
+	//    "interval": 60,
+	//    "exec": "/usr/share/sway/scripts/valent.py",
+	//    "exec-if": "[ -x \"$(command -v valent)\" ]",
+	//    "return-type": "json",
+	//    "format-icons": {
+	//        "no-devices": "",
+	//        "dangerously-empty": "󰂃",
+	//        "no-signal": "󰞃",
+	//        "connected": "",
+	//        "disconnected": ""
+	//    },
+	//    "on-click": "valent",
+	//    "on-click-middle": "waybar-signal valent",
+	//    "signal": 13
+	//},
+
+	//"custom/playerctl": {
+	//    "interval": "once",
+	//    "tooltip": true,
+	//    "return-type": "json",
+	//    "format": "{icon}",
+	//    "format-icons": {
+	//        "Playing": "󰏦",
+	//        "Paused": "󰐍"
+	//    },
+	//    "exec": "playerctl metadata --format '{\"alt\": \"{{status}}\", \"tooltip\": \"{{playerName}}:  {{markup_escape(title)}} - {{markup_escape(artist)}}\" }'",
+	//    "on-click": "playerctl play-pause",
+	//    "on-click-right": "playerctl next",
+	//    "on-scroll-up": "playerctl position 10+",
+	//    "on-scroll-down": "playerctl position 10-",
+	//    "signal": 5
+	//},
+	"custom/media": {
+		"format": "{icon} {}",
+		"return-type": "json",
+		"max-length": 40,
+		"format-icons": {
+			"spotify": "",
+			"default": "🎜"
+		},
+		"escape": true,
+		"exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+		// "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+	}
+}

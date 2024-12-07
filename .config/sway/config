@@ -1,0 +1,49 @@
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+
+# CONFIG_HOME - set the directory for your configuration
+set $CONFIG_HOME ${XDG_CONFIG_HOME:-"$HOME/.config"}
+# CACHE_HOME - set the directory for your local cache
+set $CACHE_HOME ${XDG_CACHE_HOME:-"$HOME/.cache"}
+# DATA_HOME - set the directory for your local data
+set $DATA_HOME ${XDG_DATA_HOME:-"$HOME/.local/share"}
+# STATE_HOME - set the directory for your local state
+set $STATE_HOME ${XDG_STATE_HOME:-"$HOME/.local/state"}
+# RUNTIME_DIR - set the directory for your runtime data
+set $RUNTIME_DIR ${XDG_RUNTIME_DIR:-"/run/user/$(id -u)"}
+
+# CONFIG_SWAY - set the directory for your sway configuration
+set $CONFIG_SWAY $CONFIG_HOME/sway
+
+# styles theme variables
+include $CONFIG_SWAY/themes/theme.conf
+
+# global variables
+include $CONFIG_SWAY/defines/global.conf
+
+# system additional variables
+include /etc/sway/config-vars.d/*
+
+# input devices
+include $CONFIG_SWAY/inputs/*.conf
+# output devices
+include $CONFIG_SWAY/outputs/PHL-BDM3470.conf
+#include $CONFIG_SWAY/outputs/*.conf
+
+# enable bindsyms
+include $CONFIG_SWAY/bindsyms/*.conf
+# enable modes
+include $CONFIG_SWAY/modes/*.conf
+
+# only enable this if every app you use is compatible with wayland
+# xwayland disable
+
+# system additional configs
+include /etc/sway/config.d/*
+
+# user config
+include $CONFIG_SWAY/config.d/*.conf
+

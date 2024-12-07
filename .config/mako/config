@@ -1,0 +1,68 @@
+## Mako configuration file
+
+## GLOBAL CONFIGRATION OPTIONS
+#max-history=5
+#sort=-time
+
+# BINDING OPTIONS
+on-button-left=invoke-default-action
+on-button-middle=exec makoctl menu -n "$id" wofi -d -p 'Select action: '
+on-button-right=dismiss-all
+on-touch=dismiss
+on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/message.oga
+
+# STYLE OPTIONS
+font=monospace 10
+background-color=#1e1e1eee
+text-color=#fffafaee
+width=300
+height=200
+#outer-margin=0
+#margin=10
+#padding=5
+border-size=1
+border-color=#80004eee
+border-radius=4
+progress-color=over #a9a9a9
+icons=1
+#max-icon-size=64
+#icon-path=/usr/share/icons/hicolor
+#icon-path=/usr/share/pixmaps
+#icon-location=left
+#markup=1
+#actions=1
+#history=1
+#format=(%g) <b>%s</b>\n%b
+#text-alignment=left
+default-timeout=5000
+#ignore-timeout=0
+#group-by=
+#max-visible=5
+#output=""
+#layer=top
+anchor=bottom-right
+#invisible=0
+
+[mode=do-not-disturb]
+invisible=1
+
+[hidden]
+format=(and %h more)
+text-color=#808080
+
+#[urgency=low]
+#default-timeout=5000
+
+[urgency=normal]
+border-color=#a90069
+
+[urgency=high]
+border-color=#e4007f
+default-timeout=0
+
+[category=mpd]
+group-by=category
+
+[app-name="screenshot"]
+on-notify=exec paplay /usr/share/sounds/freedesktop/stereo/screen-capture.oga
+

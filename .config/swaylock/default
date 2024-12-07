@@ -1,0 +1,12 @@
+ignore-empty-password
+daemonize
+show-keyboard-layout
+show-failed-attempts
+
+indicator-caps-lock
+indicator-radius=50
+indicator-thickness=10
+
+scaling=stretch
+color=00000080
+

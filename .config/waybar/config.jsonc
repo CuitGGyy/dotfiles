@@ -1,0 +1,6 @@
+{
+	"include": [
+		//"~/.config/waybar/modules/config.jsonc"
+		"~/.config/waybar/modules/swaybar.jsonc"
+	]
+}

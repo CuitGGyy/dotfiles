@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#set -e
+
+## Generate two pem file with below:
+#openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout key.pem -out cert.pem -days 3650
+
+function show_usage() {
+	printf "Error: ${0} ${*}\nUsage:
+	${0} [wayvnc|headless]\n"
+}
+
+if [[ -f $HOME/.config/shenv/wayland ]]; then
+	. $HOME/.config/shenv/wayland
+else
+	echo "File not found: $HOME/.config/shenv/wayland"
+	exit 1
+fi
+
+# xdg environment session desktop
+export XDG_SESSION_DESKTOP=sway
+export XDG_CURRENT_DESKTOP=sway
+
+# set default shell and terminal
+export SHELL=/usr/bin/zsh
+#export TERMINAL_COMMAND=xdg-terminal-exec
+#export GTK_THEME=Adwaita:dark
+#export XCURSOR_SIZE=24
+
+## start sway session without wayvnc server
+if [ ${#} -eq 0 ]; then
+	sway --config=$HOME/.config/sway/config
+	#dbus-run-session sway --config=${XDG_CONFIG_HOME:-"$HOME/.config"}/sway/config
+## start sway session with wayvnc server
+elif [ "${1}" == "wayvnc" ]; then
+	sway --config=$HOME/.config/sway/remote
+	#dbus-run-session sway --config=${XDG_CONFIG_HOME:-"$HOME/.config"}/sway/config
+## start headless sway session with wayvnc server
+elif [ "${1}" == "headless" ]; then
+	export WLR_BACKENDS=headless
+	export WLR_LIBINPUT_NO_DEVICES=1
+	export WAYLAND_DISPLAY=wayland-1
+	sway --config=$HOME/.config/sway/remote
+else
+	show_usage ${@}
+	exit 0
+fi
+
