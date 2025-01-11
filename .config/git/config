@@ -1,6 +1,12 @@
-[user]
+[core]
+	editor = vim
+#	sshCommand = ssh -i \"~/.ssh/id_ed25519_git\" -o StrictHostKeyChecking=no
+#[credential]
+#	helper = none
+#	helper = cache
+#	helper = "store --file ~/.cache/git-credentials.helper"
 #[url "https://gitclone.com/"]
-#    insteadof = https://
+#    insteadof = https://github.com/
 #[url "https://kgithub.com/"]
 #    insteadof = https://github.com/
 #[url "https://"]
@@ -9,10 +15,9 @@
 #    insteadof = https://
 #[http]
 #	sslverify = false
-[core]
-	editor = vim
-[init]
-	defaultBranch = master
+#[init]
+#	defaultBranch = master
+#	defaultBranch = main
 #[filter "lfs"]
 #    clean = git-lfs clean -- %f
 #    smudge = git-lfs smudge -- %f
