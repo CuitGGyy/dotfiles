@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; 使用 plugin.vim 调整插件默认配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2024/12/07 18:34:17
+" Last Modified: 2025/01/19 21:43:24
 "
 "==============================================================================
 
@@ -78,7 +78,11 @@ if get(g:bundle_group, 'basic', 0) == 1
 	Plug 'mhinz/vim-startify'
 
 	" 用于在侧边符号栏显示 marks （ma-mz 记录的位置）
-	Plug 'kshenoy/vim-signature'
+	if has("nvim")
+		Plug 'chentoast/marks.nvim'
+	else
+		Plug 'kshenoy/vim-signature'
+	endif
 
 	" 国人写的彩虹括号
 	Plug 'luochen1990/rainbow'
