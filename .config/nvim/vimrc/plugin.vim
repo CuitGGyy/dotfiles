@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器; bundle.vim 插件使用列表
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2024/12/07 18:34:30
+" Last Modified: 2025/01/19 21:29:53
 "
 "==============================================================================
 
@@ -370,6 +370,8 @@ if get(s:enabled, 'nerdcommenter', 0) == 1
 				\ 'c': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
 				\ 'cpp': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
 				\ 'vue': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/', },
+				\ 'conf': { 'left': '#', },
+				\ 'toml': { 'left': '#', },
 				\ 'yaml': { 'left': '#', },
 				\ }
 
