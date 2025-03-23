@@ -17,6 +17,9 @@
 .tags
 tags
 
+# Zsh caches
+*.zwc
+
 # Python virtualenv and caches
 virtualenv/
 venv/

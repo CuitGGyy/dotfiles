@@ -1,5 +1,6 @@
 [core]
-	editor = vim
+#	editor = vim
+	editor = nvim
 #	sshCommand = ssh -i \"~/.ssh/id_ed25519_git\" -o StrictHostKeyChecking=no
 #[credential]
 #	helper = none

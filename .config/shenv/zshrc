@@ -26,7 +26,7 @@ esac
 # and zshoptions(1) for more details.
 #
 # Correctly display UTF-8 with combining characters.
-if [[ "$(locale LC_CTYPE)" == "UTF-8" ]]; then
+if [[ "$(locale LC_CTYPE)" == 'UTF-8' ]]; then
 	setopt COMBINING_CHARS
 fi
 
@@ -199,7 +199,7 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND='1'
 function zvm_config() {
 	# Change to Zsh's default readkey engine
 	#ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
-	
+
 	# Set the escape key timeout (default is 0.03 seconds)
 	ZVM_ESCAPE_KEYTIMEOUT=0.05
 
