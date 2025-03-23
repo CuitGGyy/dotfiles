@@ -42,6 +42,9 @@ zmodule prompt-pwd
 # Powerlevel10k forked from Powerlevel9k compatibility
 #zmodule romkatv/powerlevel10k --use degit
 
+# A better and friendly vi(vim) mode plugin for ZSH.
+zmodule jeffreytse/zsh-vi-mode --use degit
+
 # my style
 zmodule siren --frozen
 

@@ -140,9 +140,28 @@ if ! shopt -oq posix; then
 fi
 
 # -------------------------------
-# Develop environment variables
+# Use a vi-style line editing interface
+# This also affects the editing interface used for read -e
 # -------------------------------
 
+# man readline
+#
+# editing-mode (emacs)
+#    Controls whether readline begins with a set of key bindings similar to Emacs or vi.
+#    editing-mode can be set to either emacs or vi.
+#
+# keymap (emacs)
+#    Set  the  current  readline  keymap.
+#    The set of legal keymap names is emacs, emacs-standard, emacs-meta, emacs-ctlx, vi, vi-move, vi-command, and vi-insert.
+#    vi is equivalent to vi-command; emacs is equivalent to emacs-standard.
+#    The default value is emacs.  The value of editing-mode also affects the default keymap.
+
+# further more setup in ~/.inputrc
+set -o vi
+
+# -------------------------------
+# Develop environment variables
+# -------------------------------
 if [ -f ~/.config/shenv/environment ]; then
 	source ~/.config/shenv/environment
 fi

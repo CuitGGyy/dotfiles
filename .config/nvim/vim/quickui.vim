@@ -5,7 +5,7 @@
 " 依赖 Vim 8.1 +popup 特性
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2024/12/07 18:34:24
+" Last Modified: 2025/03/08 14:32:22
 "
 "======================================================================
 
@@ -27,15 +27,15 @@ silent call quickui#menu#reset()
 " 顶部菜单栏
 "------------------------------------------------------------------------------
 silent call quickui#menu#install("&File", [
-			\ [ "&New File\t:tabnew", ':tabnew', ''],
+			\ [ "&New File\t:tabn", ':tabn', ''],
 			\ [ "&Open File\t:tabe", 'call feedkeys(":tabedit ")', ''],
 			\ [ "-", '', ''],
 			\ [ "&Save\t:w", 'write', ''],
 			\ [ "Save &As\t:w %", 'call feedkeys(":write ")', ''],
-			\ [ "Save All\t:wall", 'wall', ''],
-			\ [ "&Close\t:tabc", 'tabclose', ''],
+			\ [ "Save All\t:wall", ':wall', ''],
+			\ [ "&Close\t:tabc", ':tabc', ''],
 			\ [ "-", '', ''],
-			\ [ "E&xit\t:qall", 'qall', ''],
+			\ [ "E&xit\t:qall", ':qall', ''],
 			\ ])
 
 silent call quickui#menu#install("&Edit", [
@@ -61,8 +61,8 @@ silent call quickui#menu#install("&Diff", [
 silent call quickui#menu#install("&Build", [
 			\ ["File &Execute\tF5", 'AsyncTask file-run', ''],
 			\ ["File &Compile\tF9", 'AsyncTask file-build', ''],
-			\ ["File E&make\tF7", 'AsyncTask emake', ''],
-			\ ["File &Start\tF8", 'AsyncTask emake-exe', ''],
+			\ ["File C&make\tF7", 'AsyncTask cmake', ''],
+			\ ["File &Start\tF8", 'AsyncTask cmake-exe', ''],
 			\ ['-', '', ''],
 			\ ["&Project Build\tShift+F9", 'AsyncTask project-build', ''],
 			\ ["Project &Run\tShift+F5", 'AsyncTask project-run', ''],
@@ -88,8 +88,8 @@ silent call quickui#menu#install('&Tools', [
 			\ ['Display &Messages', 'call quickui#tools#display_messages()', ''],
 			\ ['Display &Help', 'call quickui#tools#display_help("usr_01")', ''],
 			\ ['-', '', ''],
-			\ ["&Explore\tc-esc", ':Lexplore', ''],
-			\ ["&Terminal\tc-`", ':split | terminal', ''],
+			\ ["&Explore\tm-e", ':Lexplore', ''],
+			\ ["&Terminal\tm-`", ':split | terminal', ''],
 			\ ])
 
 silent call quickui#menu#install('&Plugins', [
@@ -155,7 +155,7 @@ endif
 let g:quickui_preview_w = 100
 let g:quickui_preview_h = 15
 
-" specofy color group
+" specify color group
 "highlight! QuickBG ctermfg=0 ctermbg=7 guifg=black guibg=gray
 "highlight! QuickSel cterm=bold ctermfg=0 ctermbg=2 gui=bold guibg=brown guifg=gray
 "highlight! QuickKey term=bold ctermfg=9 gui=bold guifg=#f92772
@@ -168,8 +168,10 @@ let g:quickui_preview_h = 15
 "----------------------------------------------------------------------
 
 " 顶部菜单栏快捷键绑定
-nnoremap <silent><space><space> :call quickui#menu#open()<cr>
 nnoremap <silent><tab><space> :call quickui#menu#open()<cr>
+vnoremap <silent><tab><space> :call quickui#menu#open()<cr>
+"nnoremap <silent><space><space> :call quickui#menu#open()<cr>
+"vnoremap <silent><space><space> :call quickui#menu#open()<cr>
 
 " 上下文关联菜单快捷键
 nnoremap <silent>K :call quickui#tools#clever_context('k', g:context_menu_k, {})<cr>
@@ -178,4 +180,5 @@ nnoremap <silent><tab><cr> :call quickui#tools#clever_context('k', g:context_men
 if has('gui_running') || has('nvim')
 	noremap <c-f10> :call MenuHelp_TaskList()<cr>
 endif
+
 
