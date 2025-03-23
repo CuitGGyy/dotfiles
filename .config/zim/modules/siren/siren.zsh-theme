@@ -28,41 +28,70 @@
 #
 
 # define symbol charset according to TERM type
-case "$TERM" in
+case "${TERM}" in
     xterm-color|*-256color) symbol_charset='utf-8' ;;
     linux|foot|*) symbol_charset='ascii' ;;
 esac
 
 # select color by uid
-_prompt_uid_color_select() {
+function _prompt_uid_color() {
     case ${EUID} in
         0) print -n '%F{green}' ;;
         *) print -n '%F{yellow}' ;;
     esac
 }
-#_prompt_current_time() {
+#function _prompt_current_time() {
 #    print -n '%D{%H:%M:%S.%.}'
 #}
-#_prompt_jobs_count() {
+#function _prompt_jobs_count() {
 #    print -n '%(1j.%F{blue}*%f.)'
 #}
 
+# use vi mode cursor style
+function _prompt_vimode_cursor() {
+    local cursor_block='\e[2 q'
+    local cursor_underline='\e[4 q'
+    local cursor_beam='\e[6 q'
+    #local cursor_blinking_block='\e[1 q'
+    #local cursor_blinking_underline='\e[3 q'
+    #local cursor_blinking_beam='\e[5 q'
+    local cursor_user_default='\e[0 q'
+
+    case ${KEYMAP} in
+        emacs) shape=${cursor_user_default} ;;
+        vicmd) shape=${cursor_block} ;;
+        viins) shape=${cursor_beam} ;;
+        visual) shape=${cursor_block} ;;
+        viopp) shape=${cursor_underline} ;;
+        main) shape=${cursor_beam} ;;
+        *) shape=${cursor_user_default} ;;
+    esac
+    print -n ${shape}
+}
 # compatible with vi/vim/nvim
-_prompt_keymap_vimode() {
+function _prompt_vimode_keymap() {
     case ${KEYMAP} in
         vicmd) print -n '%S%#%s' ;;
         *) print -n '%B%#%b' ;;
     esac
 }
-# zle keymap
-_prompt_zle_keymap_select() {
+
+# zle-line-init widget
+function _prompt_zle-line-init() {
+    #_prompt_vimode_cursor
+}
+# zle-keymap-select widget
+function _prompt_zle-keymap-select() {
+    #_prompt_vimode_cursor
     zle reset-prompt
     zle -R
 }
 if autoload -Uz is-at-least && is-at-least 5.3; then
-    autoload -Uz add-zle-hook-widget && add-zle-hook-widget -Uz keymap-select _prompt_zle_keymap_select
+    autoload -Uz add-zle-hook-widget && add-zle-hook-widget -Uz line-init _prompt_zle-line-init
+    autoload -Uz add-zle-hook-widget && add-zle-hook-widget -Uz keymap-select _prompt_zle-keymap-select
 else
-    zle -N zle-keymap-select _prompt_zle_keymap_select
+    zle -N zle-line-init _prompt_zle-line-init
+    zle -N zle-keymap-select _prompt_zle-keymap-select
 fi
 
 # compatible with virtual environment
@@ -156,24 +185,24 @@ fi
 # define prompt line
 case ${symbol_charset} in
     utf-8)
-        PS1='╭─%(2L.%b%F{white}(%L)%f%b.)%B%(!.%F{red]}.$(_prompt_uid_color_select))%n%f%b@%B$(_prompt_uid_color_select)%m${VIRTUAL_ENV:+"%f%b‹%B%F{white}${VIRTUAL_ENV:t}%f%b›"}${VIM:+" %F{cyan}V"}%f%b:%B%F{blue}%~${(e)git_info[prompt]}%f%b
-╰─$(_prompt_keymap_vimode) '
+        PS1='╭─%(2L.%b%F{white}(%L)%f%b.)%B%(!.%F{red]}.$(_prompt_uid_color))%n%f%b@%B$(_prompt_uid_color)%m${VIRTUAL_ENV:+"%f%b‹%B%F{white}${VIRTUAL_ENV:t}%f%b›"}${VIM:+" %F{cyan}V"}%f%b:%B%F{blue}%~${(e)git_info[prompt]}%f%b
+╰─$(_prompt_vimode_keymap) '
         RPS1='${(e)git_info[status]}%b${duration_info}%(?. %F{green}↵%f. %F{red}%? ✘%f)%(1j. %F{blue}●%f.)'
-#        PS1='%(2L.%b%F{white}(%L)%f%b.)%B%(!.%F{red]}.$(_prompt_uid_color_select))%n%f%b@%B$(_prompt_uid_color_select)%m${VIRTUAL_ENV:+"%f%b‹%B%F{white}${VIRTUAL_ENV:t}%f%b›"}${VIM:+" %F{cyan}V"}%f%b:%B%F{blue}%~${(e)git_info[prompt]}%f%b
-#$(_prompt_keymap_vimode) '
+#        PS1='%(2L.%b%F{white}(%L)%f%b.)%B%(!.%F{red]}.$(_prompt_uid_color))%n%f%b@%B$(_prompt_uid_color)%m${VIRTUAL_ENV:+"%f%b‹%B%F{white}${VIRTUAL_ENV:t}%f%b›"}${VIM:+" %F{cyan}V"}%f%b:%B%F{blue}%~${(e)git_info[prompt]}%f%b
+#$(_prompt_vimode_keymap) '
 #        RPS1='${(e)git_info[status]}%b${duration_info}%(?. %F{green}↵%f. %F{red}%? ✘%f)%(1j. %F{blue}●%f.)'
         ;;
     ascii)
-        PS1='%(2L.%b%F{white}(%L)%f%b.)%B$(_prompt_uid_color_select)%n%f%b@%B$(_prompt_uid_color_select)%m${VIRTUAL_ENV:+"%f%b(%B%F{white}${VIRTUAL_ENV:t}%f%b)"}${VIM:+" %F{cyan}V"}%f%b:%B%F{cyan}%~%f%b${(e)git_info[prompt]}
-%b%(1j.%F{blue}*%f .)%(?.%F{green}.%F{red}%?%f )${duration_info}%F{white}$(_prompt_keymap_vimode)%f%b '
+        PS1='%(2L.%b%F{white}(%L)%f%b.)%B$(_prompt_uid_color)%n%f%b@%B$(_prompt_uid_color)%m${VIRTUAL_ENV:+"%f%b(%B%F{white}${VIRTUAL_ENV:t}%f%b)"}${VIM:+" %F{cyan}V"}%f%b:%B%F{cyan}%~%f%b${(e)git_info[prompt]}
+%b%(1j.%F{blue}*%f .)%(?.%F{green}.%F{red}%?%f )${duration_info}%F{white}$(_prompt_vimode_keymap)%f%b '
         unset RPS1
 #        zstyle ':zim:prompt-pwd:fish-style' dir-length 8
 #        PS1='%b%(1j.%F{blue}*%f .)%(?.%F{green}.%F{red}%?%f )${duration_info}
-#%(2L.%B%F{white}(%L)%f%b.)%B$(_prompt_uid_color_select)%n%f%b@%B$(_prompt_uid_color_select)%m${VIRTUAL_ENV:+"%f%b(%B%F{white}${VIRTUAL_ENV:t}%f%b)"}${VIM:+" %F{cyan}V"}%f%b:%B%F{cyan}$(prompt-pwd)%f%b${(e)git_info[prompt]}%F{white}$(_prompt_keymap_vimode)%f%b '
+#%(2L.%B%F{white}(%L)%f%b.)%B$(_prompt_uid_color)%n%f%b@%B$(_prompt_uid_color)%m${VIRTUAL_ENV:+"%f%b(%B%F{white}${VIRTUAL_ENV:t}%f%b)"}${VIM:+" %F{cyan}V"}%f%b:%B%F{cyan}$(prompt-pwd)%f%b${(e)git_info[prompt]}%F{white}$(_prompt_vimode_keymap)%f%b '
 #        unset RPS1
         ;;
     *)
-        PS1='%B$(_prompt_uid_color_select)%n%f%b@%B$(_prompt_uid_color_select)%m%f%b:%B%F{blue}%1~%f%b %# '
+        PS1='%B$(_prompt_uid_color)%n%f%b@%B$(_prompt_uid_color)%m%f%b:%B%F{blue}%1~%f%b %# '
         unset RPS1
         ;;
 esac

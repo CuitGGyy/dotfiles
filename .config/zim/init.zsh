@@ -1,4 +1,4 @@
-# FILE AUTOMATICALLY GENERATED FROM /home/master/.config/zim/zimrc
+# FILE AUTOMATICALLY GENERATED FROM /Users/master/.config/zim/zimrc
 # EDIT THE SOURCE FILE AND THEN RUN zimfw build. DO NOT DIRECTLY EDIT THIS FILE!
 
 if [[ -e ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]] zimfw() { source "${HOME}/.config/zim/zimfw.zsh" "${@}" }
@@ -10,6 +10,7 @@ source "${HOME}/.config/zim/modules/input/init.zsh"
 source "${HOME}/.config/zim/modules/termtitle/init.zsh"
 source "${HOME}/.config/zim/modules/utility/init.zsh"
 source "${HOME}/.config/zim/modules/duration-info/init.zsh"
+source "${HOME}/.config/zim/modules/zsh-vi-mode/zsh-vi-mode.zsh"
 source "${HOME}/.config/zim/modules/siren/siren.zsh-theme"
 source "${HOME}/.config/zim/modules/completion/init.zsh"
 source "${HOME}/.config/zim/modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

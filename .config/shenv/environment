@@ -1,5 +1,5 @@
 #!/bin/sh
-#set -e
+#set -euxo pipefail
 
 # ---------------------------
 # Develop environment variables
@@ -72,11 +72,11 @@ if [[ -x "$(command -v less)" ]]; then
 	export LESSHISTFILE=${XDG_CACHE_HOME:-"$HOME/.cache"}/.lesshst
 fi
 
-#route configuration
-if [[ "$(uname -s)" = "Darwin" ]]; then
+# route configuration
+if [[ "$(uname -s)" == 'Darwin' ]]; then
 	alias add_route='sudo route add -net 192.168.1.0/24 192.168.18.200'
 	alias del_route='sudo route delete -net 192.168.1.0/24 192.168.18.200'
-elif [[ "$(uname -s)" = "Linux" ]]; then
+elif [[ "$(uname -s)" == 'Linux' ]]; then
 	alias add_route='sudo route add 192.168.1.0/24 via 192.168.18.200'
 	alias del_route='sudo route del 192.168.1.0/24 via 192.168.18.200'
 fi
@@ -87,26 +87,34 @@ alias socks_proxy='export ALL_PROXY=socks5://192.168.18.200:1080'
 alias unset_proxy='unset http_proxy; unset https_proxy; unset ALL_PROXY'
 
 # try to use neovim as default editor
-if [[ "$(uname -s)" = "Darwin" ]]; then
-	if [[ "$(uname -m)" = "x86_64" ]]; then
-		NVIM_HOME="/opt/nvim-macos-x86_64"
-	elif [[ "$(uname -m)" = "arm64" ]]; then
-		NVIM_HOME="/opt/nvim-macos-arm64"
+if [[ "$(uname -s)" == 'Darwin' ]]; then
+	if [[ "$(uname -m)" == 'x86_64' ]]; then
+		NVIM_HOME='/usr/local/opt/nvim-macos-x86_64'
+	elif [[ "$(uname -m)" == 'arm64' ]]; then
+		NVIM_HOME='/usr/local/opt/nvim-macos-arm64'
 	else
-		NVIM_HOME="/opt/nvim-macos"
+		NVIM_HOME='/usr/local/opt/nvim-macos'
 	fi
 else
-	NVIM_HOME="/opt/nvim-linux64"
+	if [[ "$(uname -m)" == 'x86_64' ]]; then
+		NVIM_HOME='/opt/nvim-linux-x86_64'
+	elif [[ "$(uname -m)" == 'arm64' ]]; then
+		NVIM_HOME='/opt/nvim-linux-arm64'
+	else
+		NVIM_HOME='/opt/nvim-linux'
+	fi
 fi
 if [[ -x "$(command -v nvim)" ]]; then
-	alias vim=nvim
 	alias vi=nvim
-	[[ "$(uname -s)" = "Linux" ]] && export EDITOR=nvim
+	alias vim=nvim
+	alias vimdiff='nvim -d'
+	[[ "$(uname -s)" == 'Linux' ]] && export EDITOR=nvim
 elif [[ -d "$NVIM_HOME" ]] && [[ -x "$NVIM_HOME/bin/nvim" ]]; then
 	export PATH=$PATH:"${NVIM_HOME}/bin"
-	alias vim=nvim
 	alias vi=nvim
-	[[ "$(uname -s)" = "Linux" ]] && export EDITOR=nvim
+	alias vim=nvim
+	alias vimdiff='nvim -d'
+	[[ "$(uname -s)" == 'Linux' ]] && export EDITOR=nvim
 fi
 unset NVIM_HOME
 
@@ -132,6 +140,7 @@ fi
 # Brew services for macOS(launchctl) or Linux(systemctl)
 # brew tap --custom-remote --force-auto-update homebrew/services https://mirrors.ustc.edu.cn/homebrew-services.git
 if [[ -x "$(command -v brew)" ]]; then
+	#export HOMEBREW_NO_AUTO_UPDATE=1
 	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
 	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
 	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
@@ -144,15 +153,16 @@ fi
 # /bin/bash brew-install/install.sh
 # rm -rf brew-install
 #if [[ -x "$(command -v brew)" ]]; then
-#    export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
-#    export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/bottles"
-#    export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
-#    export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
-#    export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
+#	export HOMEBREW_NO_AUTO_UPDATE=1
+#	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+#	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+#	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/bottles"
+#	export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
+#	export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 #fi
 
 # linuxbrew shell environment
-if [[ "$(uname -s)" == "Linux" ]]; then
+if [[ "$(uname -s)" == 'Linux' ]]; then
 	# apple silicon cpu macos homebrew directory
 	#BREW_HOME=/opt/linuxbrew
 	# linux homebrew drectory

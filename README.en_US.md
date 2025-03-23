@@ -6,13 +6,12 @@
 
 ## Introduction
 
-- My home directory environment
-- Follow XDG Base Directory Specification
+- Home directory environment
+- Follow XDG directory specification
 - Compatible with MacOS or Linux
-- Require bash or zsh and git
-- Use [zimfw](https://github.com/zimfw/zimfw) to manage modules
-- Require vim 7.4+ or neovim 0.7+
-- Use [vim-plug](https://github.com/junegunn/vim-plug) to manage plugins
+- Compatible with Bash or Zsh
+- Compatible with NeoVim or Vim
+- Require git
 
 ## LICENSE
 
