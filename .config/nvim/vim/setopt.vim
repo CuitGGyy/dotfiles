@@ -3,11 +3,10 @@
 " setopt.vim - 全局基础选项配置设定
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/23 16:53:40
+" Last Modified: 2025/03/25 02:17:10
 "
 "==============================================================================
 
-" vim: set ts=4 sw=4 tw=80 noet :
 
 "------------------------------------------------------------------------------
 " 交换文件, 备份撤销
@@ -71,7 +70,7 @@ set history=1000
 " 共享系统剪贴板 (兼容 X 图形界面系统)
 set clipboard+=unnamed
 if v:version > 730
-	set clipboard+=unnamedplus
+set clipboard+=unnamedplus
 endif
 
 " 自动切换目录
@@ -80,7 +79,10 @@ set autochdir
 set autoread
 
 " 使用 Tab 标签页切换缓冲区（二者联动）
-set switchbuf=useopen,usetab,newtab,uselast
+set switchbuf+=useopen,usetab,newtab
+if has('nvim') || v:version > 820
+set switchbuf+=uselast
+endif
 
 
 "------------------------------------------------------------------------------
@@ -187,7 +189,7 @@ set relativenumber
 " 总是显示左侧边栏图标指示列(用于显示 mark/gitdiff/诊断信息)
 " vim不支持该参数后面附加限定条件
 if v:version > 740
-	set signcolumn=auto
+set signcolumn=auto
 endif
 
 " 总是显示标签栏
@@ -280,14 +282,18 @@ set statusline+=\ \|\ %c:%l/%L\ %p%%									" 光标位置行列信息
 
 set fillchars+=vert:▕,     "alternatives │
 set fillchars+=fold:\ ,
+if has('nvim') || v:version > 820
 set fillchars+=eob:\ ,     "suppress ~ at EndOfBuffer
+endif
 set fillchars+=diff:─,     "alternatives: ⣿ ░
 if has('nvim')
 set fillchars+=msgsep:‾,   "vim不支持该参数
 endif
+if has('nvim') || v:version > 820
 set fillchars+=foldopen:▾,
 set fillchars+=foldsep:│,
 set fillchars+=foldclose:▸,
+endif
 
 
 "------------------------------------------------------------------------------
@@ -313,7 +319,10 @@ set wildmode=longest:full
 " 命令补全显示忽略大小写
 set wildignorecase
 " 命令补全搜索选项, 默认为 'pum,tagfile'
-set wildoptions=pum,tagfile
+if has('nvim') || v:version > 820
+set wildoptions+=pum
+endif
+set wildoptions+=tagfile
 
 " 弹出窗口半透明, 透明度0-100
 " vim不支持该选项
@@ -325,12 +334,12 @@ set pumheight=15
 
 " 按英语检查拼写, 也可附加其他词典
 if has('spell')
-	set spelllang+=en_us
-	set spelllang+=cjk
-	" 自动补全拼写词典
-	"set complete+=kspell
-	" 自动补全英语词典
-	"set dictionary=k~/english/dict/*
+set spelllang+=en_us
+set spelllang+=cjk
+" 自动补全拼写词典
+"set complete+=kspell
+" 自动补全英语词典
+"set dictionary=k~/english/dict/*
 endif
 
 
@@ -354,8 +363,8 @@ set nowrap
 set linebreak
 " 自动换行显示时, 在缩进之前显示断行符
 set breakindentopt=sbr
-" 自动换行显示时的自动断行符, 其他备选符号 -> '…', '↳ ', '→', '↪ '
-set showbreak=↪
+" 自动换行显示时的自动断行符, 其他备选符号: '…', '⋯', '→', '⇢', '↳ ', '↪ ', '⤷',
+set showbreak=↳
 
 " 语法着色限制列宽, 避免长行高亮显示错误; 默认上限 3000
 set synmaxcol=1024
@@ -380,15 +389,22 @@ set matchtime=3
 " 设置显示制表符等各种隐藏分割符
 set list
 " 隐藏分割符显示列表 (支持 Unicode 字符或字符编码)
+" 使用 ascii 字符显示隐藏字符
 "set listchars=tab:\|\ ,space:\ ,trail:.,extends:>,precedes:<,nbsp:␣
-"if v:version > 730
-"    set listchars+=multispace:.,lead:·
+"if has('nvim') || v:version > 820
+"set listchars+=multispace:·,lead:⸱
 "endif
-" 使用 unicode 字符显示隐藏字符 » «
-set listchars=tab:│\ ,space:\ ,trail:•,extends:›,precedes:‹,nbsp:␣
-if v:version > 730
-	set listchars+=multispace:…,lead:·
+" 使用 unicode 字符显示隐藏字符
+" 其他备选符号: '∙', '•', '﹏', '…', '⋯', '»', '«'
+set listchars=tab:│\ ,space:\ ,trail:․,extends:›,precedes:‹,nbsp:␣
+if has('nvim') || v:version > 820
+set listchars+=multispace:·,lead:⸱
 endif
+
+
+"------------------------------------------------------------------------------
+" 文件类型, 语法高亮, 代码折叠
+"------------------------------------------------------------------------------
 
 " 允许 Vim 自带脚本根据文件类型自动设置缩进格式
 if has('filetype')
@@ -430,6 +446,7 @@ if has('folding')
 	" 撤销时不展开代码折叠
 	"set foldopen-=undo
 endif
+
 
 "------------------------------------------------------------------------------
 " 编译调试, 过滤匹配, 错误格式, QuickFix

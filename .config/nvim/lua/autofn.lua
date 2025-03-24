@@ -3,7 +3,7 @@
 -- autofn.lua - 自定义配置或自动化功能扩展
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/24 01:34:42
+-- Last Modified: 2025/03/25 02:18:01
 --
 --------------------------------------------------------------------------------
 
@@ -14,20 +14,6 @@
 local api, fn, cmd, opt = vim.api, vim.fn, vim.cmd, vim.opt
 local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
-
--- 获取 nvim 选项
--- local opts_info = api.nvim_get_all_options_info()
--- local opts = setmetatable({}, {
--- 	__newindex = function(_, key, value)
--- 		vim.o[key] = value
--- 		local scope = opts_info[key].scope
--- 		if scope == 'win' then
--- 			vim.wo[key] = value
--- 		elseif scope == 'buf' then
--- 			vim.bo[key] = value
--- 		end
--- 	end
--- })
 
 
 --------------------------------------------------------------------------------

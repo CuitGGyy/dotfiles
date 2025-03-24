@@ -3,7 +3,7 @@
 -- setopt.lua - 全局基础选项配置设定
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/23 20:49:12
+-- Last Modified: 2025/03/25 02:17:38
 --
 --------------------------------------------------------------------------------
 
@@ -14,28 +14,6 @@
 local api, fn, cmd, opt = vim.api, vim.fn, vim.cmd, vim.opt
 local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
-
--- 获取 nvim 选项
--- local opts_info = api.nvim_get_all_options_info()
--- local opts = setmetatable({}, {
--- 	__newindex = function(_, key, value)
--- 		vim.o[key] = value
--- 		local scope = opts_info[key].scope
--- 		if scope == 'win' then
--- 			vim.wo[key] = value
--- 		elseif scope == 'buf' then
--- 			vim.bo[key] = value
--- 		end
--- 	end
--- })
-
--- 表内字符串连接
--- local function strcat(value, str, sep)
--- 	sep = sep or ','
--- 	str = str or ''
--- 	value = type(value) == 'table' and table.concat(value, sep) or value
--- 	return str ~= '' and table.concat({ value, str }, sep) or value
--- end
 
 
 --------------------------------------------------------------------------------
@@ -352,8 +330,8 @@ opt.wrap = false
 opt.linebreak = true
 -- 自动换行显示时, 在缩进之前显示断行符
 opt.breakindentopt = 'sbr'
--- 自动换行显示时的自动断行符, 其他备选符号 -> '…', '↳ ', '→', '↪ '
-opt.showbreak = '↪ '
+-- 自动换行显示时的自动断行符, 其他备选符号: '…', '⋯', '→', '⇢', '↳ ', '↪ ', '⤷',
+opt.showbreak = '↳ '
 
 -- 语法着色限制列宽, 避免长行高亮显示错误; 默认上限 3000
 opt.synmaxcol = 1024
@@ -378,6 +356,8 @@ opt.matchtime = 3
 -- 设置显示制表符等各种隐藏分割符
 opt.list = true
 
+-- 隐藏分割符显示列表 (支持 Unicode 字符或字符编码)
+-- 使用 ascii 字符显示隐藏字符
 --[[
 opt.listchars = table.concat({
 	'eol: ',
@@ -387,24 +367,28 @@ opt.listchars = table.concat({
 	'extends:>',
 	'precedes:<',
 	'nbsp:␣',
-	'multispace:…',
-	'lead:·,',
+	'multispace:·',
+	'lead:⸱,',
 }, ',')
 --]]
-
+-- 使用 unicode 字符显示隐藏字符
+-- 其他备选符号: '∙', '•', '﹏', '…', '⋯', '»', '«'
 opt.listchars = table.concat({
 	'eol: ',
 	'tab:│ ',
 	'space: ',
-	'trail:•', -- BULLET (U+2022, UTF-8: E2 80 A2)
+	'trail:․', -- U+2024, One Dot Leader
 	'extends:›', -- Alternatives: … »
 	'precedes:‹', -- Alternatives: … «
 	'nbsp:␣',
-	'multispace:…',
-	'lead:·',
+	'multispace:·', -- U+00B7, Middle Dot
+	'lead:⸱', -- U+2E31, Word Separator Middle Dot
 }, ',')
 
 
+--------------------------------------------------------------------------------
+-- 文件类型, 语法高亮, 代码折叠
+--------------------------------------------------------------------------------
 -- 允许 Vim 自带脚本根据文件类型自动设置缩进格式
 if fn.has('filetype') then
 	cmd.filetype('plugin on')
