@@ -1,5 +1,5 @@
-try
+if has('nvim')
 	source $HOME/.config/nvim/init.lua
-catch
+else
 	source $HOME/.config/nvim/vim/init.vim
-endtry
+endif
