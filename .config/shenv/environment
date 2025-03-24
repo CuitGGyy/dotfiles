@@ -77,13 +77,15 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
 	alias add_route='sudo route add -net 192.168.1.0/24 192.168.18.200'
 	alias del_route='sudo route delete -net 192.168.1.0/24 192.168.18.200'
 elif [[ "$(uname -s)" == 'Linux' ]]; then
-	alias add_route='sudo route add 192.168.1.0/24 via 192.168.18.200'
-	alias del_route='sudo route del 192.168.1.0/24 via 192.168.18.200'
+#	alias add_route='sudo route add -net 192.168.1.0/24 gw 192.168.18.200'
+#	alias del_route='sudo route del -net 192.168.1.0/24 gw 192.168.18.200'
+	alias add_route='sudo ip route add 192.168.1.0/24 via 192.168.18.200'
+	alias del_route='sudo ip route del 192.168.1.0/24 via 192.168.18.200'
 fi
 
 # proxy configuration
 alias https_proxy='export http_proxy=http://192.168.18.200:8118; export https_proxy=$http_proxy'
-alias socks_proxy='export ALL_PROXY=socks5://192.168.18.200:1080'
+alias socks_proxy='export all_proxy=socks5://192.168.18.200:1080'
 alias unset_proxy='unset http_proxy; unset https_proxy; unset ALL_PROXY'
 
 # try to use neovim as default editor
