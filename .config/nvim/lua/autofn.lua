@@ -3,7 +3,7 @@
 -- autofn.lua - 自定义配置或自动化功能扩展
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/25 02:18:01
+-- Last Modified: 2025/03/26 06:37:01
 --
 --------------------------------------------------------------------------------
 
@@ -642,6 +642,82 @@ autocmd('RecordingLeave', {
 
 
 --------------------------------------------------------------------------------
+-- 使 nvim 支持 OSC52 控制序列码, 实现跨 ssh 复制文本
+--------------------------------------------------------------------------------
+-- 参考 https://www.sxrhhh.top/blog/2024/06/06/neovim-copy-anywhere/
+-- 详情 :help clipboard
+if vim.env.SSH_TTY ~= nil or vim.env.SSH_CONNECTION ~= nil then
+
+	local ok, osc52 = pcall(require, 'vim.ui.clipboard.osc52')
+	if ok then
+		-- 读取寄存器内容, 而非剪贴板的
+		local function paste_last(reg)
+			-- 返回''最后一次的默认寄存器内容, 用来作为`p`操作符的粘贴物
+			return {
+				vim.split(fn.getreg(''), '\n'),
+				fn.getregtype(''),
+			}
+		end
+		-- To force Nvim to use the OSC 52 provider you can use the following
+		vim.g.clipboard = {
+			name = 'OSC 52',
+			copy = {
+				['+'] = osc52.copy('+'),
+				['*'] = osc52.copy('*'),
+			},
+			-- 官方配置案例, 但与操作系统剪贴板存在兼容性与安全性问题
+			--paste = {
+			--	['+'] = osc52.paste('+'),
+			--	['*'] = osc52.paste('*'),
+			--},
+			-- 终端模拟器兼容性相对好些
+			paste = {
+				['+'] = paste_last('+'),
+				['*'] = paste_last('*'),
+			},
+		}
+	else
+		local function osc52_copy(text)
+			local b64 = encode_base64(text)
+			local osc = string.format('%s]52;c;%s%s', string.char(0x1b), b64, string.char(0x07))
+			--io.stderr:write(osc)
+			api.nvim_chan_send(vim.v.stderr, osc)
+		end
+		autocmd('TextYankPost', {
+			pattern = '*',
+			callback = function()
+				osc52_copy(fn.getreg(vim.v.event.regname))
+			end,
+		})
+	end
+
+end
+
+
+--------------------------------------------------------------------------------
+-- 操作系统的回车换行符存在差异, 导致剪贴板内容不一致
+--------------------------------------------------------------------------------
+--[[
+-- 解决ArchLinux WSL环境下无法和windows互通剪贴板的问题
+if fn.executable('win32yank.exe') == 1 then
+	vim.opt.clipboard:append({ 'unnamedplus' })
+	vim.g.clipboard = {
+		name = 'win32yank',
+		copy = {
+			['+'] = 'win32yank.exe -i --crlf',
+			['*'] = 'win32yank.exe -i --crlf',
+		},
+		paste = {
+			['+'] = 'win32yank.exe -o --lf',
+			['*'] = 'win32yank.exe -o --lf',
+		},
+		cache_enabled = 0,
+	}
+end
+--]]
+
+
+--------------------------------------------------------------------------------
 -- 依据时间段自动启用不同的色彩主题样式
 --------------------------------------------------------------------------------
 -- 应尽早加载 colorscheme 使其他插件能正确配色
@@ -665,28 +741,5 @@ autocmd('RecordingLeave', {
 -- 	pattern = '*',
 -- 	callback = update_colorscheme,
 -- })
-
-
---------------------------------------------------------------------------------
--- 操作系统的回车换行符存在差异, 导致剪贴板内容不一致
---------------------------------------------------------------------------------
---[[
--- 解决ArchLinux WSL环境下无法和windows互通剪贴板的问题
-if fn.executable('win32yank.exe') == 1 then
-	vim.opt.clipboard:append({ 'unnamedplus' })
-	G.clipboard = {
-		name = 'win32yank',
-		copy = {
-			['+'] = 'win32yank.exe -i --crlf',
-			['*'] = 'win32yank.exe -i --crlf',
-		},
-		paste = {
-			['+'] = 'win32yank.exe -o --lf',
-			['*'] = 'win32yank.exe -o --lf',
-		},
-		cache_enabled = 0,
-	}
-end
---]]
 
 

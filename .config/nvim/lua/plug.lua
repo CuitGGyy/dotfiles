@@ -6,7 +6,7 @@
 -- 使用 plugin.vim 调整 vim 插件默认配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/23 20:50:57
+-- Last Modified: 2025/03/26 02:50:54
 --
 --------------------------------------------------------------------------------
 
@@ -286,6 +286,9 @@ if _G.plugged.pack_plug then
 
 	-- 代码注释插件, 自定义扩展性较好
 	Plug('preservim/nerdcommenter')
+
+	-- 支持 ANSI OSC52 控制序列码
+	--Plug('ojroques/vim-oscyank', { ['branch'] = 'main' })
 
 	---- 高级扩展 ----
 

@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/25 01:52:52
+-- Last Modified: 2025/03/26 04:04:12
 --
 --------------------------------------------------------------------------------
 
@@ -461,89 +461,6 @@ end)
 
 
 --------------------------------------------------------------------------------
--- numToStr/Comment.nvim
---------------------------------------------------------------------------------
-now(function()
-
-	-- 代码注释, 支持 treesitter
-	add({ source = 'numToStr/Comment.nvim', })
-
-	-- 插件选项自定义配置
-	require('Comment').setup({
-		---Add a space b/w comment and the line
-		padding = false,
-		---Whether the cursor should stay at its position
-		sticky = true,
-		---Lines to be ignored while (un)comment
-		ignore = nil,
-		-- ignores empty lines
-		--ignore = '^$',
-		-- only ignore empty lines for lua files
-		--ignore = function()
-		--	if vim.bo.filetype == 'lua' then
-		--		return '^$'
-		--	end
-		--end,
-		---LHS of toggle mappings in NORMAL mode
-		toggler = {
-			---Line-comment toggle keymap, default `gcc`
-			line = 'gcc',
-			---Block-comment toggle keymap, default `gbc`
-			block = 'gbc',
-		},
-		---LHS of operator-pending mappings in NORMAL and VISUAL mode
-		opleader = {
-			---Line-comment keymap
-			line = 'gc',
-			---Block-comment keymap
-			block = 'gb',
-		},
-		---LHS of extra mappings
-		extra = {
-			---Add comment on the line above, default `gcO`
-			above = 'gcO',
-			---Add comment on the line below, default `gco`
-			below = 'gco',
-			---Add comment at the end of line, default `gcA`
-			eol = 'gcA',
-		},
-		---Enable keybindings
-		---NOTE: If given `false` then the plugin won't create any mappings
-		mappings = {
-			---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-			basic = true,
-			---Extra mapping; `gco`, `gcO`, `gcA`
-			extra = true,
-		},
-		---Function to call before (un)comment
-		pre_hook = nil,
-		---Function to call after (un)comment
-		post_hook = nil,
-	})
-
-	--[[
-	-- 自定义文件类型的注释
-	local ft = require('Comment.ft')
-
-	-- 1. Using set function
-	-- Set only line comment
-	ft.set('yaml', '#%s')
-	-- Or set both line and block commentstring
-	ft.set('javascript', {'//%s', '/*%s*/'})
-
-	-- 2. Metatable magic
-	ft.javascript = {'//%s', '/*%s*/'}
-	ft.yaml = '#%s'
-
-	-- Multiple filetypes
-	ft({'go', 'rust'}, ft.get('c'))
-	ft({'toml', 'graphql'}, '#%s')
-	--]]
-
-end)
-
-
---------------------------------------------------------------------------------
 -- chentoast/marks.nvim
 --------------------------------------------------------------------------------
 now(function()
@@ -813,6 +730,134 @@ later(function()
 	end
 
 end)
+
+
+--------------------------------------------------------------------------------
+-- numToStr/Comment.nvim
+--------------------------------------------------------------------------------
+now(function()
+
+	-- 代码注释, 支持 treesitter
+	add({ source = 'numToStr/Comment.nvim', })
+
+	-- 插件选项自定义配置
+	require('Comment').setup({
+		---Add a space b/w comment and the line
+		padding = false,
+		---Whether the cursor should stay at its position
+		sticky = true,
+		---Lines to be ignored while (un)comment
+		ignore = nil,
+		-- ignores empty lines
+		--ignore = '^$',
+		-- only ignore empty lines for lua files
+		--ignore = function()
+		--	if vim.bo.filetype == 'lua' then
+		--		return '^$'
+		--	end
+		--end,
+		---LHS of toggle mappings in NORMAL mode
+		toggler = {
+			---Line-comment toggle keymap, default `gcc`
+			line = 'gcc',
+			---Block-comment toggle keymap, default `gbc`
+			block = 'gbc',
+		},
+		---LHS of operator-pending mappings in NORMAL and VISUAL mode
+		opleader = {
+			---Line-comment keymap
+			line = 'gc',
+			---Block-comment keymap
+			block = 'gb',
+		},
+		---LHS of extra mappings
+		extra = {
+			---Add comment on the line above, default `gcO`
+			above = 'gcO',
+			---Add comment on the line below, default `gco`
+			below = 'gco',
+			---Add comment at the end of line, default `gcA`
+			eol = 'gcA',
+		},
+		---Enable keybindings
+		---NOTE: If given `false` then the plugin won't create any mappings
+		mappings = {
+			---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+			basic = true,
+			---Extra mapping; `gco`, `gcO`, `gcA`
+			extra = true,
+		},
+		---Function to call before (un)comment
+		pre_hook = nil,
+		---Function to call after (un)comment
+		post_hook = nil,
+	})
+
+	--[[
+	-- 自定义文件类型的注释
+	local ft = require('Comment.ft')
+
+	-- 1. Using set function
+	-- Set only line comment
+	ft.set('yaml', '#%s')
+	-- Or set both line and block commentstring
+	ft.set('javascript', {'//%s', '/*%s*/'})
+
+	-- 2. Metatable magic
+	ft.javascript = {'//%s', '/*%s*/'}
+	ft.yaml = '#%s'
+
+	-- Multiple filetypes
+	ft({'go', 'rust'}, ft.get('c'))
+	ft({'toml', 'graphql'}, '#%s')
+	--]]
+
+end)
+
+
+--------------------------------------------------------------------------------
+-- ojroques/nvim-osc52
+--------------------------------------------------------------------------------
+-- nvim 0.10.x 以后的版本已经内嵌支持 ANSI OSC52 控制序列码
+--later(function()
+--
+--	-- 使 nvim 支持 ANSI OSC52 控制序列码, 实现跨 ssh 复制文本
+--	add({
+--		source = 'ojroques/nvim-osc52',
+--	})
+--
+--	require('osc52').setup {
+--		max_length = 0,           -- Maximum length of selection (0 for no limit)
+--		silent = false,           -- Disable message on successful copy
+--		trim = false,             -- Trim surrounding whitespaces before copy
+--		tmux_passthrough = false, -- Use tmux passthrough (requires tmux: set -g allow-passthrough on)
+--	}
+--
+--	-- to automatically copy text that was yanked into register +
+--	function copy()
+--		if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
+--			require('osc52').copy_register('+')
+--		end
+--	end
+--	vim.api.nvim_create_autocmd('TextYankPost', {callback = copy})
+--
+--	-- use the plugin as your clipboard provider, see :h provider-clipboard for more details.
+--	local function copy(lines, _)
+--		require('osc52').copy(table.concat(lines, '\n'))
+--	end
+--	local function paste()
+--		return {vim.fn.split(vim.fn.getreg(''), '\n'), vim.fn.getregtype('')}
+--	end
+--	vim.g.clipboard = {
+--		name = 'osc52',
+--		copy = {['+'] = copy, ['*'] = copy},
+--		paste = {['+'] = paste, ['*'] = paste},
+--	}
+--	-- Now the '+' register will copy to system clipboard using OSC52
+--	map('n', '<leader>c', '"+y')
+--	map('n', '<leader>cc', '"+yy')
+--
+--end)
 
 
 --------------------------------------------------------------------------------

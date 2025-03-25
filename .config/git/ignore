@@ -8,13 +8,20 @@
 # Develop Environment Ignores
 # ===========================
 # Backup files
-*.*~
 *.bak
+*.old
+*.*~
+
+# Temporary files
+*.temp
+*.tmp
+
 # Swap files
 *.swp
 
-# tags file
-.tags
+# Tags files
+*.tags
+tagfile
 tags
 
 # Zsh caches
@@ -25,6 +32,7 @@ virtualenv/
 venv/
 __pycache__/
 *.pyc
+
 
 # ===========================
 # Windows Cached Files
@@ -57,6 +65,7 @@ bin
 obj
 Release
 
+
 # ===========================
 # MacOS Cached Files
 # ===========================
@@ -77,4 +86,5 @@ Release
 .apdisk
 Network Trash Folder
 Temporary Items
+
 
