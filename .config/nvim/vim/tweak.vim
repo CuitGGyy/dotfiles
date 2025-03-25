@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器及插件分组配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/24 01:34:28
+" Last Modified: 2025/03/26 01:05:58
 "
 "===============================================================================
 
@@ -628,6 +628,54 @@ if get(s:plugged, 'nerdcommenter', 0) == 1
 
 	" Uncomments the selected line(s).
 	"noremap <leader>cu <Plug>NERDCommenterUncomment
+
+endif
+
+
+"-------------------------------------------------------------------------------
+" ojroques/vim-oscyank
+"-------------------------------------------------------------------------------
+if get(s:plugged, 'vim-oscyank', 0) == 1
+
+	" The available options with their default values are:
+	let g:oscyank_max_length = 0  " maximum length of a selection, 0 for unlimited length
+	let g:oscyank_silent     = 0  " disable message on successful copy
+	let g:oscyank_trim       = 0  " trim surrounding whitespaces before copy
+	let g:oscyank_osc52      = "\x1b]52;c;%s\x07"  " the OSC52 format string to use
+
+	" automatically copy text that was yanked into the unnamed register (")
+	" as well as + and " when the clipboard isn't working:
+	"if (!has('nvim') && !has('clipboard_working'))
+	"	" In the event that the clipboard isn't working, it's quite likely that
+	"	" the + and * registers will not be distinct from the unnamed register. In
+	"	" this case, a:event.regname will always be '' (empty string). However, it
+	"	" can be the case that `has('clipboard_working')` is false, yet `+` is
+	"	" still distinct, so we want to check them all.
+	"	let s:VimOSCYankPostRegisters = ['', '+', '*']
+	"	" copy text to clipboard on both (y)ank and (d)elete
+	"	let s:VimOSCYankOperators = ['y', 'd']
+	"	function! s:VimOSCYankPostCallback(event)
+	"		if index(s:VimOSCYankPostRegisters, a:event.regname) != -1
+	"					\ && index(s:VimOSCYankOperators, a:event.operator) != -1
+	"			call OSCYankRegister(a:event.regname)
+	"		endif
+	"	endfunction
+	"	augroup VimOSCYankPost
+	"		autocmd!
+	"		autocmd TextYankPost * call s:VimOSCYankPostCallback(v:event)
+	"	augroup END
+	"endif
+
+	" In normal mode, <leader>c is an operator that will copy the given text to the clipboard.
+	"nnoremap <leader>c <Plug>OSCYankOperator
+	" In normal mode, <leader>cc will copy the current line.
+	"nnoremap <leader>cc <leader>c_
+	" In visual mode, <leader>c will copy the current selection.
+	"vnoremap <leader>c <Plug>OSCYankVisual
+
+	nnoremap <f13> <Plug>OSCYankOperator
+	nnoremap <s-f13> <f13>_
+	vnoremap <f13> <Plug>OSCYankOperator
 
 endif
 

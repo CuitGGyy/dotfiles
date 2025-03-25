@@ -3,7 +3,7 @@
 -- setopt.lua - 全局基础选项配置设定
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/26 00:04:30
+-- Last Modified: 2025/03/26 04:26:06
 --
 --------------------------------------------------------------------------------
 
@@ -33,8 +33,8 @@ opt.backup = false
 -- 备份文件扩展名
 opt.backupext = '~'
 -- nvim 备份目录默认.,$XDG_STATE_HOME/nvim/backup/
--- 与 vim 的备份文件格式不兼容, 可能出现警告;
--- 无论 vim/nvim 若启用备份, 则统一在 $XDG_STATE_HOME/nvim/backup/
+-- nvim 与 vim 的备份文件格式不兼容, 可能出现警告;
+-- nvim backup 目录默认在 $XDG_STATE_HOME/nvim/backup/
 --[[
 opt.backupdir = fn.stdpath('state') .. '/backup'
 if not fn.isdirectory(vim.opt.backupdir) then
@@ -45,8 +45,8 @@ end
 -- 启用undo文件
 opt.undofile = true
 -- nvim undo目录默认.,$XDG_STATE_HOME/nvim/undo/
--- 与 vim 的 undo 文件格式不兼容, 可能出现警告;
--- 无论 vim/nvim 若启用 undo, 则统一在 $XDG_STATE_HOME/nvim/undo/
+-- nvim 与 vim 的 undo 文件格式不兼容, 可能出现警告;
+-- nvim undo 目录默认在 $XDG_STATE_HOME/nvim/undo/
 --[[
 opt.undodir = fn.stdpath('state') .. '/undo'
 if not fn.isdirectory(vim.opt.undodir) then

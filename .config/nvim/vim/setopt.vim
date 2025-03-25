@@ -3,7 +3,7 @@
 " setopt.vim - 全局基础选项配置设定
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/26 00:04:59
+" Last Modified: 2025/03/26 04:25:54
 "
 "==============================================================================
 
@@ -27,30 +27,30 @@ set nobackup
 " 备份文件扩展名
 set backupext='~'
 " nvim 备份目录默认.,$XDG_STATE_HOME/nvim/backup/
-" 与 vim 的备份文件格式不兼容, 可能出现警告;
-" 无论 vim/nvim 若启用备份, 则统一在 $XDG_STATE_HOME/nvim/backup/
+" nvim 与 vim 的备份文件格式不兼容, 可能出现警告;
+" vim bakcup 目录统一在 $XDG_CACHE_HOME/nvim/backup/
 if !has('nvim')
-	if $XDG_STATE_HOME != ''
-		set backupdir=$XDG_STATE_HOME/nvim/backup
-		silent! call mkdir(expand($XDG_STATE_HOME.'/nvim/backup'), 'p', 0755)
+	if $XDG_CACHE_HOME != ''
+		set backupdir=$XDG_CACHE_HOME/nvim/backup
+		silent! call mkdir(expand('$XDG_CACHE_HOME/nvim/backup'), 'p', 0755)
 	else
-		set backupdir=~/.local/state/nvim/backup
-		silent! call mkdir(expand('~/.local/state/nvim/backup'), 'p', 0755)
+		set backupdir=$HOME/.cache/nvim/backup
+		silent! call mkdir(expand('$HOME/.cache/nvim/backup'), 'p', 0755)
 	endif
 endif
 
 " 启用 undo 文件
 set undofile
 " nvim undo目录默认.,$XDG_STATE_HOME/nvim/undo/
-" 与 vim 的 undo 文件格式不兼容, 可能出现警告;
-" 无论 vim/nvim 若启用 undo, 则统一在 $XDG_STATE_HOME/nvim/undo/
+" nvim 与 vim 的 undo 文件格式不兼容, 可能出现警告;
+" vim undo 目录统一在 $XDG_CACHE_HOME/nvim/undo/
 if !has('nvim')
-	if $XDG_STATE_HOME != ''
-		set undodir=$XDG_STATE_HOME/nvim/undo
-		silent! call mkdir(expand($XDG_STATE_HOME.'/nvim/undo'), 'p', 0755)
+	if $XDG_CACHE_HOME != ''
+		set undodir=$XDG_CACHE_HOME/nvim/undo
+		silent! call mkdir(expand('$XDG_CACHE_HOME/nvim/undo'), 'p', 0755)
 	else
-		set undodir=~/.local/state/nvim/undo
-		silent! call mkdir(expand('~/.local/state/nvim/undo'), 'p', 0755)
+		set undodir=$HOME/.cache/nvim/undo
+		silent! call mkdir(expand('$HOME/.cache/nvim/undo'), 'p', 0755)
 	endif
 endif
 

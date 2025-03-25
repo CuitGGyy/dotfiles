@@ -3,7 +3,7 @@
 " autofn.vim - 自定义配置或自动化功能扩展
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/24 01:35:15
+" Last Modified: 2025/03/26 06:40:16
 "
 "===============================================================================
 
@@ -587,25 +587,84 @@ let g:netrw_browse_split = 4
 
 
 "-------------------------------------------------------------------------------
-" 依据时间段自动启用不同的色彩主题样式
+" 使 nvim 或 vim 支持 OSC52 控制序列码, 实现跨 ssh 复制文本
 "-------------------------------------------------------------------------------
-" 应尽早加载 colorscheme 使其他插件能正确配色
-"function! UpdateColorscheme()
-"	try
-"		let hour = str2nr(strftime('%H'))
-"		if hour > 8 && hour < 18
-"			colorscheme codedark
-"			"colorscheme molokai
-"		else
-"			colorscheme xcodedarkhc
-"			"colorscheme molokai
-"		endif
-"	catch
-"		colorscheme habamax
-"	endtry
-"endfunction
-"" 每次进入更新主题
-"autocmd VimEnter * call UpdateColorscheme()
+" 参考 https://www.sxrhhh.top/blog/2024/06/06/neovim-copy-anywhere/
+" 详情 :help clipboard
+
+" 返回''最后一次的默认寄存器内容, 用来作为`p`操作符的粘贴物
+" 返回包含寄存器内容和类型的列表 [内容行列表, 寄存器类型]
+function! PasteLast() abort
+	" 获取无名寄存器内容
+	let reg_content = getreg('')
+	" 获取寄存器类型
+	let reg_type = getregtype('')
+	let content_lines = split(reg_content, '\n')
+	return [content_lines, reg_type]
+endfunction
+
+if exists('$SSH_TTY') || exists('$SSH_CONNECTION')
+
+try
+
+lua <<EOF
+	local ok, osc52 = pcall(require, 'vim.ui.clipboard.osc52')
+	if ok then
+		-- To force Nvim to use the OSC 52 provider you can use the following
+		vim.g.clipboard = {
+			name = 'OSC 52',
+			copy = {
+				['+'] = osc52.copy('+'),
+				['*'] = osc52.copy('*'),
+			},
+			-- 官方配置案例, 但与操作系统剪贴板存在兼容性与安全性问题
+			--paste = {
+			--	['+'] = osc52.paste('+'),
+			--	['*'] = osc52.paste('*'),
+			--},
+			-- 终端模拟器兼容性相对好些
+			paste = {
+				['+'] = paste_last('+'),
+				['*'] = paste_last('*'),
+			},
+		}
+	end
+EOF
+
+catch /.*/
+
+	if !has('nvim')
+		" 类似 nvim 的`chansend`对应功能; 参考 nvim 的:help chansend
+		function! s:chansend(data)
+			if filewritable('/dev/fd/2')
+				" 写入 stderr 标准错误
+				call writefile([a:data], '/dev/fd/2', 'b')
+			else
+				execute("silent! !echo " . shellescape(a:data))
+				redraw!
+			endif
+		endfunction
+	endif
+
+	" 参考 https://taoshu.in/vim/vim-copy-over-ssh.html
+	" 还有 :help clipboard-osc52
+	function! OSC52Copy(text)
+		let b64 = system('base64', a:text)
+		let osc = "\e]52;c;" . trim(b64) . "\x07"
+		" 写入 stderr 标准错误
+		if has('nvim')
+			call chansend(v:stderr, osc)
+		else
+			call s:chansend(osc)
+		endif
+	endfunction
+
+	" 文本复制后自动发送
+	autocmd TextYankPost * call OSC52Copy(getreg(v:event.regname))
+
+endtry
+
+endif
 
 
 "-------------------------------------------------------------------------------
@@ -626,5 +685,27 @@ let g:netrw_browse_split = 4
 "        \ 'cache_enabled': 0
 "        \ }
 "endif
+
+
+"-------------------------------------------------------------------------------
+" 依据时间段自动启用不同的色彩主题样式
+"-------------------------------------------------------------------------------
+" 应尽早加载 colorscheme 使其他插件能正确配色
+"function! UpdateColorscheme()
+"	try
+"		let hour = str2nr(strftime('%H'))
+"		if hour > 8 && hour < 18
+"			colorscheme codedark
+"			"colorscheme molokai
+"		else
+"			colorscheme xcodedarkhc
+"			"colorscheme molokai
+"		endif
+"	catch
+"		colorscheme habamax
+"	endtry
+"endfunction
+"" 每次进入更新主题
+"autocmd VimEnter * call UpdateColorscheme()
 
 

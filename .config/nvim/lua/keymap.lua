@@ -6,7 +6,7 @@
 -- 依赖终端或系统的键码识别, 可结合键盘键位布局及键码识别情况予以修改
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/24 01:44:50
+-- Last Modified: 2025/03/26 05:32:55
 --
 --------------------------------------------------------------------------------
 
@@ -110,7 +110,7 @@ map('', '<leader>p', ':set invpaste<cr>', opt)
 autocmd('InsertLeave', {
 	pattern = '*',
 	callback = function()
-		vim.o.paste = false
+		vim.opt.paste = false
 	end,
 })
 
