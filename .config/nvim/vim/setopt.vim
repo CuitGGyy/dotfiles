@@ -3,7 +3,7 @@
 " setopt.vim - 全局基础选项配置设定
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/25 02:17:10
+" Last Modified: 2025/03/26 00:04:59
 "
 "==============================================================================
 
@@ -46,10 +46,10 @@ set undofile
 " 无论 vim/nvim 若启用 undo, 则统一在 $XDG_STATE_HOME/nvim/undo/
 if !has('nvim')
 	if $XDG_STATE_HOME != ''
-		set backupdir=$XDG_STATE_HOME/nvim/undo
+		set undodir=$XDG_STATE_HOME/nvim/undo
 		silent! call mkdir(expand($XDG_STATE_HOME.'/nvim/undo'), 'p', 0755)
 	else
-		set backupdir=~/.local/state/nvim/backup
+		set undodir=~/.local/state/nvim/undo
 		silent! call mkdir(expand('~/.local/state/nvim/undo'), 'p', 0755)
 	endif
 endif
