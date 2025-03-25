@@ -3,7 +3,7 @@
 -- setopt.lua - 全局基础选项配置设定
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/25 02:17:38
+-- Last Modified: 2025/03/26 00:04:30
 --
 --------------------------------------------------------------------------------
 
@@ -37,8 +37,8 @@ opt.backupext = '~'
 -- 无论 vim/nvim 若启用备份, 则统一在 $XDG_STATE_HOME/nvim/backup/
 --[[
 opt.backupdir = fn.stdpath('state') .. '/backup'
-if not fn.isdirectory(vim.o.backupdir) then
-	fn.mkdir(vim.o.backupdir, 'p', 0755)
+if not fn.isdirectory(vim.opt.backupdir) then
+	fn.mkdir(vim.opt.backupdir, 'p', 0755)
 end
 --]]
 
@@ -49,8 +49,8 @@ opt.undofile = true
 -- 无论 vim/nvim 若启用 undo, 则统一在 $XDG_STATE_HOME/nvim/undo/
 --[[
 opt.undodir = fn.stdpath('state') .. '/undo'
-if not fn.isdirectory(vim.o.undodir) then
-	fn.mkdir(vim.o.undodir, 'p', 0755)
+if not fn.isdirectory(vim.opt.undodir) then
+	fn.mkdir(vim.opt.undodir, 'p', 0755)
 end
 --]]
 
