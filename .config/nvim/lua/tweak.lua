@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/26 04:04:12
+-- Last Modified: 2025/03/27 04:05:51
 --
 --------------------------------------------------------------------------------
 
@@ -1487,7 +1487,7 @@ later(function()
 	-- Possible to immediately execute code which depends on the added plugin
 	require('nvim-treesitter.configs').setup({
 		-- A list of parser names, or 'all' (the listed parsers MUST always be installed)
-		ensure_installed = {},
+		ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline', },
 
 		-- Install parsers synchronously (only applied to `ensure_installed`)
 		sync_install = false,
@@ -1505,7 +1505,7 @@ later(function()
 		highlight = {
 			enable = true,
 
-	-- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+			-- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
 			-- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
 			-- the name of the parser)
 			-- list of language that will be disabled
@@ -1529,7 +1529,7 @@ later(function()
 		keymaps = {
 			init_selection = '<space>', -- set to `false` to disable one of the mappings
 			node_incremental = '<space>',
-			scope_incremental = '<space>',
+			scope_incremental = '<enter>',
 			node_decremental = '<backspace>',
 		},
 
@@ -1540,11 +1540,13 @@ later(function()
 		},
 	})
 
-	-- 开启代码折叠
-	--vim.wo.foldmethod = 'expr'
-	--vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-	-- 模式不折叠
-	--vim.wo.foldlevel = 99
+	-- 对比差异时关闭 treesitter 折叠表达式方法
+	if not vim.opt.diff then
+		-- 代码折叠方法
+		vim.opt.foldmethod = 'expr'
+		-- 代码折叠表达式
+		vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+	end
 
 	-- 始终使用 mini.comment 自定义注释`字符串`
 	-- always use buffer 'commentstring' even in case of present active tree-sitter parser.
