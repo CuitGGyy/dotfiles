@@ -3,7 +3,7 @@
 " autofn.vim - 自定义配置或自动化功能扩展
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/26 08:05:51
+" Last Modified: 2025/03/26 10:54:20
 "
 "===============================================================================
 
@@ -590,75 +590,9 @@ let g:netrw_browse_split = 4
 " 使 nvim 或 vim 支持 OSC52 控制序列码, 实现跨 ssh 复制文本
 "-------------------------------------------------------------------------------
 " 参考 https://www.sxrhhh.top/blog/2024/06/06/neovim-copy-anywhere/
-" 详情 :help clipboard
+" nvim 相关说明 :help clipboard-osc52
 if exists('$SSH_TTY') || exists('$SSH_CONNECTION')
-
-try
-
-lua <<EOF
-	local ok, osc52 = pcall(require, 'vim.ui.clipboard.osc52')
-	if ok then
-		-- 读取寄存器内容, 而非剪贴板的
-		local function paste(reg)
-			-- 返回""默认寄存器内容, 用来作为`p`操作符的粘贴物
-			return function()
-				return vim.split(fn.getreg('"'), '\n')
-			end
-		end
-		-- To force Nvim to use the OSC 52 provider you can use the following
-		vim.g.clipboard = {
-			name = 'OSC 52',
-			copy = {
-				['+'] = osc52.copy('+'),
-				['*'] = osc52.copy('*'),
-			},
-			-- 官方配置案例, 但与操作系统剪贴板存在兼容性与安全性问题
-			--paste = {
-			--	['+'] = osc52.paste('+'),
-			--	['*'] = osc52.paste('*'),
-			--},
-			-- 终端模拟器兼容性相对好些
-			paste = {
-				['+'] = paste('+'),
-				['*'] = paste('*'),
-			},
-		}
-	end
-EOF
-
-catch /.*/
-
-	if !has('nvim')
-		" 类似 nvim 的`chansend`对应功能; 参考 nvim 的:help chansend
-		function! s:chansend(data)
-			if filewritable('/dev/fd/2')
-				" 写入 stderr 标准错误
-				call writefile([a:data], '/dev/fd/2', 'b')
-			else
-				execute("silent! !echo " . shellescape(a:data))
-				redraw!
-			endif
-		endfunction
-	endif
-
-	" 参考 https://taoshu.in/vim/vim-copy-over-ssh.html
-	" 还有 :help clipboard-osc52
-	function! OSC52Copy(text)
-		let b64 = system('base64', a:text)
-		let osc = "\e]52;c;" . trim(b64) . "\x07"
-		" 写入 stderr 标准错误
-		if has('nvim')
-			call chansend(v:stderr, osc)
-		else
-			call s:chansend(osc)
-		endif
-	endfunction
-
-	" 文本复制后自动发送
-	autocmd TextYankPost * call OSC52Copy(getreg(v:event.regname))
-
-endtry
-
+" 使用插件 https://github.com/ojroques/vim-oscyank
 endif
 
 

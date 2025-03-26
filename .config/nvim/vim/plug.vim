@@ -5,7 +5,7 @@
 " 使用 tweak.vim 调整 vim 插件默认配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/26 02:52:24
+" Last Modified: 2025/03/26 10:54:06
 "
 "===============================================================================
 
@@ -121,7 +121,7 @@ if get(s:plugged, 'plug', 0) == 1
 	Plug 'preservim/nerdcommenter'
 
 	" 支持 ANSI OSC52 控制序列码
-	"Plug 'ojroques/vim-oscyank', { 'branch': 'main' }
+	Plug 'ojroques/vim-oscyank', { 'branch': 'main' }
 
 	"---- 高级扩展 ----
 
