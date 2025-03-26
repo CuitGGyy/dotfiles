@@ -3,7 +3,7 @@
 -- setopt.lua - 全局基础选项配置设定
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/26 04:26:06
+-- Last Modified: 2025/03/27 04:13:16
 --
 --------------------------------------------------------------------------------
 
@@ -410,9 +410,14 @@ if fn.has('folding') then
 	-- 启用代码折叠
 	opt.foldenable = true
 
-	-- 代码折叠默认使用缩进, 默认值'manual'
-	--opt.foldmethod = 'indent'
-	opt.foldmethod = 'syntax'
+	-- 若未加载treesitter, 则代码折叠采用缩进方式, 默认值'manual'
+	if package.loaded['nvim-treesitter.configs'] == nil then
+		opt.foldmethod = 'indent'
+	end
+	-- 对比差异时使用默认手动折叠方式
+	if opt.diff then
+		opt.foldmethod = 'manual'
+	end
 
 	-- 代码折叠左侧边栏对齐间距, 默认0关闭选项功能
 	-- vim不支持`auto`仅支持数值, 上限值12
@@ -420,8 +425,8 @@ if fn.has('folding') then
 
 	-- 打开所有代码折叠
 	opt.foldlevel = 99
-	-- 折叠起始层级
-	opt.foldlevelstart = 15
+	-- 折叠起始层级, 默认值-1
+	opt.foldlevelstart = -1
 
 	-- foldopen 默认值 'block,hor,mark,percent,quickfix,search,tag,undo'
 	-- 搜索时不展开代码折叠

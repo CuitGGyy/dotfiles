@@ -3,7 +3,7 @@
 " setopt.vim - 全局基础选项配置设定
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/26 04:25:54
+" Last Modified: 2025/03/27 04:12:05
 "
 "==============================================================================
 
@@ -427,9 +427,13 @@ if has('folding')
 	" 允许代码折叠
 	set foldenable
 
-	" 代码折叠默认使用缩进, 默认manual
-	"set foldmethod=indent
-	set foldmethod=syntax
+	if &diff
+		" 对比差异时使用默认手动折叠方式
+		set foldmethod=manual
+	else
+		" 代码折叠方法使用缩进方式, 默认manual
+		set foldmethod=indent
+	endif
 
 	" 代码折叠左侧边栏对齐间距, 默认0关闭选项功能
 	" vim不支持`auto`仅支持数值, 上限值12
@@ -437,8 +441,8 @@ if has('folding')
 
 	" 打开所有代码折叠
 	set foldlevel=99
-	" 折叠起始层级
-	set foldlevelstart=15
+	" 折叠起始层级, 默认值-1
+	set foldlevelstart=-1
 
 	" foldopen 默认值 'block,hor,mark,percent,quickfix,search,tag,undo'
 	" 搜索时不展开代码折叠
