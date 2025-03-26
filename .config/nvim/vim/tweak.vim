@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器及插件分组配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/26 01:05:58
+" Last Modified: 2025/03/26 11:03:59
 "
 "===============================================================================
 
@@ -643,39 +643,40 @@ if get(s:plugged, 'vim-oscyank', 0) == 1
 	let g:oscyank_trim       = 0  " trim surrounding whitespaces before copy
 	let g:oscyank_osc52      = "\x1b]52;c;%s\x07"  " the OSC52 format string to use
 
-	" automatically copy text that was yanked into the unnamed register (")
+	" Automatically copy text that was yanked into the unnamed register (")
 	" as well as + and " when the clipboard isn't working:
-	"if (!has('nvim') && !has('clipboard_working'))
-	"	" In the event that the clipboard isn't working, it's quite likely that
-	"	" the + and * registers will not be distinct from the unnamed register. In
-	"	" this case, a:event.regname will always be '' (empty string). However, it
-	"	" can be the case that `has('clipboard_working')` is false, yet `+` is
-	"	" still distinct, so we want to check them all.
-	"	let s:VimOSCYankPostRegisters = ['', '+', '*']
-	"	" copy text to clipboard on both (y)ank and (d)elete
-	"	let s:VimOSCYankOperators = ['y', 'd']
-	"	function! s:VimOSCYankPostCallback(event)
-	"		if index(s:VimOSCYankPostRegisters, a:event.regname) != -1
-	"					\ && index(s:VimOSCYankOperators, a:event.operator) != -1
-	"			call OSCYankRegister(a:event.regname)
-	"		endif
-	"	endfunction
-	"	augroup VimOSCYankPost
-	"		autocmd!
-	"		autocmd TextYankPost * call s:VimOSCYankPostCallback(v:event)
-	"	augroup END
-	"endif
+	if (!has('nvim') && !has('clipboard_working'))
+		" In the event that the clipboard isn't working, it's quite likely that
+		" the + and * registers will not be distinct from the unnamed register. In
+		" this case, a:event.regname will always be '' (empty string). However, it
+		" can be the case that `has('clipboard_working')` is false, yet `+` is
+		" still distinct, so we want to check them all.
+		let s:VimOSCYankPostRegisters = ['', '+', '*']
+		" copy text to clipboard on both (y)ank and (d)elete
+		let s:VimOSCYankOperators = ['y', 'd']
+		function! s:VimOSCYankPostCallback(event)
+			if index(s:VimOSCYankPostRegisters, a:event.regname) != -1
+						\ && index(s:VimOSCYankOperators, a:event.operator) != -1
+				call OSCYankRegister(a:event.regname)
+			endif
+		endfunction
+		augroup VimOSCYankPost
+			autocmd!
+			autocmd TextYankPost * call s:VimOSCYankPostCallback(v:event)
+		augroup END
+	endif
 
 	" In normal mode, <leader>c is an operator that will copy the given text to the clipboard.
-	"nnoremap <leader>c <Plug>OSCYankOperator
-	" In normal mode, <leader>cc will copy the current line.
-	"nnoremap <leader>cc <leader>c_
-	" In visual mode, <leader>c will copy the current selection.
-	"vnoremap <leader>c <Plug>OSCYankVisual
+	"nmap <leader>c <Plug>OSCYankOperator
+	nmap <leader>y <Plug>OSCYankOperator
 
-	nnoremap <f13> <Plug>OSCYankOperator
-	nnoremap <s-f13> <f13>_
-	vnoremap <f13> <Plug>OSCYankOperator
+	" In normal mode, <leader>cc will copy the current line.
+	"nmap <leader>cc <leader>c_
+	nmap <leader>yy <leader>y_
+
+	" In visual mode, <leader>c will copy the current selection.
+	"vmap <leader>c <Plug>OSCYankVisual
+	vmap <leader>y <Plug>OSCYankVisual
 
 endif
 
