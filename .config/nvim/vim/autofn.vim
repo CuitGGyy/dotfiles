@@ -3,7 +3,7 @@
 " autofn.vim - 自定义配置或自动化功能扩展
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/26 06:40:16
+" Last Modified: 2025/03/26 08:05:51
 "
 "===============================================================================
 
@@ -591,18 +591,6 @@ let g:netrw_browse_split = 4
 "-------------------------------------------------------------------------------
 " 参考 https://www.sxrhhh.top/blog/2024/06/06/neovim-copy-anywhere/
 " 详情 :help clipboard
-
-" 返回''最后一次的默认寄存器内容, 用来作为`p`操作符的粘贴物
-" 返回包含寄存器内容和类型的列表 [内容行列表, 寄存器类型]
-function! PasteLast() abort
-	" 获取无名寄存器内容
-	let reg_content = getreg('')
-	" 获取寄存器类型
-	let reg_type = getregtype('')
-	let content_lines = split(reg_content, '\n')
-	return [content_lines, reg_type]
-endfunction
-
 if exists('$SSH_TTY') || exists('$SSH_CONNECTION')
 
 try
@@ -610,6 +598,13 @@ try
 lua <<EOF
 	local ok, osc52 = pcall(require, 'vim.ui.clipboard.osc52')
 	if ok then
+		-- 读取寄存器内容, 而非剪贴板的
+		local function paste(reg)
+			-- 返回""默认寄存器内容, 用来作为`p`操作符的粘贴物
+			return function()
+				return vim.split(fn.getreg('"'), '\n')
+			end
+		end
 		-- To force Nvim to use the OSC 52 provider you can use the following
 		vim.g.clipboard = {
 			name = 'OSC 52',
@@ -624,8 +619,8 @@ lua <<EOF
 			--},
 			-- 终端模拟器兼容性相对好些
 			paste = {
-				['+'] = paste_last('+'),
-				['*'] = paste_last('*'),
+				['+'] = paste('+'),
+				['*'] = paste('*'),
 			},
 		}
 	end
