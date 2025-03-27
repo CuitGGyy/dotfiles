@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器及插件分组配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/26 11:03:59
+" Last Modified: 2025/03/27 17:34:39
 "
 "===============================================================================
 
@@ -84,13 +84,11 @@ try
 	let hour = str2nr(strftime('%H'))
 	if hour > 8 && hour < 18
 		colorscheme codedark
-		"colorscheme molokai
 	else
 		colorscheme xcodedarkhc
-		"colorscheme molokai
 	endif
 catch
-	colorscheme habamax
+	colorscheme molokai
 endtry
 
 
