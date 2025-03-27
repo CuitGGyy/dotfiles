@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/27 04:05:51
+-- Last Modified: 2025/03/27 17:51:16
 --
 --------------------------------------------------------------------------------
 
@@ -56,6 +56,68 @@ now(function()
 		on_highlights = function(highlights, colors) end,
 		-- When set to true, the theme will be cached for better performance
 		cache = true,
+	})
+
+end)
+
+--------------------------------------------------------------------------------
+-- navarasu/onedark.nvim
+--------------------------------------------------------------------------------
+now(function()
+
+	-- 暗系高对比色彩主题样式
+	add({ source = 'navarasu/onedark.nvim', })
+
+	require('onedark').setup({
+		---- Main options ----
+		-- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+		style = 'deep',
+		-- Show/hide background
+		transparent = false,
+		-- Change terminal color as per the selected theme style
+		term_colors = true,
+		-- Show the end-of-buffer tildes. By default they are hidden
+		ending_tildes = false,
+		-- reverse item kind highlights in cmp menu
+		cmp_itemkind_reverse = false,
+
+		---- toggle theme style ----
+		-- keybind to toggle theme style. Leave it nil to disable it,
+		-- or set it to a string, for example "<leader>ts"
+		toggle_style_key = nil,
+		-- List of styles to toggle between
+		toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'},
+
+		---- Change code style ----
+		-- Options are italic, bold, underline, none
+		-- You can configure multiple style with comma separated, For e.g., keywords = 'italic,bold'
+		code_style = {
+			comments = 'none',
+			keywords = 'none',
+			functions = 'none',
+			strings = 'none',
+			variables = 'none'
+		},
+
+		---- Lualine options ----
+		lualine = {
+			-- lualine center bar transparency
+			transparent = false,
+		},
+
+		---- Custom Highlights ----
+		colors = {}, -- Override default colors
+		highlights = {}, -- Override highlight groups
+
+		---- Plugins Config ----
+		diagnostics = {
+			-- darker colors for diagnostic
+			darker = true,
+			-- use undercurl instead of underline for diagnostics
+			undercurl = true,
+			-- use background color for virtual text
+			background = true,
+		},
 	})
 
 end)
@@ -186,19 +248,17 @@ end)
 -- 依据时间段自动启用不同的色彩主题样式
 --------------------------------------------------------------------------------
 -- 应尽早加载 colorscheme 使其他插件正确配色
-if package.loaded['tokyonight'] and package.loaded['vscode'] then
+if package.loaded['tokyonight'] and package.loaded['onedark'] then
 	local hour = tonumber(os.date('%H'))
 	-- 白天 9:00-18:00 高对比
 	if hour > 8 and hour < 18 then
-		cmd('colorscheme vscode')
-		--cmd('colorscheme carbonfox')
+		cmd('colorscheme onedark')
 	-- 晚上 18:00-9:00 低亮度
 	else
 		cmd('colorscheme tokyonight')
-		--cmd('colorscheme duskfox')
 	end
 else
-	cmd('colorscheme habamax')
+	cmd('colorscheme vscode')
 end
 
 
