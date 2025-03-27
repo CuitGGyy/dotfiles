@@ -5,7 +5,7 @@
 " 使用 tweak.vim 调整 vim 插件默认配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/26 10:54:06
+" Last Modified: 2025/03/27 17:51:15
 "
 "===============================================================================
 
@@ -164,6 +164,9 @@ if has('nvim') && get(s:plugged, 'deps', 0) == 1
 
 	" `东京之夜`色彩主题样式
 	Plug 'folke/tokyonight.nvim'
+
+	" 暗系高对比色彩主题样式
+	Plug 'navarasu/onedark.nvim'
 
 	" `暗夜之狐`色彩主题样式
 	"Plug 'EdenEast/nightfox.nvim'

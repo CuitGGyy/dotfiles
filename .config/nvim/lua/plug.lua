@@ -6,7 +6,7 @@
 -- 使用 plugin.vim 调整 vim 插件默认配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/26 02:50:54
+-- Last Modified: 2025/03/27 17:51:14
 --
 --------------------------------------------------------------------------------
 
@@ -145,6 +145,9 @@ if _G.plugged.pack_deps then
 	-- 复刻 vscode 的 tokyonight.nvim 色彩主题样式
 	Plug('folke/tokyonight.nvim')
 
+	-- 暗系高对比色彩主题样式
+	Plug('navarasu/onedark.nvim')
+
 	-- `暗夜之狐`色彩主题样式
 	--Plug('EdenEast/nightfox.nvim')
 
@@ -249,7 +252,7 @@ if _G.plugged.pack_plug then
 	Plug('tomasr/molokai')
 
 	-- 复刻 xcode 色彩主题样式
-	--Plug('arzg/vim-colors-xcode')
+	Plug('arzg/vim-colors-xcode')
 
 	-- 复刻 vscode 色彩主题样式
 	Plug('tomasiser/vim-code-dark')
