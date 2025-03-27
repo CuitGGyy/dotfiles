@@ -89,36 +89,12 @@ alias socks_proxy='export all_proxy=socks5://192.168.18.200:1080'
 alias unset_proxy='unset http_proxy; unset https_proxy; unset ALL_PROXY'
 
 # try to use neovim as default editor
-if [[ "$(uname -s)" == 'Darwin' ]]; then
-	if [[ "$(uname -m)" == 'x86_64' ]]; then
-		NVIM_HOME='/usr/local/opt/nvim-macos-x86_64'
-	elif [[ "$(uname -m)" == 'arm64' ]]; then
-		NVIM_HOME='/usr/local/opt/nvim-macos-arm64'
-	else
-		NVIM_HOME='/usr/local/opt/nvim-macos'
-	fi
-else
-	if [[ "$(uname -m)" == 'x86_64' ]]; then
-		NVIM_HOME='/opt/nvim-linux-x86_64'
-	elif [[ "$(uname -m)" == 'arm64' ]]; then
-		NVIM_HOME='/opt/nvim-linux-arm64'
-	else
-		NVIM_HOME='/opt/nvim-linux'
-	fi
-fi
 if [[ -x "$(command -v nvim)" ]]; then
 	alias vi=nvim
 	alias vim=nvim
 	alias vimdiff='nvim -d'
 	[[ "$(uname -s)" == 'Linux' ]] && export EDITOR=nvim
-elif [[ -d "$NVIM_HOME" ]] && [[ -x "$NVIM_HOME/bin/nvim" ]]; then
-	export PATH=$PATH:"${NVIM_HOME}/bin"
-	alias vi=nvim
-	alias vim=nvim
-	alias vimdiff='nvim -d'
-	[[ "$(uname -s)" == 'Linux' ]] && export EDITOR=nvim
 fi
-unset NVIM_HOME
 
 # python command line tab completetion and history file
 if [[ -x "$(command -v python)" ]] || [[ -x "$(command -v python3)" ]]; then
