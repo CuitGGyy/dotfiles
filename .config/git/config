@@ -2,13 +2,14 @@
 #	editor = vim
 	editor = nvim
 #	sshCommand = ssh -i \"~/.ssh/id_ed25519_git\" -o StrictHostKeyChecking=no
+#[user]
+#	name = CuitGGyy
+#	email = cuitggyy(at)gmail.com
 #[credential]
 #	helper = none
 #	helper = cache
 #	helper = "store --file ~/.cache/git-credentials.helper"
 #[url "https://gitclone.com/"]
-#    insteadof = https://github.com/
-#[url "https://kgithub.com/"]
 #    insteadof = https://github.com/
 #[url "https://"]
 #    insteadof = git://
@@ -16,9 +17,12 @@
 #    insteadof = https://
 #[http]
 #	sslverify = false
-#[init]
-#	defaultBranch = master
+[init]
+	defaultBranch = master
+#	defaultBranch = trunk
 #	defaultBranch = main
+#[safe]
+#    directory = /srv/data/repo
 #[filter "lfs"]
 #    clean = git-lfs clean -- %f
 #    smudge = git-lfs smudge -- %f
