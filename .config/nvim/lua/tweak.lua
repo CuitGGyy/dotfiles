@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/29 03:01:24
+-- Last Modified: 2025/03/29 05:24:17
 --
 --------------------------------------------------------------------------------
 
@@ -1199,7 +1199,7 @@ now(function()
 			buffer_previewer_maker = ignore_binary_maker,
 			preview = {
 				-- 预览限制文件尺寸
-				filesize_limit = 0.5, -- MB
+				filesize_limit = 0.256, -- MB
 			},
 
 			---- Default Mappings
@@ -1346,7 +1346,7 @@ now(function()
 	})
 
 	-- 判断项目 git 目录树
-	local function is_git_repo()
+	local function is_git_tree()
 		fn.system('git rev-parse --is-inside-work-tree')
 		return vim.v.shell_error == 0
 	end
@@ -1363,7 +1363,7 @@ now(function()
 	-- 不包括隐藏及忽略的查找
 	map('', '<leader>ff', function()
 		local opts = {}
-		if is_git_repo() then
+		if is_git_tree() then
 			opts.cwd = get_git_root()
 		end
 		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
@@ -1372,7 +1372,7 @@ now(function()
 	-- 包括隐藏及忽略的查找
 	map('', '<leader>fF', function()
 		local opts = { hidden = true, no_ignore = true, }
-		if is_git_repo() then
+		if is_git_tree() then
 			opts.cwd = get_git_root()
 		end
 		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
@@ -1381,7 +1381,7 @@ now(function()
 
 	map('', '<leader>fg', function()
 		local opts = {}
-		if is_git_repo() then
+		if is_git_tree() then
 			opts.cwd = get_git_root()
 		end
 		-- 若是git目录树则基于项目根路径过滤, 否则基于当前路径过滤
@@ -1392,7 +1392,7 @@ now(function()
 		vim.ui.input({ prompt = 'Search: ', default = default_word }, function(input)
 			if input and input ~= '' then
 				local opts = { search = input, }
-				if is_git_repo() then
+				if is_git_tree() then
 					opts.cwd = get_git_root()
 				end
 				-- 若是git目录树则基于项目根路径搜索, 否则基于当前路径搜索
@@ -1421,10 +1421,38 @@ now(function()
 	map('', '<leader>ft', builtin.treesitter, { desc = 'Lists Function names, variables, from Treesitter!' })
 
 	-- git pickers --
-	map('', '<leader>fC', builtin.git_commits, { desc = 'Lists git commits with diff preview, checkout action <cr>, reset mixed <C-r>m, reset soft <C-r>s and reset hard <C-r>h' })
-	map('', '<leader>fc', builtin.git_bcommits, { desc = 'Lists buffer git commits with diff preview and checks them out on <cr>' })
-	map('', '<leader>fs', builtin.git_status, { desc = 'Lists current changes per file with diff preview and add action. (Multi-selection still WIP)' })
-	map('', '<leader>fS', builtin.git_stash, { desc = 'Lists stash items in current repository with ability to apply them on <cr>' })
+	map('', '<leader>fC', function()
+		local opts = {}
+		if is_git_tree() then
+			builtin.git_commits(opts)
+		else
+			vim.notify('Not a git work tree', vim.log.levels.ERROR)
+		end
+	end, { desc = 'Lists git commits with diff preview, checkout action <cr>, reset mixed <C-r>m, reset soft <C-r>s and reset hard <C-r>h' })
+	map('', '<leader>fc', function()
+		local opts = {}
+		if is_git_tree() then
+			builtin.git_bcommits(opts)
+		else
+			vim.notify('Not a git work tree', vim.log.levels.ERROR)
+		end
+	end, { desc = 'Lists buffer git commits with diff preview and checks them out on <cr>' })
+	map('', '<leader>fs', function()
+		local opts = {}
+		if is_git_tree() then
+			builtin.git_status(opts)
+		else
+			vim.notify('Not a git work tree', vim.log.levels.ERROR)
+		end
+	end, { desc = 'Lists current changes per file with diff preview and add action. (Multi-selection still WIP)' })
+	map('', '<leader>fS', function()
+		local opts = {}
+		if is_git_tree() then
+			builtin.git_stash(opts)
+		else
+			vim.notify('Not a git work tree', vim.log.levels.ERROR)
+		end
+	end, { desc = 'Lists stash items in current repository with ability to apply them on <cr>' })
 
 end)
 
@@ -1465,8 +1493,8 @@ later(function()
 				local ret = true
 				local bufname = api.nvim_buf_get_name(bufnr)
 				local fsize = fn.getfsize(bufname)
-				if fsize > 100 * 1024 then
-					-- skip file size greater than 100k
+				if fsize > 256 * 1024 then
+					-- skip file size greater than 256k
 					ret = false
 				elseif bufname:match('^fugitive://') then
 					-- skip fugitive buffer
@@ -1697,6 +1725,7 @@ later(function()
 		---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
 		-- parser_install_dir = '/some/path/to/store/parsers', -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
 
+		-- 语法高亮
 		highlight = {
 			enable = true,
 
@@ -1707,7 +1736,7 @@ later(function()
 			--disable = { 'c', 'rust' },
 			-- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
 			disable = function(lang, buf)
-				local max_filesize = 100 * 1024 -- 100 KB
+				local max_filesize = 256 * 1024 -- 256 KB
 				local ok, stats = pcall(vim.loop.fs_stat, api.nvim_buf_get_name(buf))
 				if ok and stats and stats.size > max_filesize then
 					return true
@@ -1721,13 +1750,23 @@ later(function()
 			additional_vim_regex_highlighting = false,
 		},
 
-		keymaps = {
-			init_selection = '<space>', -- set to `false` to disable one of the mappings
-			node_incremental = '<space>',
-			scope_incremental = '<enter>',
-			node_decremental = '<backspace>',
+		-- 增量选择
+		incremental_selection = {
+			enable = true,
+			keymaps = {
+				init_selection = '<space>', -- set to `false` to disable one of the mappings
+				node_incremental = '<space>',
+				scope_incremental = '<enter>',
+				node_decremental = '<backspace>',
+			},
 		},
 
+		-- 文本对象
+		textobjects = {
+			enable = false,
+		},
+
+		-- 自动缩进
 		-- Indentation based on treesitter for the = operator.
 		-- NOTE: This is an experimental feature.
 		indent = {
@@ -1906,7 +1945,7 @@ later(function()
 			keymaps = {
 				---@since 1.0.0
 				-- Keymap to expand a package
-				toggle_package_expand = '<CR>',
+				toggle_package_expand = '<cr>',
 				---@since 1.0.0
 				-- Keymap to install the package under the current cursor position
 				install_package = 'i',

@@ -6,7 +6,7 @@
 -- 使用 plugin.vim 调整 vim 插件默认配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/27 17:51:14
+-- Last Modified: 2025/03/29 06:45:10
 --
 --------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@
 --------------------------------------------------------------------------------
 -- 变量重命名与函数预定义
 --------------------------------------------------------------------------------
-local vim, G = vim, vim.g
+local vim = vim
 local api, call = vim.api, vim.call
 local cmd, fn = vim.cmd, vim.fn
 local opt, fs = vim.opt, vim.fs
@@ -139,13 +139,19 @@ if _G.plugged.pack_deps then
 	-- `g:plug_home`插件存储加载路径默认在`g:pack_plug`目录
 	call('plug#begin', pack_deps)
 
+	-- 添加 vim-plug 自己
+	Plug('junegunn/vim-plug')
+
 	-- 实用的独立模块插件库
 	Plug('echasnovski/mini.nvim')
 
 	-- 复刻 vscode 的 tokyonight.nvim 色彩主题样式
 	Plug('folke/tokyonight.nvim')
 
-	-- 暗系高对比色彩主题样式
+	-- Catppuccin 系列色彩主题样式
+	--Plug('catppuccin/nvim', { ['as'] = 'catppuccin' })
+
+	-- 复刻 atom 色彩主题样式
 	Plug('navarasu/onedark.nvim')
 
 	-- `暗夜之狐`色彩主题样式
@@ -246,16 +252,25 @@ if _G.plugged.pack_plug then
 	-- `g:plug_home`插件存储加载路径默认在`g:pack_plug`目录
 	call('plug#begin', pack_plug)
 
+	-- 添加 vim-plug 自己
+	Plug('junegunn/vim-plug')
+
 	---- 基础功能 ----
 
-	-- 复刻 monokai 色彩主题样式
-	Plug('tomasr/molokai')
+	-- Catppuccin 系列色彩主题样式
+	Plug('catppuccin/vim', { ['as'] = 'catppuccin' })
 
-	-- 复刻 xcode 色彩主题样式
-	Plug('arzg/vim-colors-xcode')
+	-- 复刻 atom 色彩主题样式
+	Plug 'joshdick/onedark.vim'
 
 	-- 复刻 vscode 色彩主题样式
 	Plug('tomasiser/vim-code-dark')
+
+	-- 复刻 xcode 色彩主题样式
+	--Plug('arzg/vim-colors-xcode')
+
+	-- 复刻 textmate 色彩主题样式
+	--Plug('tomasr/molokai')
 
 	-- 轻量级状态栏
 	Plug('itchyny/lightline.vim')
@@ -279,10 +294,10 @@ if _G.plugged.pack_plug then
 	Plug('kshenoy/vim-signature')
 
 	-- 可视区域搜索匹配方式的光标快速跳转
-	--Plug('easymotion/vim-easymotion')
+	Plug('easymotion/vim-easymotion')
 
 	-- 简易版可视区域搜索匹配方式的光标快速跳转
-	Plug('justinmk/vim-sneak')
+	--Plug('justinmk/vim-sneak')
 
 	-- 多光标同时编辑
 	Plug('mg979/vim-visual-multi')

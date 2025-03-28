@@ -110,7 +110,7 @@ WORDCHARS=${WORDCHARS//[\/]}
 zstyle ':zim' disable-version-check yes
 
 # zim completion dump file cache path
-zstyle ':zim:completion' dumpfile ${XDG_CACHE_HOME:-"$HOME/.cache/temp"}/.zcompdump
+zstyle ':zim:completion' dumpfile ${XDG_CACHE_HOME:-"$HOME/.cache"}/.zcompdump
 # zim completion cache directory path
 #zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME:-"$HOME/.cache"}/zcompcache
 
