@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器及插件分组配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/27 17:34:39
+" Last Modified: 2025/03/29 06:32:58
 "
 "===============================================================================
 
@@ -22,14 +22,20 @@ for key in keys(g:plugs) | let s:plugged[key] = 1 | endfor
 
 
 "-------------------------------------------------------------------------------
-" tomasr/molokai
+" catppuccin/vim
 "-------------------------------------------------------------------------------
-if get(s:plugged, 'molokai', 0) == 1
-	" If you prefer the scheme to match the original monokai background color
-	let g:molokai_original = 0
+if get(s:plugged, 'catppuccin', 0) == 1
+	"nothing except g:lightline.colorscheme
+endif
 
-	" attempts terminals to bring the 256 color
-	let g:rehash256 = 1
+
+"-------------------------------------------------------------------------------
+" joshdick/onedark.vim
+"-------------------------------------------------------------------------------
+if get(s:plugged, 'onedark.vim', 0) == 1
+	"let g:onedark_hide_endofbuffer=1
+	"let g:onedark_termcolors=256
+	"let g:onedark_terminal_italics=1
 endif
 
 
@@ -46,12 +52,6 @@ if get(s:plugged, 'vim-code-dark', 0) == 1
 
 	" Make the background transparent
 	"let g:codedark_transparent = 1
-	" 修正 nvim 和 vim 之间的背景透明差异
-	"if has('nvim') == 0
-	"    let g:codedark_transparent = 1
-	"else
-	"    let g:codedark_transparent = 0
-	"endif
 
 	" If you have vim-airline, you can also enable the provided theme
 	"let g:airline_theme = 'codedark'
@@ -62,9 +62,6 @@ endif
 " arzg/vim-colors-xcode
 "-------------------------------------------------------------------------------
 if get(s:plugged, 'vim-colors-xcode', 0) == 1
-	" Enable terminal 24-bit True Colour
-	set termguicolors
-
 	" If you would like to have italic comments
 	" 需要字库字体支持
 	"augroup vim-colors-xcode
@@ -72,24 +69,19 @@ if get(s:plugged, 'vim-colors-xcode', 0) == 1
 	"    autocmd vim-colors-xcode ColorScheme * highlight Comment cterm=italic gui=italic
 	"    autocmd vim-colors-xcode ColorScheme * highlight SpecialComment cterm=italic gui=italic
 	"augroup END
-
 endif
 
 
 "-------------------------------------------------------------------------------
-" 依据时间段自动启用不同的色彩主题样式
+" tomasr/molokai
 "-------------------------------------------------------------------------------
-" 应尽早加载 colorscheme 使其他插件正确配色
-try
-	let hour = str2nr(strftime('%H'))
-	if hour > 8 && hour < 18
-		colorscheme codedark
-	else
-		colorscheme xcodedarkhc
-	endif
-catch
-	colorscheme molokai
-endtry
+if get(s:plugged, 'molokai', 0) == 1
+	" If you prefer the scheme to match the original monokai background color
+	let g:molokai_original = 0
+
+	" attempts terminals to bring the 256 color
+	let g:rehash256 = 1
+endif
 
 
 "-------------------------------------------------------------------------------
@@ -137,15 +129,26 @@ if get(s:plugged, 'lightline.vim', 0) == 1
 	let g:lightline.tab = {
 				\ 'active': [ 'tabnum', 'filename', 'modified', ],
 				\ }
-
-	" 调整 nvim 与 vim 之间的配色差异
-	if has('nvim')
-		let g:lightline.colorscheme = 'deus'
-		"let g:lightline.colorscheme = 'one'
-	else
-		let g:lightline.colorscheme = 'codedark'
-	endif
 endif
+
+
+"-------------------------------------------------------------------------------
+" 依据时间段自动启用不同的色彩主题样式
+"-------------------------------------------------------------------------------
+" 应尽早加载 colorscheme 使其他插件正确配色
+try
+	let hour = str2nr(strftime('%H'))
+	if hour > 8 && hour < 18
+		colorscheme onedark
+		let g:lightline.colorscheme = 'onedark'
+	else
+		colorscheme catppuccin_mocha
+		let g:lightline.colorscheme = 'catppuccin_mocha'
+	endif
+catch
+	colorscheme codedark
+	let g:lightline.colorscheme = 'codedark'
+endtry
 
 
 "-------------------------------------------------------------------------------
@@ -848,10 +851,10 @@ endif
 if get(s:plugged, 'vim-dict', 0) == 1
 
 	" Add additional dict folders
-	let g:vim_dict_dict = [
-				\ '~/.vim/dict',
-				\ '~/.config/nvim/dict',
-				\ ]
+	"let g:vim_dict_dict = [
+	"			\ '~/.vim/dict',
+	"			\ '~/.config/nvim/dict',
+	"			\ ]
 	" File type override
 	"let g:vim_dict_config = {
 	"            \ 'html':'html,javascript,css',

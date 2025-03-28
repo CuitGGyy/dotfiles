@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/29 04:48:32
+-- Last Modified: 2025/03/29 05:24:17
 --
 --------------------------------------------------------------------------------
 
@@ -1763,7 +1763,7 @@ later(function()
 
 		-- 文本对象
 		textobjects = {
-			enable = true,
+			enable = false,
 		},
 
 		-- 自动缩进

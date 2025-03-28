@@ -5,7 +5,7 @@
 " 使用 tweak.vim 调整 vim 插件默认配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/27 17:51:15
+" Last Modified: 2025/03/29 06:26:35
 "
 "===============================================================================
 
@@ -78,14 +78,20 @@ if get(s:plugged, 'plug', 0) == 1
 
 	"---- 基础功能 ----
 
-	" 复刻 monokai 色彩主题样式
-	Plug 'tomasr/molokai'
+	" Catppuccin 系列色彩主题样式
+	Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+
+	" 复刻 atom 色彩主题样式
+	Plug 'joshdick/onedark.vim'
 
 	" 复刻 vscode 色彩主题样式
 	Plug 'tomasiser/vim-code-dark'
 
 	" 复刻 xcode 色彩主题样式
-	Plug 'arzg/vim-colors-xcode'
+	"Plug 'arzg/vim-colors-xcode'
+
+	" 复刻 textmate 色彩主题样式
+	"Plug 'tomasr/molokai'
 
 	" 轻量级状态栏
 	Plug 'itchyny/lightline.vim'
@@ -165,7 +171,10 @@ if has('nvim') && get(s:plugged, 'deps', 0) == 1
 	" `东京之夜`色彩主题样式
 	Plug 'folke/tokyonight.nvim'
 
-	" 暗系高对比色彩主题样式
+	" Catppuccin 系列色彩主题样式
+	"Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+
+	" 复刻 atom 色彩主题样式
 	Plug 'navarasu/onedark.nvim'
 
 	" `暗夜之狐`色彩主题样式
