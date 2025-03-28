@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/27 17:51:16
+-- Last Modified: 2025/03/29 03:01:24
 --
 --------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ now(function()
 	-- 插件选项自定义配置
 	require('tokyonight').setup({
 		style = 'night',
-		--transparent = true,
+		transparent = false,
 		styles = {
 			-- Style to be applied to different syntax groups
 			-- Value is any valid attr-list value for `:help nvim_set_hl`
@@ -60,14 +60,98 @@ now(function()
 
 end)
 
+
+--------------------------------------------------------------------------------
+-- catppuccin/nvim
+--------------------------------------------------------------------------------
+--[[
+now(function()
+
+	-- Catppuccin 系列色彩主题样式
+	add({
+		source = 'catppuccin/nvim',
+		name = 'catppuccin',
+	})
+
+	-- 插件选项自定义配置
+	require('catppuccin').setup({
+		-- latte, frappe, macchiato, mocha
+		flavour = 'auto',
+		-- :h background
+		background = {
+			light = 'latte',
+			dark = 'mocha',
+		},
+		-- disables setting the background color.
+		transparent_background = false,
+		-- shows the '~' characters after the end of buffers
+		show_end_of_buffer = false,
+		-- sets terminal colors (e.g. `g:terminal_color_0`)
+		term_colors = false,
+		dim_inactive = {
+			-- dims the background color of inactive window
+			enabled = false,
+			shade = 'dark',
+			-- percentage of the shade to apply to the inactive window
+			percentage = 0.15,
+		},
+		-- Force no italic
+		no_italic = false,
+		-- Force no bold
+		no_bold = false,
+		-- Force no underline
+		no_underline = false,
+		-- Handles the styles of general hi groups (see `:h highlight-args`):
+		styles = {
+			-- Change the style of comments
+			comments = { 'italic' },
+			conditionals = { 'italic' },
+			loops = {},
+			functions = {},
+			keywords = {},
+			strings = {},
+			variables = {},
+			numbers = {},
+			booleans = {},
+			properties = {},
+			types = {},
+			operators = {},
+			-- Uncomment to turn off hard-coded styles
+			-- miscs = {},
+		},
+		color_overrides = {},
+		custom_highlights = {},
+		default_integrations = true,
+		integrations = {
+			cmp = true,
+			gitsigns = true,
+			nvimtree = true,
+			treesitter = true,
+			notify = false,
+			mini = {
+				enabled = true,
+				indentscope_color = '',
+			},
+			-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+		},
+	})
+
+	-- setup must be called before loading
+	--vim.cmd.colorscheme "catppuccin"
+
+end)
+--]]
+
+
 --------------------------------------------------------------------------------
 -- navarasu/onedark.nvim
 --------------------------------------------------------------------------------
 now(function()
 
-	-- 暗系高对比色彩主题样式
+	-- 复刻 atom 色彩主题样式
 	add({ source = 'navarasu/onedark.nvim', })
 
+	-- 插件选项自定义配置
 	require('onedark').setup({
 		---- Main options ----
 		-- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
@@ -127,7 +211,7 @@ end)
 -- EdenEast/nightfox.nvim
 --------------------------------------------------------------------------------
 --[[
-later(function()
+now(function()
 
 	-- `暗夜之狐`色彩主题样式
 	add({ source = 'EdenEast/nightfox.nvim', })
@@ -1111,9 +1195,11 @@ now(function()
 				'--smart-case',
 				'--trim', -- add this value
 			},
+			-- 忽略二进制文件
 			buffer_previewer_maker = ignore_binary_maker,
 			preview = {
-				filesize_limit = 0.1, -- MB
+				-- 预览限制文件尺寸
+				filesize_limit = 0.5, -- MB
 			},
 
 			---- Default Mappings
@@ -1150,7 +1236,7 @@ now(function()
 			-- 去除对应功能, 释放键位映射, 减少按键冲突
 			mappings = {
 				i = {
-					-- 默认按键重新映射功能
+					-- 默认按键重新映射功能, `false`表示停用功能解除映射释放键位
 					['<c-n>'] = false,
 					['<c-p>'] = false,
 
@@ -1187,6 +1273,7 @@ now(function()
 					['<m-pagedown>'] = actions.preview_scrolling_down,
 
 					-- 添加其他按键映射
+					['<esc>'] = actions.close,
 					['<m-p>'] = action_layout.toggle_preview,
 					-- Mapping <C-s>/<C-a> to cycle previewer for git commits to show full message
 					--['c-n'] = actions.cycle_history_next,
@@ -1248,48 +1335,96 @@ now(function()
 				--find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix' },
 				-- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
 				--find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
-				hidden = true,
+				--hidden = true,
+				--no_ignore = true,
+				--no_ignore_parent = true,
+				--follow = true,
 				-- `dropdown`,`cursor`,`ivy`
 				theme = nil,
 			},
 		},
 	})
 
-	-- 按键映射绑定
+	-- 判断项目 git 目录树
+	local function is_git_repo()
+		fn.system('git rev-parse --is-inside-work-tree')
+		return vim.v.shell_error == 0
+	end
+	-- 获取项目 git 目录树根路径
+	local function get_git_root()
+		local dot_git_path = fn.finddir('.git', '.;')
+		return fn.fnamemodify(dot_git_path, ':h')
+	end
+
+	---- 按键映射绑定 ----
 	local builtin = require('telescope.builtin')
-	-- file pickers
-	map('', '<leader>ff', builtin.find_files, { desc = 'Lists files in your current working directory, respects .gitignore' })
-	map('', '<leader>fg', builtin.live_grep, { desc = 'Search for a string in your current working directory and get results live as you type, respects .gitignore. (Requires ripgrep)' })
+
+	-- file pickers --
+	-- 不包括隐藏及忽略的查找
+	map('', '<leader>ff', function()
+		local opts = {}
+		if is_git_repo() then
+			opts.cwd = get_git_root()
+		end
+		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
+		builtin.find_files(opts)
+	end, { desc = 'Lists files in your current working directory, respects .gitignore' })
+	-- 包括隐藏及忽略的查找
+	map('', '<leader>fF', function()
+		local opts = { hidden = true, no_ignore = true, }
+		if is_git_repo() then
+			opts.cwd = get_git_root()
+		end
+		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
+		builtin.find_files(opts)
+	end, { desc = 'Lists files in your current working directory, respects .gitignore' })
+
+	map('', '<leader>fg', function()
+		local opts = {}
+		if is_git_repo() then
+			opts.cwd = get_git_root()
+		end
+		-- 若是git目录树则基于项目根路径过滤, 否则基于当前路径过滤
+		builtin.live_grep(opts)
+	end, { desc = 'Search for a string in your current working directory and get results live as you type, respects .gitignore. (Requires ripgrep)' })
 	map('', '<leader>fG', function()
 		local default_word = fn.expand('<cword>')
 		vim.ui.input({ prompt = 'Search: ', default = default_word }, function(input)
 			if input and input ~= '' then
-				builtin.grep_string({ search = input })
+				local opts = { search = input, }
+				if is_git_repo() then
+					opts.cwd = get_git_root()
+				end
+				-- 若是git目录树则基于项目根路径搜索, 否则基于当前路径搜索
+				builtin.grep_string(opts)
 			end
 		end)
 	end, { desc = 'Searches for the string under your cursor or selection in your current working directory' })
 
-	-- vim pickers
+	-- vim pickers --
 	map('', '<leader>fb', builtin.current_buffer_fuzzy_find, { desc = 'Live fuzzy search inside of the currently open buffer' })
 	map('', '<leader>fH', builtin.help_tags, { desc = 'Lists available help tags and opens a new window with the relevant help info on <cr>' })
 	map('', '<leader>fm', builtin.marks, { desc = 'Lists vim marks and their value' })
-	map('', '<leader>fM', builtin.marks, { desc = 'Lists manpage entries, opens them in a help window on <cr>' })
+	map('', '<leader>fM', builtin.man_pages, { desc = 'Lists manpage entries, opens them in a help window on <cr>' })
 	map('', '<leader>fq', builtin.quickfix, { desc = 'Lists items in the quickfix list' })
 	map('', '<leader>fQ', builtin.quickfixhistory, { desc = 'Lists all quickfix lists in your history and open them with builtin.quickfix or quickfix window' })
 	map('', '<leader>fl', builtin.loclist, { desc = 'Lists items from the current window location list' })
 	map('', '<leader>fj', builtin.jumplist, { desc = 'Lists Jump List entries' })
 
-	-- lsp pickers
+	-- lsp pickers --
 	map('', '<leader>fd', function()
 		builtin.diagnostics({ bufnr = 0 })
 	end, { desc = 'Lists Diagnostics for current buffer.' })
 	map('', '<leader>fD', builtin.diagnostics, { desc = 'Lists Diagnostics for all open buffers.' })
 
-	--Git pickers
-	--map('', '<leader>gs', builtin.diagnostics, { desc = 'Lists current changes per file with diff preview and add action. (Multi-selection still WIP)' })
-
-	-- treesitter picker
+	-- treesitter picker --
 	map('', '<leader>ft', builtin.treesitter, { desc = 'Lists Function names, variables, from Treesitter!' })
+
+	-- git pickers --
+	map('', '<leader>fC', builtin.git_commits, { desc = 'Lists git commits with diff preview, checkout action <cr>, reset mixed <C-r>m, reset soft <C-r>s and reset hard <C-r>h' })
+	map('', '<leader>fc', builtin.git_bcommits, { desc = 'Lists buffer git commits with diff preview and checks them out on <cr>' })
+	map('', '<leader>fs', builtin.git_status, { desc = 'Lists current changes per file with diff preview and add action. (Multi-selection still WIP)' })
+	map('', '<leader>fS', builtin.git_stash, { desc = 'Lists stash items in current repository with ability to apply them on <cr>' })
 
 end)
 
@@ -1615,6 +1750,10 @@ later(function()
 	--		custom_commentstring = function() return vim.bo.commentstring end,
 	--	},
 	--})
+
+	-- the .h/.hpp filetype will use the c/cpp parser and queries.
+	--vim.treesitter.language.register('c', '.h')
+	--vim.treesitter.language.register('cpp', '.hpp')
 
 	---- 多语言代码混合编程需要 ----
 
