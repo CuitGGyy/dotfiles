@@ -3,7 +3,7 @@
 -- autofn.lua - 自定义配置或自动化功能扩展
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/26 08:02:25
+-- Last Modified: 2025/03/29 04:50:26
 --
 --------------------------------------------------------------------------------
 
@@ -380,8 +380,8 @@ local function neat_tab_line()
 	s = s .. '%#TabLineFill#%T'
 	-- 右对齐关闭按钮
 	if fn.tabpagenr('$') > 1 then
-		--s = s .. '%=%#TabLine#%999XXclose'
-		s = s .. '%=%#TabLine#%999XX '
+		--s = s .. '%=%#TabLine#%999XX '
+		s = s .. '%=%#TabLine#%999X✖ '
 	end
 	return s
 end
