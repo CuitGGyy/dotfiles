@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/29 05:24:17
+-- Last Modified: 2025/03/30 04:08:43
 --
 --------------------------------------------------------------------------------
 
@@ -1335,10 +1335,6 @@ now(function()
 				--find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix' },
 				-- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
 				--find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
-				--hidden = true,
-				--no_ignore = true,
-				--no_ignore_parent = true,
-				--follow = true,
 				-- `dropdown`,`cursor`,`ivy`
 				theme = nil,
 			},
@@ -1378,7 +1374,7 @@ now(function()
 		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
 		builtin.find_files(opts)
 	end, { desc = 'Lists files in your current working directory, respects .gitignore' })
-
+	-- 不包括隐藏及忽略的过滤
 	map('', '<leader>fg', function()
 		local opts = {}
 		if is_git_tree() then
@@ -1387,11 +1383,12 @@ now(function()
 		-- 若是git目录树则基于项目根路径过滤, 否则基于当前路径过滤
 		builtin.live_grep(opts)
 	end, { desc = 'Search for a string in your current working directory and get results live as you type, respects .gitignore. (Requires ripgrep)' })
+	-- 包括隐藏及忽略的过滤
 	map('', '<leader>fG', function()
 		local default_word = fn.expand('<cword>')
 		vim.ui.input({ prompt = 'Search: ', default = default_word }, function(input)
 			if input and input ~= '' then
-				local opts = { search = input, }
+				local opts = { search = input, additional_args = { '--hidden', '--no-ignore', }, }
 				if is_git_tree() then
 					opts.cwd = get_git_root()
 				end
