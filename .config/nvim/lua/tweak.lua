@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/30 04:08:43
+-- Last Modified: 2025/03/31 05:02:27
 --
 --------------------------------------------------------------------------------
 
@@ -514,8 +514,9 @@ end)
 -- akinsho/bufferline.nvim
 --------------------------------------------------------------------------------
 --[[
-later(function()
+now(function()
 
+	-- 功能多样的标签页栏
 	add({
 		source = 'akinsho/bufferline.nvim',
 		depends = {
@@ -524,7 +525,67 @@ later(function()
 		},
 	})
 
-	require('bufferline').setup({})
+	-- 插件选项自定义配置
+	bufferline = require('bufferline')
+	bufferline.setup({
+		options = {
+			mode = 'buffers',
+			themable = true, -- whether or not bufferline highlights can be overridden externally
+			style_preset = {
+				--bufferline.style_preset.minimal,
+				bufferline.style_preset.no_italic,
+			},
+			numbers = function(opts)
+				--return string.format('%s/%s', opts.raise(opts.id), opts.lower(opts.ordinal))
+				return string.format('%s·%s', opts.ordinal, opts.raise(opts.id))
+			end,
+			buffer_close_icon = '',
+			modified_icon = '●',
+			close_icon = '',
+			close_command = 'bdelete! %d',
+			left_mouse_command = 'buffer %d',
+			right_mouse_command = 'bdelete! %d',
+			middle_mouse_command = nil,
+			-- U+2590 ▐ Right half block, this character is right aligned so the
+			-- background highlight doesn't appear in the middle
+			-- alternatives:  right aligned => ▕ ▐ ,  left aligned => ▍
+			indicator = { icon = '▎', style = 'icon' },
+			left_trunc_marker = '',
+			right_trunc_marker = '',
+			separator_style = 'thin',
+			name_formatter = nil,
+			truncate_names = true,
+			tab_size = 15,
+			max_name_length = 15,
+			color_icons = true,
+			show_buffer_icons = true,
+			show_buffer_close_icons = true,
+			get_element_icon = nil,
+			show_close_icon = true,
+			show_tab_indicators = true,
+			show_duplicate_prefix = true,
+			duplicates_across_groups = true,
+			enforce_regular_tabs = false,
+			always_show_bufferline = true,
+			auto_toggle_bufferline = true,
+			persist_buffer_sort = true,
+			move_wraps_at_ends = false,
+			max_prefix_length = 12,
+			-- 'insert_after_current' | 'insert_at_end' | 'id' | 'extension' | 'relative_directory' | 'directory'
+			sort_by = 'insert_after_current',
+			diagnostics = false,
+			diagnostics_indicator = nil,
+			diagnostics_update_in_insert = true,
+			diagnostics_update_on_event = true,
+			offsets = {},
+			groups = { items = {}, options = { toggle_hidden_on_enter = true } },
+			hover = { enabled = false, reveal = {}, delay = 200 },
+			debug = { logging = false },
+			pick = {
+				alphabet = 'abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ1234567890',
+			},
+		}
+	})
 
 end)
 --]]
@@ -1356,7 +1417,7 @@ now(function()
 	local builtin = require('telescope.builtin')
 
 	-- file pickers --
-	-- 不包括隐藏及忽略的查找
+	-- 基于git工作树根路径, 但不包括隐藏及忽略的查找
 	map('', '<leader>ff', function()
 		local opts = {}
 		if is_git_tree() then
@@ -1365,33 +1426,33 @@ now(function()
 		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
 		builtin.find_files(opts)
 	end, { desc = 'Lists files in your current working directory, respects .gitignore' })
-	-- 包括隐藏及忽略的查找
+	-- 基于文件当前路径, 且包括隐藏及忽略的查找
 	map('', '<leader>fF', function()
 		local opts = { hidden = true, no_ignore = true, }
-		if is_git_tree() then
-			opts.cwd = get_git_root()
-		end
-		-- 若是git目录树则基于项目根路径查找, 否则基于当前路径查找
+		--if is_git_tree() then
+		--	opts.cwd = get_git_root()
+		--end
+		-- 若是git工作树则基于项目根路径查找, 否则基于当前路径查找
 		builtin.find_files(opts)
 	end, { desc = 'Lists files in your current working directory, respects .gitignore' })
-	-- 不包括隐藏及忽略的过滤
+	-- 基于git工作树根路径, 但不包括隐藏及忽略的过滤
 	map('', '<leader>fg', function()
 		local opts = {}
 		if is_git_tree() then
 			opts.cwd = get_git_root()
 		end
-		-- 若是git目录树则基于项目根路径过滤, 否则基于当前路径过滤
+		-- 若是git工作树则基于项目根路径过滤, 否则基于当前路径过滤
 		builtin.live_grep(opts)
 	end, { desc = 'Search for a string in your current working directory and get results live as you type, respects .gitignore. (Requires ripgrep)' })
-	-- 包括隐藏及忽略的过滤
+	-- 基于当前文件路径, 且包括隐藏及忽略的过滤
 	map('', '<leader>fG', function()
 		local default_word = fn.expand('<cword>')
 		vim.ui.input({ prompt = 'Search: ', default = default_word }, function(input)
 			if input and input ~= '' then
 				local opts = { search = input, additional_args = { '--hidden', '--no-ignore', }, }
-				if is_git_tree() then
-					opts.cwd = get_git_root()
-				end
+				--if is_git_tree() then
+				--	opts.cwd = get_git_root()
+				--end
 				-- 若是git目录树则基于项目根路径搜索, 否则基于当前路径搜索
 				builtin.grep_string(opts)
 			end
