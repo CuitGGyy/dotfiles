@@ -3,7 +3,7 @@
 -- autofn.lua - 自定义配置或自动化功能扩展
 --
 -- Maintainer: cuitggyy (at) gmail.com
--- Last Modified: 2025/03/29 04:50:26
+-- Last Modified: 2025/03/31 13:57:38
 --
 --------------------------------------------------------------------------------
 
@@ -211,6 +211,7 @@ end
 -- 0: 不显示标签编号, 仅显示标签名称
 -- 1: 显示标签编号和标签名称
 local tablabel_number_style = true
+local tablabel_number_separator = ':'
 
 -- 当显示标签编号时, 标签编号左右两侧修饰符
 local tablabel_padding_left = ''
@@ -278,12 +279,16 @@ local function neat_tab_label(num)
 
 	if symbol ~= '' and tablabel_number_style then
 		label = table.concat({
-			tablabel_padding_left, num, tablabel_padding_right,
+			tablabel_padding_left,
+			num, tablabel_number_separator, bufnr,
+			tablabel_padding_right,
 			' ', fname, ' ', symbol,
 		}, '')
 	elseif symbol == '' and tablabel_number_style then
 		label = table.concat({
-			tablabel_padding_left, num, tablabel_padding_right,
+			tablabel_padding_left,
+			num, tablabel_number_separator, bufnr,
+			tablabel_padding_right,
 			' ', fname,
 		}, '')
 	else
@@ -318,12 +323,16 @@ local function neat_gui_tab_label()
 
 	if symbol ~= '' and tablabel_number_style then
 		label = table.concat({
-			tablabel_padding_left, num, tablabel_padding_right,
+			tablabel_padding_left,
+			num, tablabel_number_separator, bufnr,
+			tablabel_padding_right,
 			' ', fname, ' ', symbol,
 		}, '')
 	elseif symbol == '' and tablabel_number_style then
 		label = table.concat({
-			tablabel_padding_left, num, tablabel_padding_right,
+			tablabel_padding_left,
+			num, tablabel_number_separator, bufnr,
+			tablabel_padding_right,
 			' ', fname,
 		}, '')
 	else
@@ -386,7 +395,7 @@ local function neat_tab_line()
 	return s
 end
 
-if opt.tabline == nil or vim.o.tabline == '' then
+if opt.tabline == nil or vim.opt.tabline == '' then
 	-- 将函数暴露给 v:lua
 	_G.neat_buffer = neat_buffer
 	_G.neat_tab_label = neat_tab_label
