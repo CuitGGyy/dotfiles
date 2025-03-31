@@ -4,7 +4,7 @@
 #	sshCommand = ssh -i \"~/.ssh/id_ed25519_git\" -o StrictHostKeyChecking=no
 #[user]
 #	name = CuitGGyy
-#	email = cuitggyy(at)gmail.com
+#	email = 2168884+CuitGGyy@users.noreply.github.com
 #[credential]
 #	helper = none
 #	helper = cache
