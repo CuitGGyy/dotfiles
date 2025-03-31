@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/31 14:13:14
+-- Last Modified: 2025/03/31 18:05:14
 --
 --------------------------------------------------------------------------------
 
@@ -1005,24 +1005,24 @@ now(function()
 		post_hook = nil,
 	})
 
-	--[[
 	-- 自定义文件类型的注释
 	local ft = require('Comment.ft')
 
 	-- 1. Using set function
 	-- Set only line comment
-	ft.set('yaml', '#%s')
+	--ft.set('yaml', '#%s')
 	-- Or set both line and block commentstring
-	ft.set('javascript', {'//%s', '/*%s*/'})
+	--ft.set('javascript', {'//%s', '/*%s*/'})
 
 	-- 2. Metatable magic
-	ft.javascript = {'//%s', '/*%s*/'}
-	ft.yaml = '#%s'
+	--ft.javascript = {'//%s', '/*%s*/'}
+	--ft.yaml = '#%s'
 
-	-- Multiple filetypes
-	ft({'go', 'rust'}, ft.get('c'))
-	ft({'toml', 'graphql'}, '#%s')
-	--]]
+	-- 3. Multiple filetypes
+	--ft({'go', 'rust'}, ft.get('c'))
+	--ft({'toml', 'graphql'}, '#%s')
+
+	ft({'gitconfig', 'gitcommit'}, '#%s')
 
 end)
 
