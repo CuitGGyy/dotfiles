@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/31 18:05:14
+-- Last Modified: 2025/04/01 03:12:53
 --
 --------------------------------------------------------------------------------
 
@@ -525,12 +525,24 @@ now(function()
 	})
 
 	-- 通过tab标签页序列值获取buffer缓冲区编号
-	local function bufnr_by_tabpage(num)
-		local buflist = fn.tabpagebuflist(num)
-		local winnr = fn.tabpagewinnr(num)
+	local function bufnr_by_tabpage(order)
+		local buflist = fn.tabpagebuflist(order)
+		local winnr = fn.tabpagewinnr(order)
 		local bufnr = buflist[winnr]
 		return bufnr
 	end
+
+	-- 通过buffer缓冲区编号获取tab标签页编号
+	--local function tabpage_by_bufnr(bufnr)
+	--	for _, tabpage in ipairs(vim.api.nvim_list_tabpages()) do
+	--		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+	--			if vim.api.nvim_win_get_buf(win) == bufnr then
+	--				return vim.api.nvim_tabpage_get_number(tabpage)
+	--			end
+	--		end
+	--	end
+	--	return nil
+	--end
 
 	-- 插件选项自定义配置
 	bufferline = require('bufferline')
@@ -542,16 +554,20 @@ now(function()
 				--bufferline.style_preset.minimal,
 				bufferline.style_preset.no_italic,
 			},
-			numbers = function(opts)
-				--return string.format('%s/%s', opts.raise(opts.id), opts.lower(opts.ordinal))
-				--return string.format('%s·%s', opts.ordinal, opts.raise(opts.id))
-				return string.format('%s·%s', opts.ordinal, opts.raise( bufnr_by_tabpage(opts.ordinal) ))
-			end,
+			numbers = 'none',
+			--numbers = function(opts)
+			--	return string.format('%s/%s', opts.raise(opts.id), opts.lower(opts.ordinal))
+			--	return string.format('%s·%s', opts.ordinal, opts.raise( bufnr_by_tabpage(opts.ordinal) ))
+			--	return string.format('%s·', opts.ordinal)
+			--end,
 			buffer_close_icon = '',
 			modified_icon = '●',
 			close_icon = '',
 			close_command = 'bdelete! %d',
-			left_mouse_command = 'buffer %d',
+			--left_mouse_command = 'buffer %d',
+			left_mouse_command = function(id)
+				api.nvim_set_current_tabpage(id)
+			end,
 			right_mouse_command = 'bdelete! %d',
 			middle_mouse_command = nil,
 			-- U+2590 ▐ Right half block, this character is right aligned so the
@@ -571,7 +587,7 @@ now(function()
 			get_element_icon = nil,
 			show_close_icon = true,
 			show_tab_indicators = true,
-			show_duplicate_prefix = true,
+			show_duplicate_prefix = false,
 			duplicates_across_groups = true,
 			enforce_regular_tabs = false,
 			always_show_bufferline = true,
@@ -592,7 +608,30 @@ now(function()
 			pick = {
 				alphabet = 'abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ1234567890',
 			},
-		}
+			--custom_areas = {
+			--	right = function()
+			--		local result = {}
+			--		local seve = vim.diagnostic.severity
+			--		local error = #vim.diagnostic.get(0, {severity = seve.ERROR})
+			--		local warning = #vim.diagnostic.get(0, {severity = seve.WARN})
+			--		local info = #vim.diagnostic.get(0, {severity = seve.INFO})
+			--		local hint = #vim.diagnostic.get(0, {severity = seve.HINT})
+			--		if error ~= 0 then
+			--			table.insert(result, {text = '  ' .. error, link = 'DiagnosticError'})
+			--		end
+			--		if warning ~= 0 then
+			--			table.insert(result, {text = '  ' .. warning, link = 'DiagnosticWarn'})
+			--		end
+			--		if hint ~= 0 then
+			--			table.insert(result, {text = '  ' .. hint, link = 'DiagnosticHint'})
+			--		end
+			--		if info ~= 0 then
+			--			table.insert(result, {text = '  ' .. info, link = 'DiagnosticInfo'})
+			--		end
+			--		return result
+			--	end,
+			--},
+		}, -- end of options
 	})
 
 end)

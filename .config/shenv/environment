@@ -86,7 +86,7 @@ fi
 # proxy configuration
 alias https_proxy='export http_proxy=http://192.168.18.200:8118; export https_proxy=$http_proxy'
 alias socks_proxy='export all_proxy=socks5://192.168.18.200:1080'
-alias unset_proxy='unset http_proxy; unset https_proxy; unset ALL_PROXY'
+alias unset_proxy='unset http_proxy; unset https_proxy; unset all_proxy'
 
 # try to use neovim as default editor
 if [[ -x "$(command -v nvim)" ]]; then
