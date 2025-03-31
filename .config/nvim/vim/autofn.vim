@@ -3,7 +3,7 @@
 " autofn.vim - 自定义配置或自动化功能扩展
 "
 " Maintainer: cuitggyy (at) gmail.com
-" Last Modified: 2025/03/26 10:54:28
+" Last Modified: 2025/03/31 15:24:35
 "
 "===============================================================================
 
@@ -170,6 +170,7 @@ endif
 " 0: 不显示标签编号, 仅显示标签名称
 " 1: 显示标签编号和标签名称
 let g:tablabel_number_style = 1
+let g:tablabel_number_separator = ':'
 
 " 当显示标签编号时, 标签编号左右两侧修饰符
 let g:tablabel_padding_left = ''
@@ -219,11 +220,11 @@ function! NeatTabLabel(num)
 	endif
 
 	if l:symbol != '' && g:tablabel_number_style == 1
-		let l:label = g:tablabel_padding_left . a:num . g:tablabel_padding_right
-					\ . ' ' . l:fname . ' ' . l:symbol
+		let l:label = g:tablabel_padding_left . a:num . g:tablabel_number_separator . l:bufnr
+					\ . g:tablabel_padding_right . ' ' . l:fname . ' ' . l:symbol
 	elseif l:symbol == '' && g:tablabel_number_style == 1
-		let l:label = g:tablabel_padding_left . a:num . g:tablabel_padding_right
-					\ . ' ' . l:fname
+		let l:label = g:tablabel_padding_left . a:num . g:tablabel_number_separator . l:bufnr
+					\ . g:tablabel_padding_right . ' ' . l:fname
 	else
 		let l:label = l:symbol . ' ' . l:fname
 	endif
@@ -251,11 +252,11 @@ function! NeatGuiTabLabel()
 	endif
 
 	if l:symbol != '' && g:tablabel_number_style == 1
-		let l:label = g:tablabel_padding_left . v:lnum . g:tablabel_padding_right
-					\ . ' ' . l:fname . ' ' . l:symbol
+		let l:label = g:tablabel_padding_left . v:lnum . g:tablabel_number_separator . l:bufnr
+					\ . g:tablabel_padding_right . ' ' . l:fname . ' ' . l:symbol
 	elseif l:symbol == '' && g:tablabel_number_style == 1
-		let l:label = g:tablabel_padding_left . v:lnum . g:tablabel_padding_right
-					\ . ' ' . l:fname
+		let l:label = g:tablabel_padding_left . v:lnum . g:tablabel_number_separator . l:bufnr
+					\ . g:tablabel_padding_right . ' ' . l:fname
 	else
 		let l:label = l:symbol . ' ' . l:fname
 	endif
@@ -309,8 +310,8 @@ function! NeatTabLine()
 
 	" right-align the label to close the current tab page
 	if tabpagenr('$') > 1
-		"let s .= '%=%#TabLine#%999XXclose'
-		let s .= '%=%#TabLine#%999XX '
+		"let s .= '%=%#TabLine#%999XX '
+		let s .= '%=%#TabLine#%999X✖ '
 	endif
 
 	return s

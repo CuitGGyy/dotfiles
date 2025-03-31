@@ -5,7 +5,7 @@
 " 依赖 vim-plug 插件管理器及插件分组配置
 "
 " Maintainer: cuitggyy (at) google.com
-" Last Modified: 2025/03/29 06:32:58
+" Last Modified: 2025/03/31 15:36:27
 "
 "===============================================================================
 
@@ -128,6 +128,7 @@ if get(s:plugged, 'lightline.vim', 0) == 1
 				\ }
 	let g:lightline.tab = {
 				\ 'active': [ 'tabnum', 'filename', 'modified', ],
+				\ 'inactive': [ 'tabnum', 'filename', 'modified', ],
 				\ }
 endif
 
@@ -140,14 +141,20 @@ try
 	let hour = str2nr(strftime('%H'))
 	if hour > 8 && hour < 18
 		colorscheme onedark
-		let g:lightline.colorscheme = 'onedark'
+		if get(s:plugged, 'lightline.vim', 0) == 1
+			let g:lightline.colorscheme = 'onedark'
+		endif
 	else
 		colorscheme catppuccin_mocha
-		let g:lightline.colorscheme = 'catppuccin_mocha'
+		if get(s:plugged, 'lightline.vim', 0) == 1
+			let g:lightline.colorscheme = 'catppuccin_mocha'
+		endif
 	endif
 catch
 	colorscheme codedark
-	let g:lightline.colorscheme = 'codedark'
+	if get(s:plugged, 'lightline.vim', 0) == 1
+		let g:lightline.colorscheme = 'codedark'
+	endif
 endtry
 
 
@@ -629,6 +636,7 @@ if get(s:plugged, 'nerdcommenter', 0) == 1
 
 	" Uncomments the selected line(s).
 	"noremap <leader>cu <Plug>NERDCommenterUncomment
+	noremap gcu <Plug>NERDCommenterUncomment
 
 endif
 

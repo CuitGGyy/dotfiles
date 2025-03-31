@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/03/31 05:02:27
+-- Last Modified: 2025/03/31 14:13:14
 --
 --------------------------------------------------------------------------------
 
@@ -513,7 +513,6 @@ end)
 --------------------------------------------------------------------------------
 -- akinsho/bufferline.nvim
 --------------------------------------------------------------------------------
---[[
 now(function()
 
 	-- 功能多样的标签页栏
@@ -525,11 +524,19 @@ now(function()
 		},
 	})
 
+	-- 通过tab标签页序列值获取buffer缓冲区编号
+	local function bufnr_by_tabpage(num)
+		local buflist = fn.tabpagebuflist(num)
+		local winnr = fn.tabpagewinnr(num)
+		local bufnr = buflist[winnr]
+		return bufnr
+	end
+
 	-- 插件选项自定义配置
 	bufferline = require('bufferline')
 	bufferline.setup({
 		options = {
-			mode = 'buffers',
+			mode = 'tabs',
 			themable = true, -- whether or not bufferline highlights can be overridden externally
 			style_preset = {
 				--bufferline.style_preset.minimal,
@@ -537,7 +544,8 @@ now(function()
 			},
 			numbers = function(opts)
 				--return string.format('%s/%s', opts.raise(opts.id), opts.lower(opts.ordinal))
-				return string.format('%s·%s', opts.ordinal, opts.raise(opts.id))
+				--return string.format('%s·%s', opts.ordinal, opts.raise(opts.id))
+				return string.format('%s·%s', opts.ordinal, opts.raise( bufnr_by_tabpage(opts.ordinal) ))
 			end,
 			buffer_close_icon = '',
 			modified_icon = '●',
@@ -571,8 +579,8 @@ now(function()
 			persist_buffer_sort = true,
 			move_wraps_at_ends = false,
 			max_prefix_length = 12,
-			-- 'insert_after_current' | 'insert_at_end' | 'id' | 'extension' | 'relative_directory' | 'directory'
-			sort_by = 'insert_after_current',
+			-- 'insert_after_current' | 'insert_at_end' | 'id' | 'extension' | 'relative_directory' | 'directory' | 'tabs'
+			sort_by = 'tabs',
 			diagnostics = false,
 			diagnostics_indicator = nil,
 			diagnostics_update_in_insert = true,
@@ -588,7 +596,6 @@ now(function()
 	})
 
 end)
---]]
 
 
 --------------------------------------------------------------------------------
@@ -1334,7 +1341,7 @@ now(function()
 					['<m-pagedown>'] = actions.preview_scrolling_down,
 
 					-- 添加其他按键映射
-					['<esc>'] = actions.close,
+					--['<esc>'] = actions.close,
 					['<m-p>'] = action_layout.toggle_preview,
 					-- Mapping <C-s>/<C-a> to cycle previewer for git commits to show full message
 					--['c-n'] = actions.cycle_history_next,
