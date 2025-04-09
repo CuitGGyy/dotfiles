@@ -5,7 +5,7 @@
 -- 依赖 mini.deps 插件管理器及插件分组配置
 --
 -- Maintainer: cuitggyy (at) google.com
--- Last Modified: 2025/04/01 03:12:53
+-- Last Modified: 2025/04/09 09:08:57
 --
 --------------------------------------------------------------------------------
 
@@ -334,10 +334,10 @@ end)
 -- 应尽早加载 colorscheme 使其他插件正确配色
 if package.loaded['tokyonight'] and package.loaded['onedark'] then
 	local hour = tonumber(os.date('%H'))
-	-- 白天 9:00-18:00 高对比
-	if hour > 8 and hour < 18 then
+	-- 白天 6:00-18:00 高对比
+	if hour > 6 and hour < 18 then
 		cmd('colorscheme onedark')
-	-- 晚上 18:00-9:00 低亮度
+	-- 晚上 18:00-6:00 低亮度
 	else
 		cmd('colorscheme tokyonight')
 	end
@@ -572,7 +572,8 @@ now(function()
 			middle_mouse_command = nil,
 			-- U+2590 ▐ Right half block, this character is right aligned so the
 			-- background highlight doesn't appear in the middle
-			-- alternatives:  right aligned => ▕ ▐ ,  left aligned => ▍
+			-- alternatives:  right aligned => ▕ ▐ ,  left aligned => ▎ ▍
+			--indicator = { icon = '▍', style = 'icon' },
 			indicator = { icon = '▎', style = 'icon' },
 			left_trunc_marker = '',
 			right_trunc_marker = '',
@@ -986,7 +987,7 @@ end)
 --------------------------------------------------------------------------------
 -- numToStr/Comment.nvim
 --------------------------------------------------------------------------------
-now(function()
+later(function()
 
 	-- 代码注释, 支持 treesitter
 	add({ source = 'numToStr/Comment.nvim', })
@@ -1114,7 +1115,7 @@ end)
 --------------------------------------------------------------------------------
 -- akinsho/toggleterm.nvim
 --------------------------------------------------------------------------------
-now(function()
+later(function()
 
 	-- 终端会话管理器
 	add({
@@ -1245,7 +1246,7 @@ end)
 --------------------------------------------------------------------------------
 -- nvim-telescope/telescope.nvim
 --------------------------------------------------------------------------------
-now(function()
+later(function()
 
 	-- fzf, fuzzyfind 模糊搜索
 	add({
@@ -1920,6 +1921,78 @@ later(function()
 	-- 使用 Comment.nvim 注释器
 	require('Comment').setup({
 		pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+	})
+
+end)
+
+
+--------------------------------------------------------------------------------
+-- HiPhish/rainbow-delimiters.nvim
+--------------------------------------------------------------------------------
+now(function()
+
+	-- 不依赖treesitter的彩虹括号
+	add({
+		source = 'HiPhish/rainbow-delimiters.nvim',
+	})
+
+	require('rainbow-delimiters.setup').setup({
+		--strategy = {
+		--	[''] = 'rainbow-delimiters.strategy.global',
+		--	vim = 'rainbow-delimiters.strategy.local',
+		--	html = 'rainbow-delimiters.strategy.local',
+		--	latex = 'rainbow-delimiters.strategy.local',
+		--	commonlisp = 'rainbow-delimiters.strategy.local',
+		--},
+		--query = {
+		--	[''] = 'rainbow-delimiters',
+		--	latex = 'rainbow-blocks',
+		--	lua = 'rainbow-blocks',
+		--	query = function(bufnr)
+		--		-- Use blocks for read-only buffers like in `:InspectTree`
+		--		local is_nofile = vim.bo[bufnr].buftype == 'nofile'
+		--		return is_nofile and 'rainbow-blocks' or 'rainbow-delimiters'
+		--	end,
+		--},
+		--priority = {
+		--	-- Halfway between semantic tokens and Tree-sitter
+		--	[''] = function()
+		--		local priorities = (vim.hl or vim.highlight).priorities
+		--		return math.floor((priorities.semantic_tokens + priorities.treesitter) / 2)
+		--	end,
+		--},
+		highlight = {
+			'RainbowDelimiterOrange',
+			'RainbowDelimiterYellow',
+			'RainbowDelimiterGreen',
+			'RainbowDelimiterRed',
+			'RainbowDelimiterBlue',
+			'RainbowDelimiterViolet',
+			'RainbowDelimiterCyan',
+		},
+		--blacklist = {'c', 'cpp'},
+	})
+
+	api.nvim_create_autocmd('ColorSchemePre', {
+		pattern = 'tokyonight',
+		callback = function()
+			-- 默认定义高亮组
+			--api.nvim_set_hl(0, 'RainbowDelimiterRed', { guifg = '#cc241d', ctermfg = 'Red', })
+			--api.nvim_set_hl(0, 'RainbowDelimiterOrange', { guifg = '#d65d0e', ctermfg = 'White', })
+			--api.nvim_set_hl(0, 'RainbowDelimiterYellow', { guifg = '#d79921', ctermfg = 'Yellow', })
+			--api.nvim_set_hl(0, 'RainbowDelimiterGreen', { guifg = '#689d6a', ctermfg = 'Green', })
+			--api.nvim_set_hl(0, 'RainbowDelimiterCyan', { guifg = '#a89984', ctermfg = 'Cyan', })
+			--api.nvim_set_hl(0, 'RainbowDelimiterBlue', { guifg = '#458588', ctermfg = 'Blue', })
+			--api.nvim_set_hl(0, 'RainbowDelimiterViolet', { guifg = '#b16286', ctermfg = 'Magenta', })
+
+			api.nvim_set_hl(0, 'RainbowDelimiterRed', { guifg = '#cc241d', ctermfg = 'Red', })
+			api.nvim_set_hl(0, 'RainbowDelimiterYellow', { guifg = '#e8b622', ctermfg = 'Yellow', })
+			api.nvim_set_hl(0, 'RainbowDelimiterBlue', { guifg = '#21a2ff', ctermfg = 'Blue', })
+			api.nvim_set_hl(0, 'RainbowDelimiterOrange', { guifg = '#d65d0e', ctermfg = 'White', })
+			api.nvim_set_hl(0, 'RainbowDelimiterGreen', { guifg = '#59dd5d', ctermfg = 'Green', })
+			api.nvim_set_hl(0, 'RainbowDelimiterViolet', { guifg = '#e669da', ctermfg = 'Magenta', })
+			api.nvim_set_hl(0, 'RainbowDelimiterCyan', { guifg = '#00d1c1', ctermfg = 'Cyan', })
+		end,
 	})
 
 end)
