@@ -1,4 +1,7 @@
-# ~/.zprofile: executed by zsh for login shells.
+#
+# ~/.zprofile: executed by the command interpreter for login shells.
+# The file ~/.profile is not read by bash, if ~/.zprofile or ~/.zlogin exists.
+#
 
 if [ -x /usr/libexec/path_helper ]; then
 	eval `/usr/libexec/path_helper -s`
@@ -13,7 +16,7 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state"}
-if [[ "$(uname -s)" == 'Linux' ]]; then
+if [[ "$(uname -s)" = "Linux" ]]; then
 	export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-"/run/user/$(id -u)"}
 	# xdg system directories
 	#export XDG_DATA_DIRS=${XDG_DATA_DIRS:-"/usr/local/share:/usr/share"}
@@ -22,26 +25,26 @@ fi
 
 # if running zsh
 #if [ -n "$ZSH_VERSION" ]; then
-#    # zsh environment variables
-#    #export ZDOTDIR=${ZDOTDIR:-"$XDG_CONFIG_HOME/zsh"}
+#	# zsh environment variables
+#	#export ZDOTDIR=${ZDOTDIR:-"$XDG_CONFIG_HOME/zsh"}
 #
-#    # include .zshrc if it exists
-#    #[[ -f ~/.zshrc ]] && . ~/.zshrc
-#    if [ -f "$HOME/.zshrc" ]; then
-#        source "$HOME/.zshrc"
-#    fi
+#	# include .zshrc if it exists
+#	#[[ -f ~/.zshrc ]] && . ~/.zshrc
+#	if [ -f "$HOME/.zshrc" ]; then
+#		. "$HOME/.zshrc"
+#	fi
 #fi
 
 # if running ssh tty
 #if [ -n "${SSH_TTY}" ]; then
-#    export SHELL=$(which bash)
-#    export SHELL=$(which zsh)
-#    exec $SHELL -l
+#	export SHELL=$(which bash)
+#	export SHELL=$(which zsh)
+#	exec $SHELL -l
 #fi
 
 # set PATH so it includes user's private bin if it exists
 #if [ -d "$HOME/bin" ] ; then
-#    PATH="$HOME/bin:$PATH"
+#	PATH="$HOME/bin:$PATH"
 #fi
 
 # set PATH so it includes user's private bin if it exists
