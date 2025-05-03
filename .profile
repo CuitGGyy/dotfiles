@@ -31,7 +31,7 @@ if [[ "$(basename $SHELL)" = "bash" ]] && [ -n "$BASH_VERSION" ]; then
 	# include .bashrc if it exists
 	#[[ -f ~/.bashrc ]] && . ~/.bashrc
 	if [ -f "$HOME/.bashrc" ]; then
-		source "$HOME/.bashrc"
+		. "$HOME/.bashrc"
 	fi
 fi
 
@@ -43,20 +43,20 @@ if [[ "$(basename $SHELL)" = "zsh" ]] && [ -n "$ZSH_VERSION" ]; then
 	# include .zshrc if it exists
 	#[[ -f ~/.zshrc ]] && . ~/.zshrc
 	if [ -f "$HOME/.zshrc" ]; then
-		source "$HOME/.zshrc"
+		. "$HOME/.zshrc"
 	fi
 fi
 
 # if running ssh tty
 #if [ -n "${SSH_TTY}" ]; then
-#    export SHELL=$(which bash)
-#    export SHELL=$(which zsh)
-#    exec $SHELL -l
+#	export SHELL=$(which bash)
+#	export SHELL=$(which zsh)
+#	exec $SHELL -l
 #fi
 
 # set PATH so it includes user's private bin if it exists
 #if [ -d "$HOME/bin" ] ; then
-#    PATH="$HOME/bin:$PATH"
+#	PATH="$HOME/bin:$PATH"
 #fi
 
 # set PATH so it includes user's private bin if it exists
